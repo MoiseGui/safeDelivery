@@ -11,7 +11,7 @@ public class Client extends User{
 		this.adresse = new SimpleObjectProperty<Adresse>();
 	}
 
-	public Client(Double id, String nom, String prenom, String email, String pass, String tel, Adresse adresse) {
+	public Client(Long id, String nom, String prenom, String email, String pass, String tel, Adresse adresse) {
 		super(id, nom, prenom, email, pass, tel);
 		this.adresse = new SimpleObjectProperty<Adresse>(adresse);
 	}

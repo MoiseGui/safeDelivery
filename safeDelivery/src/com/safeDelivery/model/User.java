@@ -1,12 +1,12 @@
 package com.safeDelivery.model;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class User {
-	private DoubleProperty id;
+	private LongProperty id;
 	private StringProperty nom;
 	private StringProperty prenom;
 	private StringProperty email;
@@ -14,7 +14,7 @@ public class User {
 	private StringProperty tel;
 	
 	public User() {
-		this.id = new SimpleDoubleProperty();
+		this.id = new SimpleLongProperty();
 		this.nom = new SimpleStringProperty();
 		this.prenom = new SimpleStringProperty();
 		this.email = new SimpleStringProperty();
@@ -22,26 +22,25 @@ public class User {
 		this.tel = new SimpleStringProperty();
 	}
 
-	public User(Double id, String nom, String prenom, String email, String pass,
+	public User(Long id, String nom, String prenom, String email, String pass,
 			String tel) {
-		super();
-		this.id.set(id);
-		this.nom.set(nom);
-		this.prenom.set(prenom);
-		this.email.set(email);
-		this.pass.set(pass);
-		this.tel.set(tel);
+		this.id = new SimpleLongProperty(id);
+		this.nom = new SimpleStringProperty(nom);
+		this.prenom = new SimpleStringProperty(prenom);
+		this.email = new SimpleStringProperty(email);
+		this.pass = new SimpleStringProperty(pass);
+		this.tel = new SimpleStringProperty(tel);
 	}
 
-	public Double getId() {
+	public Long getId() {
 		return id.get();
 	}
 
-	public void setId(Double id) {
+	public void setId(Long id) {
 		this.id.set(id);
 	}
 	
-	public DoubleProperty idProperty() {
+	public LongProperty idProperty() {
 		return this.id;
 	}
 
@@ -108,5 +107,13 @@ public class User {
 	public StringProperty telProperty() {
 		return this.tel;
 	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", pass=" + pass
+				+ ", tel=" + tel + "]";
+	}
+	
+	
 	
 }
