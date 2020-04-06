@@ -1,5 +1,6 @@
 package com.safeDelivery.model;
 
-public class Restaurateur {
 
+public class Restaurateur extends User {
+	
 }
