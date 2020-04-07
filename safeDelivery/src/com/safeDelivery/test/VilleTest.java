@@ -6,7 +6,7 @@ public class VilleTest {
 	public static void main(String argv[]) {
 		VilleServiceImpl vs = new VilleServiceImpl();
 		
-		int i = vs.findByName("Marrakech");
+		int i = vs.existByName("Marrakech");
 		
 	     System.out.println("Resultat: "+i);
 	}

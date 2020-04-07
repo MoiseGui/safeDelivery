@@ -17,6 +17,11 @@ public class Ville {
 	}
 
 
+	public Ville( String nom) {
+		this.id = new SimpleLongProperty();
+		this.nom = new SimpleStringProperty(nom);
+	}
+
 	public Ville(Long id, String nom) {
 		this.id = new SimpleLongProperty(id);
 		this.nom = new SimpleStringProperty(nom);

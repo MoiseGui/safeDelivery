@@ -21,7 +21,13 @@ public class UserServiceImpl implements UserService {
 				String query = "select count(*) from user where email = ? and pass = ?";
 				PreparedStatement ps = conn.prepareStatement(query);
 				ps.setString(1, email);
-				ps.setString(2, pass);
+				try {
+					ps.setString(2, saltHashPassword.generateHash(pass));
+				} catch (Exception e) {
+					e.printStackTrace();
+					return -4;
+				}
+
 				ResultSet result = ps.executeQuery();
 				result.next();
 
@@ -62,7 +68,7 @@ public class UserServiceImpl implements UserService {
 				} else {
 					ps.close();
 					SingletonConnexion.closeConnection(conn);
-					System.out.println("1 ");
+					System.out.println("1");
 					return null;
 				}
 
@@ -82,27 +88,34 @@ public class UserServiceImpl implements UserService {
 		try {
 			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
-				String query = "insert into user (nom,prenom,email,pass,tel,categorie,enable) values (?,?,?,?,?,?,?)";
-				PreparedStatement ps = conn.prepareStatement(query);
-				ps.setString(1, user.getNom());
-				ps.setString(2, user.getPrenom());
-				ps.setString(3, user.getEmail());
-				try {
-					ps.setString(4, saltHashPassword.generateHash(user.getPass()));
-				} catch (NoSuchAlgorithmException e) {
-					return -4;
-				}
-				ps.setString(5, user.getTel());
-				ps.setInt(6, user.getCategorie());
-				ps.setInt(7, user.getEnable());
-				int count = ps.executeUpdate();
-				if (count > 0) {
-					ps.close();
-					SingletonConnexion.closeConnection(conn);
-					return 1;
+				User user1 = getUserByEmail(user.getEmail());
+				if (user1 == null) {
+					String query = "insert into user (nom,prenom,email,pass,tel,categorie,enable) values (?,?,?,?,?,?,?)";
+					PreparedStatement ps = conn.prepareStatement(query);
+					ps.setString(1, user.getNom());
+					ps.setString(2, user.getPrenom());
+					ps.setString(3, user.getEmail());
+					try {
+						ps.setString(4, saltHashPassword.generateHash(user.getPass()));
+					} catch (NoSuchAlgorithmException e) {
+						return -3;
+					}
+					ps.setString(5, user.getTel());
+					ps.setInt(6, user.getCategorie());
+					ps.setInt(7, user.getEnable());
+					int count = ps.executeUpdate();
+					if (count > 0) {
+						ps.close();
+						SingletonConnexion.closeConnection(conn);
+						ResultSet rs = ps.getGeneratedKeys();
+						if(rs.next())
+						   return  rs.getInt(1);
+					} else {
+						ps.close();
+						SingletonConnexion.closeConnection(conn);
+						return -2;
+					}
 				} else {
-					ps.close();
-					SingletonConnexion.closeConnection(conn);
 					return -1;
 				}
 			} else {
@@ -110,8 +123,9 @@ public class UserServiceImpl implements UserService {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return -3;
+			return -4;
 		}
+		return -5;
 	}
 
 	@Override
@@ -119,7 +133,7 @@ public class UserServiceImpl implements UserService {
 		try {
 			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
-				String query = "update user set enable = 0 where email=? ";
+				String query = "update user set enable = 1 where email=? ";
 				PreparedStatement ps = conn.prepareStatement(query);
 				ps.setString(1, email);
 				int count = ps.executeUpdate();

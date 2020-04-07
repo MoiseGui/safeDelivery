@@ -1,8 +1,9 @@
 package com.safeDelivery.service;
 
 import com.safeDelivery.model.Ville;
+import com.safeDelivery.model.Zone;
 
-public interface VilleService {
+public interface ZoneService {
 	public int existByName(String nom);
-	public int saveVille(Ville ville);
+	public int saveZone(Zone zone);
 }

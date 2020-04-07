@@ -26,6 +26,16 @@ public class User {
 		this.categorie = new SimpleIntegerProperty();
 		this.enable = new SimpleIntegerProperty();
 	}
+	public User( String nom, String prenom, String email, String pass, String tel, int categorie, int enable) {
+		this.id = new SimpleLongProperty();
+		this.nom = new SimpleStringProperty(nom);
+		this.prenom = new SimpleStringProperty(prenom);
+		this.email = new SimpleStringProperty(email);
+		this.pass = new SimpleStringProperty(pass);
+		this.tel = new SimpleStringProperty(tel);
+		this.categorie = new SimpleIntegerProperty(categorie);
+		this.enable = new SimpleIntegerProperty(enable);
+	}
 
 	public User(Long id, String nom, String prenom, String email, String pass, String tel, int categorie, int enable) {
 		this.id = new SimpleLongProperty(id);
@@ -37,6 +47,7 @@ public class User {
 		this.categorie = new SimpleIntegerProperty(categorie);
 		this.enable = new SimpleIntegerProperty(enable);
 	}
+	
 
 	public Long getId() {
 		return id.get();

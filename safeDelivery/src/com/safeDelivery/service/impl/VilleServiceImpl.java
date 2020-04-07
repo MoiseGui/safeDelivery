@@ -9,43 +9,78 @@ import com.safeDelivery.model.Ville;
 import com.safeDelivery.service.VilleService;
 import com.safeDelivery.utils.SingletonConnexion;
 
-public class VilleServiceImpl implements VilleService{
+public class VilleServiceImpl implements VilleService {
 
 	@Override
-	public int findByName(String nom) {
-		
+	public int existByName(String nom) {
+
 		try {
 			Connection conn = SingletonConnexion.startConnection();
-			if(conn != null) {
-				String query = "select count(*) from ville where nom = ?";
+			if (conn != null) {
+				String query = "select id from ville where nom like ?";
 				PreparedStatement ps = conn.prepareStatement(query);
 				ps.setString(1, nom);
 				ResultSet result = ps.executeQuery();
-				result.next();
-				if(result.getInt(1) == 1) {
-					ps.close();
-					SingletonConnexion.closeConnection(conn);
-					return 1;
+				if (result.next()) {
+					int id = result.getInt(1);
+					if (id > 0) {
+						ps.close();
+						SingletonConnexion.closeConnection(conn);
+						return id;
+					} else {
+						ps.close();
+						SingletonConnexion.closeConnection(conn);
+						return -1;
+					}
 				}
-				else {
-					ps.close();
-					SingletonConnexion.closeConnection(conn);
-					return -1;
-				}
-			}
-			else {
+
+			} else {
 				return -2;
 			}
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return -3;
 		}
+		return -4;
 	}
 
 	@Override
 	public int saveVille(Ville ville) {
-		// TODO Auto-generated method stub
-		return 0;
+		int found = existByName(ville.getNom());
+		System.out.println("found saveville "+found);
+		if (found < 0) {
+			try {
+				Connection conn = SingletonConnexion.startConnection();
+				if (conn != null) {
+					String query = "insert into ville (nom) values (?)";
+					PreparedStatement ps = conn.prepareStatement(query);
+					ps.setString(1, ville.getNom());
+					int count = ps.executeUpdate();
+					if (count > 0) {
+						ps.close();
+						ResultSet rs = ps.getGeneratedKeys();
+						int rsgetint = rs.getInt(1);
+						if (rs.next()) {
+							SingletonConnexion.closeConnection(conn);
+							return rsgetint;
+						}
+					} else {
+						ps.close();
+						SingletonConnexion.closeConnection(conn);
+						return -2;
+					}
+				} else {
+					return -3;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return -4;
+			}
+			return -5;
+		} else {
+			return found;
+		}
+
 	}
 
 }
