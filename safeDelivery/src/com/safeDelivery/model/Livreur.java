@@ -12,8 +12,8 @@ public class Livreur extends User {
 		this.busy = new SimpleBooleanProperty();
 	}
 	
-	public Livreur(Long id, String nom, String prenom, String email, String pass, String tel, boolean busy) {
-		super(id, nom, prenom, email, pass, tel);
+	public Livreur(Long id, String nom, String prenom, String email, String pass, String tel, boolean busy,int categorie,int enable) {
+		super(id, nom, prenom, email, pass, tel, categorie,enable);
 		this.busy = new SimpleBooleanProperty(busy);
 	}
 

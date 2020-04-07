@@ -1,6 +1,7 @@
 package com.safeDelivery.model;
 
 import javafx.beans.property.LongProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -12,7 +13,9 @@ public class User {
 	private StringProperty email;
 	private StringProperty pass;
 	private StringProperty tel;
-	
+	private SimpleIntegerProperty categorie;
+	private SimpleIntegerProperty enable;
+
 	public User() {
 		this.id = new SimpleLongProperty();
 		this.nom = new SimpleStringProperty();
@@ -20,16 +23,19 @@ public class User {
 		this.email = new SimpleStringProperty();
 		this.pass = new SimpleStringProperty();
 		this.tel = new SimpleStringProperty();
+		this.categorie = new SimpleIntegerProperty();
+		this.enable = new SimpleIntegerProperty();
 	}
 
-	public User(Long id, String nom, String prenom, String email, String pass,
-			String tel) {
+	public User(Long id, String nom, String prenom, String email, String pass, String tel, int categorie, int enable) {
 		this.id = new SimpleLongProperty(id);
 		this.nom = new SimpleStringProperty(nom);
 		this.prenom = new SimpleStringProperty(prenom);
 		this.email = new SimpleStringProperty(email);
 		this.pass = new SimpleStringProperty(pass);
 		this.tel = new SimpleStringProperty(tel);
+		this.categorie = new SimpleIntegerProperty(categorie);
+		this.enable = new SimpleIntegerProperty(enable);
 	}
 
 	public Long getId() {
@@ -39,20 +45,44 @@ public class User {
 	public void setId(Long id) {
 		this.id.set(id);
 	}
-	
+
 	public LongProperty idProperty() {
 		return this.id;
+	}
+
+	// Categories
+	public int getCategorie() {
+		return categorie.get();
+	}
+
+	public SimpleIntegerProperty categorieProperty() {
+		return this.categorie;
+	}
+
+	public void setCategorie(int categorie) {
+		this.categorie.set(categorie);
+	}
+
+	// enable
+	public int getEnable() {
+		return categorie.get();
+	}
+
+	public SimpleIntegerProperty enableProperty() {
+		return this.categorie;
+	}
+
+	public void setEnable(int enable) {
+		this.enable.set(enable);
 	}
 
 	public String getNom() {
 		return this.nom.get();
 	}
-	
-	
+
 	public StringProperty nomProperty() {
 		return this.nom;
 	}
-
 
 	public void setNom(String nom) {
 		this.nom.set(nom);
@@ -61,12 +91,10 @@ public class User {
 	public String getPrenom() {
 		return this.prenom.get();
 	}
-	
-	
+
 	public StringProperty PrenomProperty() {
 		return this.prenom;
 	}
-
 
 	public void setPrenom(String prenom) {
 		this.prenom.set(prenom);
@@ -79,7 +107,7 @@ public class User {
 	public void setEmail(String email) {
 		this.email.set(email);
 	}
-	
+
 	public StringProperty emailProperty() {
 		return this.email;
 	}
@@ -91,7 +119,7 @@ public class User {
 	public void setPass(String pass) {
 		this.pass.set(pass);
 	}
-	
+
 	public StringProperty passProperty() {
 		return this.pass;
 	}
@@ -103,7 +131,7 @@ public class User {
 	public void setTel(String tel) {
 		this.tel.set(tel);
 	}
-	
+
 	public StringProperty telProperty() {
 		return this.tel;
 	}
@@ -113,7 +141,5 @@ public class User {
 		return "User [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", pass=" + pass
 				+ ", tel=" + tel + "]";
 	}
-	
-	
-	
+
 }
