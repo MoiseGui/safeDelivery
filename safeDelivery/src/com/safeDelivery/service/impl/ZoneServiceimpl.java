@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import com.safeDelivery.model.Zone;
 import com.safeDelivery.service.ZoneService;
@@ -13,12 +14,12 @@ public class ZoneServiceimpl implements ZoneService {
 	VilleServiceImpl villeserviceimpl = new VilleServiceImpl();
 
 	@Override
-	public int existByName(String nom) {
+	public long existByName(String nom) {
 		try {
 			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "select id from zone where nom = ?";
-				PreparedStatement ps = conn.prepareStatement(query);
+				PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 				ps.setString(1, nom);
 				ResultSet result = ps.executeQuery();
 				if (result.next()) {
@@ -32,6 +33,8 @@ public class ZoneServiceimpl implements ZoneService {
 						SingletonConnexion.closeConnection(conn);
 						return -1;
 					}
+				} else {
+					return -4;
 				}
 			} else {
 				return -2;
@@ -40,34 +43,37 @@ public class ZoneServiceimpl implements ZoneService {
 			e.printStackTrace();
 			return -3;
 		}
-		return -4;
+
 	}
 
 	@Override
-	public int saveZone(Zone zone) {
-		int found = existByName(zone.getNom());
-		System.out.println("found ////// =" + found);
+	public long saveZone(Zone zone) {
+		long found = existByName(zone.getNom());
 		if (found < 0) {
-			int rs = villeserviceimpl.saveVille(zone.getVille());
+			System.out.println("zone not found " + found);
+			long rs = villeserviceimpl.saveVille(zone.getVille());
 			System.out.println("creation de la ville = " + rs);
+			zone.getVille().setId(rs);
 			if (rs >= 0) {
 				try {
 					Connection conn = SingletonConnexion.startConnection();
 					if (conn != null) {
 						String query = "insert into zone (nom,id_ville) values (?,?)";
-						PreparedStatement ps = conn.prepareStatement(query);
+						PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 						ps.setString(1, zone.getNom());
-						ps.setLong(2, rs);
+						ps.setLong(2,rs);
 						int count = ps.executeUpdate();
-						ps.close();
 						if (count > 0) {
-
-							SingletonConnexion.closeConnection(conn);
 							ResultSet rs1 = ps.getGeneratedKeys();
-							if (rs1.next())
-								return rs1.getInt(1);
+							if (rs1.next()) {
+								int id = rs1.getInt(1);
+								ps.close();
+								System.out.println("l'id de la zone "+id);
+								SingletonConnexion.closeConnection(conn);
+								return id;
+							}
 						} else {
-
+							ps.close();
 							SingletonConnexion.closeConnection(conn);
 							return -1;
 						}
@@ -82,8 +88,10 @@ public class ZoneServiceimpl implements ZoneService {
 			}
 			return -2;
 
+		} else {
+			return found;
 		}
-		return -1;
+
 	}
 
 }

@@ -4,7 +4,7 @@ import com.safeDelivery.model.Client;
 import com.safeDelivery.model.User;
 
 public interface ClientService {
-	public int addClient(Client client);
+	public long addClient(Client client);
 
 	public User getClientByEmail(String email);
 

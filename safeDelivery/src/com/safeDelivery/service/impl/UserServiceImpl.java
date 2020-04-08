@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import com.safeDelivery.model.User;
 import com.safeDelivery.service.UserService;
@@ -14,7 +15,7 @@ import com.safeDelivery.utils.saltHashPassword;
 public class UserServiceImpl implements UserService {
 
 	@Override
-	public int existByEmailAndPass(String email, String pass) {
+	public long existByEmailAndPass(String email, String pass) {
 		try {
 			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
@@ -27,10 +28,8 @@ public class UserServiceImpl implements UserService {
 					e.printStackTrace();
 					return -4;
 				}
-
 				ResultSet result = ps.executeQuery();
 				result.next();
-
 				if (result.getInt(1) == 1) {
 					ps.close();
 					SingletonConnexion.closeConnection(conn);
@@ -83,7 +82,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int addUser(User user) {
+	public long addUser(User user) {
 
 		try {
 			Connection conn = SingletonConnexion.startConnection();
@@ -91,7 +90,7 @@ public class UserServiceImpl implements UserService {
 				User user1 = getUserByEmail(user.getEmail());
 				if (user1 == null) {
 					String query = "insert into user (nom,prenom,email,pass,tel,categorie,enable) values (?,?,?,?,?,?,?)";
-					PreparedStatement ps = conn.prepareStatement(query);
+					PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 					ps.setString(1, user.getNom());
 					ps.setString(2, user.getPrenom());
 					ps.setString(3, user.getEmail());
@@ -105,27 +104,31 @@ public class UserServiceImpl implements UserService {
 					ps.setInt(7, user.getEnable());
 					int count = ps.executeUpdate();
 					if (count > 0) {
-						ps.close();
-						SingletonConnexion.closeConnection(conn);
+
 						ResultSet rs = ps.getGeneratedKeys();
-						if(rs.next())
-						   return  rs.getInt(1);
+						if (rs.next()) {
+							long id = rs.getInt(1);
+							ps.close();
+							SingletonConnexion.closeConnection(conn);
+							return id;
+						} else {
+							return -4;
+						}
 					} else {
 						ps.close();
 						SingletonConnexion.closeConnection(conn);
-						return -2;
+						return -3;
 					}
 				} else {
-					return -1;
+					return -2;
 				}
 			} else {
-				return -2;
+				return -1;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return -4;
+			return -5;
 		}
-		return -5;
 	}
 
 	@Override

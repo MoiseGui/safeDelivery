@@ -1,32 +1,35 @@
 package com.safeDelivery.model;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
 public class Livreur extends User {
-	private BooleanProperty busy;
-	
-	
+	private SimpleIntegerProperty busy;
+
 	public Livreur() {
 		super();
-		this.busy = new SimpleBooleanProperty();
-	}
-	
-	public Livreur(Long id, String nom, String prenom, String email, String pass, String tel, boolean busy,int categorie,int enable) {
-		super(id, nom, prenom, email, pass, tel, categorie,enable);
-		this.busy = new SimpleBooleanProperty(busy);
+		this.busy = new SimpleIntegerProperty();
 	}
 
-	public boolean isBusy() {
+	public Livreur(String nom, String prenom, String email, String pass, String tel, int categorie, int enable) {
+		super(nom, prenom, email, pass, tel, categorie, enable);
+		this.busy = new SimpleIntegerProperty(1);
+	}
+
+	public Livreur(Long id, String nom, String prenom, String email, String pass, String tel, int categorie,
+			int enable) {
+		super(id, nom, prenom, email, pass, tel, categorie, enable);
+		this.busy = new SimpleIntegerProperty(1);
+	}
+
+	public int getBusy() {
 		return busy.get();
 	}
 
-	public void setBusy(boolean busy) {
+	public void setBusy(int busy) {
 		this.busy.set(busy);
 	}
-	
-	public BooleanProperty busyProperty() {
+
+	public SimpleIntegerProperty busyProperty() {
 		return this.busy;
 	}
-	
 }
