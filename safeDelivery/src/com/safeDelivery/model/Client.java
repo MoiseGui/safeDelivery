@@ -11,12 +11,12 @@ public class Client extends User{
 		this.adresse = new SimpleObjectProperty<Adresse>();
 	}
 
-	public Client( String nom, String prenom, String email, String pass, String tel, Adresse adresse,int categorie,int enable) {
-		super(nom, prenom, email, pass, tel, categorie,enable);
+	public Client( String nom, String prenom, String email, String pass, String tel, Adresse adresse,int enable) {
+		super(nom, prenom, email, pass, tel, 1,enable);
 		this.adresse = new SimpleObjectProperty<Adresse>(adresse);
 	}
-	public Client(Long id, String nom, String prenom, String email, String pass, String tel, Adresse adresse,int categorie,int enable) {
-		super(id, nom, prenom, email, pass, tel, categorie,enable);
+	public Client(Long id, String nom, String prenom, String email, String pass, String tel, Adresse adresse,int enable) {
+		super(id, nom, prenom, email, pass, tel, 1,enable);
 		this.adresse = new SimpleObjectProperty<Adresse>(adresse);
 	}
 

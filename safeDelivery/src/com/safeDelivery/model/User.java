@@ -13,6 +13,7 @@ public class User {
 	private StringProperty email;
 	private StringProperty pass;
 	private StringProperty tel;
+	// 1: Client 2: Restaurateur 3: Livreur
 	private SimpleIntegerProperty categorie;
 	private SimpleIntegerProperty enable;
 

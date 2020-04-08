@@ -7,17 +7,18 @@ public class Livreur extends User {
 
 	public Livreur() {
 		super();
+		this.setCategorie(3);
 		this.busy = new SimpleIntegerProperty();
 	}
 
-	public Livreur(String nom, String prenom, String email, String pass, String tel, int categorie, int enable) {
-		super(nom, prenom, email, pass, tel, categorie, enable);
+	public Livreur(String nom, String prenom, String email, String pass, String tel, int enable) {
+		super(nom, prenom, email, pass, tel, 3, enable);
 		this.busy = new SimpleIntegerProperty(1);
 	}
 
-	public Livreur(Long id, String nom, String prenom, String email, String pass, String tel, int categorie,
+	public Livreur(Long id, String nom, String prenom, String email, String pass, String tel,
 			int enable) {
-		super(id, nom, prenom, email, pass, tel, categorie, enable);
+		super(id, nom, prenom, email, pass, tel, 3, enable);
 		this.busy = new SimpleIntegerProperty(1);
 	}
 
