@@ -8,14 +8,14 @@ import com.safeDelivery.service.impl.RestaurateurServiceImpl;
 
 
 public class Test {
-	public static void main(String[] args) throws NoSuchAlgorithmException {
+//	public static void main(String[] args) throws NoSuchAlgorithmException {
 //		UserServiceImpl userService = new UserServiceImpl();
 //		VilleServiceImpl villeService = new VilleServiceImpl();
 //		ZoneServiceimpl zoneservice = new ZoneServiceimpl();
 //		AdresseServiceImpl adresseservice = new AdresseServiceImpl();
 //		ClientServiceImpl clientService = new ClientServiceImpl();
 //		LivreurServiceImpl livreurService = new LivreurServiceImpl();
-		RestaurateurServiceImpl restaurateurServiceImpl = new RestaurateurServiceImpl();
+//		RestaurateurServiceImpl restaurateurServiceImpl = new RestaurateurServiceImpl();
 		// test add user
 //		User user = new User((long) 3,"itachi", "sasuke", "sasuke@gmail.com","keykey","2222222", 0, 0);
 //		int rs1 = userService.addUser(user);
@@ -64,15 +64,15 @@ public class Test {
 //		System.out.println("id du livreur est "+livreurService.addLivreur(livreur)); 
 		
 		
-		// test de addUser
-		Restaurateur restaurateur = new Restaurateur("Uzumaki", "Naruto", "naruto@gmail.com", "i hate madara", "0655443322" , 1);
-		System.out.println("L'id du restaurateur est "+ restaurateurServiceImpl.addRestaurateur(restaurateur));
-		
-		
-		
-		
-		
-		
-		
-	}
+//		// test de addUser
+//		Restaurateur restaurateur = new Restaurateur("Uzumaki", "Naruto", "naruto@gmail.com", "i hate madara", "0655443322" , 1);
+//		System.out.println("L'id du restaurateur est "+ restaurateurServiceImpl.addRestaurateur(restaurateur));
+//		
+//		
+//		
+//		
+//		
+//		
+//		
+//	}
 }

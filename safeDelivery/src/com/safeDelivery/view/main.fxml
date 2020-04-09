@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane fx:id="container" prefHeight="404.0" prefWidth="676.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.safeDelivery.view.controller.LoginController">
+   <children>
+      <BorderPane prefHeight="404.0" prefWidth="697.0" style="-fx-background-color: #fff;">
+         <left>
+            <Pane fx:id="anchRoot" prefHeight="404.0" prefWidth="332.0" styleClass="linear-grad" stylesheets="@application.css" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox layoutX="11.0" layoutY="11.0" prefHeight="15.0" prefWidth="47.0" spacing="5.0">
+                     <children>
+                        <Circle fx:id="btnClose" fill="#fc5d57" onMouseClicked="#handleMouseEvent" radius="6.0" stroke="WHITE" strokeType="INSIDE" styleClass="cliquable" />
+                        <Circle fill="#fdbb2d" layoutX="16.0" layoutY="16.0" radius="6.0" stroke="WHITE" strokeType="INSIDE" />
+                        <Circle fx:id="btnMin" fill="#27c941" layoutX="38.0" layoutY="16.0" onMouseClicked="#handleMouseEvent" radius="6.0" stroke="WHITE" strokeType="INSIDE">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Circle>
+                     </children>
+                  </HBox>
+                  <ImageView cache="true" cacheHint="QUALITY" fitHeight="222.0" fitWidth="213.0" layoutX="60.0" layoutY="55.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/logo_with_back_4.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="lblForgot2" layoutX="77.0" layoutY="181.0" text="Safe Delivery" textFill="#eed4d4">
+                     <font>
+                        <Font name="System Bold" size="29.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="98.0" layoutY="281.0" text="On vous livre tout partout" textFill="#bcadad" />
+               </children>
+            </Pane>
+         </left>
+         <center>
+            <StackPane fx:id="pnlStack" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane fx:id="pnlSignUp" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffff;">
+                     <children>
+                        <TextField fx:id="tEmail1" layoutX="65.0" layoutY="167.0" prefHeight="35.0" prefWidth="245.0" promptText="Email" />
+                        <Button fx:id="btnStart" layoutX="187.0" layoutY="230.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" styleClass="button1" stylesheets="@application.css" text="Commencer" />
+                        <ImageView fx:id="btnBack" fitHeight="30.0" fitWidth="47.0" layoutX="50.0" layoutY="45.0" onMouseClicked="#handleMouseEvent" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/icons8_back_30px.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <Label fx:id="lblForgot11" layoutX="65.0" layoutY="123.0" text="Inscription">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="pnlLogin" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffff;">
+                     <children>
+                        <TextField fx:id="tEmail" layoutX="64.0" layoutY="111.0" prefHeight="35.0" prefWidth="245.0" promptText="Email" styleClass="text-input" stylesheets="@application.css" />
+                        <PasswordField fx:id="tPass" layoutX="64.0" layoutY="173.0" prefHeight="35.0" prefWidth="245.0" promptText="Mot de passe" styleClass="text-input" stylesheets="@application.css" />
+                        <Button fx:id="btnConn" layoutX="187.0" layoutY="237.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" styleClass="button1" stylesheets="@application.css" text="Connexion" />
+                        <Button fx:id="btnInscr" layoutX="72.0" layoutY="332.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="236.0" styleClass="button2" stylesheets="@application.css" text="Pas encore inscrit ? Inscription" />
+                        <Label fx:id="lblForgot" layoutX="64.0" layoutY="246.0" opacity="0.88" text="Mot de passe oublié?" textFill="#948e8e">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Label>
+                        <Label fx:id="lblForgot1" layoutX="64.0" layoutY="65.0" text="Connectez-vous">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+               </children>
+            </StackPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
