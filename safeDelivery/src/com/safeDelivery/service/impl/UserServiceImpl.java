@@ -67,12 +67,10 @@ public class UserServiceImpl implements UserService {
 				} else {
 					ps.close();
 					SingletonConnexion.closeConnection(conn);
-					System.out.println("1");
 					return null;
 				}
 
 			} else {
-				System.out.println("2");
 				return null;
 			}
 		} catch (SQLException e) {
