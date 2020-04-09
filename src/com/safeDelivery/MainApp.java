@@ -5,15 +5,18 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 
 public class MainApp extends Application {
 	
 	private Stage primaryStage;
     private BorderPane rootLayout;
+    private AnchorPane main;
 	
 //	@Override
 //	public void start(Stage primaryStage) {
@@ -31,7 +34,11 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
+//        primaryStage.initStyle(StageStyle.UNDECORATED);
+        this.primaryStage.setResizable(false);
+//        this.primaryStage
         this.primaryStage.setTitle("SafeDelivery");
+        this.primaryStage.getIcons().add(new Image("file:resources/images/logo_sans_titre.png"));
 
         initRootLayout();
 
@@ -44,9 +51,10 @@ public class MainApp extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/MainBorder.fxml"));
             rootLayout = (BorderPane) loader.load();
-            
+//            rootLayout.widthProperty().Bind(main.widthProperty());
+
             // Show the scene containing the root layout.
-            Scene scene = new Scene(rootLayout, 677, 404);
+            Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {
@@ -62,7 +70,7 @@ public class MainApp extends Application {
             // Load person overview.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/main.fxml"));
-            AnchorPane main = (AnchorPane) loader.load();
+            this.main = (AnchorPane) loader.load();
 
             // Set person overview into the center of root layout.
             rootLayout.setCenter(main);

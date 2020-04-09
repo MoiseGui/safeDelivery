@@ -1,19 +1,48 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.error{
+	-fx-border-color:red;
+}
 
 .cliquable{
 	-fx-cursor: hand ;
 }
 
 .text-input{
-	-fx-background-radius: 5;
+	
 	-fx-text-fill: #4E4A50;
 	-fx-prompt-text-fill: #D4CEE3;
 }
 
-.button1{
-	-fx-background-color: #3C62D2;
+
+.buttonInscr{
+	-fx-font-size: 30;
+	-fx-border-radius: 5 5 50 50;
+	-fx-background-radius: 5 50 50 5;
+	-fx-background-color: #3B60CF;
 	-fx-text-fill: #ffffff;
 	-fx-cursor: hand ;
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+	
+}
+
+.buttonInscr:hover{
+	-fx-text-fill: #431FA0;
+}
+
+.buttonInscr:pressed{
+	-fx-text-fill: #371897;
+}
+
+.buutonInscr:active{
+	-fx-text-fill: #80AFF5;
+}
+
+
+.button1{
+	-fx-background-color: #3B60CF;
+	-fx-text-fill: #ffffff;
+	-fx-cursor: hand ;
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
 }
 
 .button1:hover{
@@ -93,9 +122,9 @@
 
 
 .combo-box{
-	-fx-background-color: #141124;
-	-fx-border-color: #515658;
-	-fx-border-radius: 30;
+	-fx-background-color: transparent ;
+	-fx-border-color: #BBBBBB;
+	-fx-border-radius: 3;
 }
 
 .combo-box:hover{
@@ -185,7 +214,12 @@
 }
 
 .linear-grad{
-	-fx-background-color: linear-gradient(to bottom left, #054879, #3C62D2);
+	-fx-background-color: linear-gradient(to bottom left, #3A5FCC, #3C62D2);
+}
+
+
+.anchor-style{
+	-fx-border-width:  inherit;
 }
 
 
