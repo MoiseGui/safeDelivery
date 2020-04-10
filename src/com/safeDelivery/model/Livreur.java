@@ -11,13 +11,17 @@ public class Livreur extends User {
 		this.busy = new SimpleIntegerProperty();
 	}
 
+	public Livreur(User user) {
+		super(user);
+		this.busy = new SimpleIntegerProperty(1);
+	}
+
 	public Livreur(String nom, String prenom, String email, String pass, String tel, int enable) {
 		super(nom, prenom, email, pass, tel, 3, enable);
 		this.busy = new SimpleIntegerProperty(1);
 	}
 
-	public Livreur(Long id, String nom, String prenom, String email, String pass, String tel,
-			int enable) {
+	public Livreur(Long id, String nom, String prenom, String email, String pass, String tel, int enable) {
 		super(id, nom, prenom, email, pass, tel, 3, enable);
 		this.busy = new SimpleIntegerProperty(1);
 	}

@@ -10,7 +10,12 @@ public class Client extends User{
 		super();
 		this.adresse = new SimpleObjectProperty<Adresse>();
 	}
-
+ 
+	public Client( User user ) {
+		super(user);
+		this.adresse = new SimpleObjectProperty<Adresse>();
+	}
+	
 	public Client( String nom, String prenom, String email, String pass, String tel, Adresse adresse,int enable) {
 		super(nom, prenom, email, pass, tel, 1,enable);
 		this.adresse = new SimpleObjectProperty<Adresse>(adresse);
@@ -19,7 +24,10 @@ public class Client extends User{
 		super(id, nom, prenom, email, pass, tel, 1,enable);
 		this.adresse = new SimpleObjectProperty<Adresse>(adresse);
 	}
-
+	public Client( User user , Adresse adresse) {
+		super(user);
+		this.adresse = new SimpleObjectProperty<Adresse>(adresse);
+	}
 	public Adresse getAdresse() {
 		return adresse.get();
 	}

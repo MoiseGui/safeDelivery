@@ -8,4 +8,5 @@ public interface UserService {
 	public long addUser(User user);
 	public int disableUserByEmail(String email);
 	public int deleteUserByEmail(String email);
+
 }

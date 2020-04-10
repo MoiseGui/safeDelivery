@@ -1,17 +1,15 @@
  package com.safeDelivery.utils;
 
 import java.security.MessageDigest;
+
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
 public class saltHashPassword {
   public static String generateHash(String data) throws NoSuchAlgorithmException
   {
-	  byte[] salt = createSalt();
 	  String algorithm = "SHA-256";
 	  MessageDigest digest = MessageDigest.getInstance(algorithm);
 	  digest.reset();
-	  digest.update(salt);
 	  byte[] hash = digest.digest(data.getBytes());
 	  return bytesToHex(hash);
   }
@@ -27,10 +25,5 @@ public class saltHashPassword {
 	    return new String(hexChars);
 	}
   
-  public static byte[] createSalt() {
-	  byte[] bytes = new byte[20];
-	  SecureRandom random = new SecureRandom();
-	  random.nextBytes(bytes);
-	  return bytes;
-  }
+ 
 }

@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.safeDelivery.model.Ville;
 import com.safeDelivery.service.VilleService;
@@ -84,6 +86,28 @@ public class VilleServiceImpl implements VilleService {
 			return found;
 		}
 
+	}
+
+	@Override
+	public List<String> findAll() {
+		List<String> list = new ArrayList<String>();
+		try {
+			Connection conn = SingletonConnexion.startConnection();
+			if (conn != null) {
+				String query = "select * from ville";
+				Statement statement = conn.createStatement();
+				ResultSet result = statement.executeQuery(query);
+				while(result.next()) {
+					list.add(result.getString(2));
+				}
+				return list;
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

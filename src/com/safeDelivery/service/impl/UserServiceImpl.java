@@ -79,7 +79,6 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 	}
-
 	@Override
 	public long addUser(User user) {
 
@@ -103,7 +102,6 @@ public class UserServiceImpl implements UserService {
 					ps.setInt(7, user.getEnable());
 					int count = ps.executeUpdate();
 					if (count > 0) {
-
 						ResultSet rs = ps.getGeneratedKeys();
 						if (rs.next()) {
 							long id = rs.getInt(1);
@@ -111,12 +109,12 @@ public class UserServiceImpl implements UserService {
 							SingletonConnexion.closeConnection(conn);
 							return id;
 						} else {
-							return -4;
+							return -5;
 						}
 					} else {
 						ps.close();
 						SingletonConnexion.closeConnection(conn);
-						return -3;
+						return -4;
 					}
 				} else {
 					return -2;

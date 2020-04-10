@@ -16,7 +16,17 @@ public class User {
 	// 1: Client 2: Restaurateur 3: Livreur
 	private SimpleIntegerProperty categorie;
 	private SimpleIntegerProperty enable;
-
+    public User(User user)
+    {
+    	this.id = new SimpleLongProperty(user.getId());
+		this.nom = new SimpleStringProperty(user.getNom());
+		this.prenom = new SimpleStringProperty(user.getPrenom());
+		this.email = new SimpleStringProperty(user.getEmail());
+		this.pass = new SimpleStringProperty(user.getPass());
+		this.tel = new SimpleStringProperty(user.getTel());
+		this.categorie = new SimpleIntegerProperty(user.getCategorie());
+		this.enable = new SimpleIntegerProperty(user.getEnable());
+    }
 	public User() {
 		this.id = new SimpleLongProperty();
 		this.nom = new SimpleStringProperty();

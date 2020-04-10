@@ -1,6 +1,8 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 .error{
-	-fx-border-color:red;
+	 -fx-text-box-border: red ;
+     -fx-focus-color: red ; 
+
 }
 
 .cliquable{
@@ -12,7 +14,6 @@
 	-fx-text-fill: #4E4A50;
 	-fx-prompt-text-fill: #D4CEE3;
 }
-
 
 .buttonInscr{
 	-fx-font-size: 30;
@@ -128,15 +129,15 @@
 }
 
 .combo-box:hover{
-	-fx-background-color: #141124;
-	-fx-border-color: #FFFF;
-	-fx-border-radius: 30;
+	-fx-background-color: transparent;
+	-fx-border-color: #bbbbbb;
+	-fx-border-radius: 3;
 }
 
 .combo-box:pressed{
-	-fx-background-color: #141124;
+	-fx-background-color:  transparent;
 	-fx-border-color: #FFFF;
-	-fx-border-radius: 30;
+	-fx-border-radius: 3;
 }
 
 
