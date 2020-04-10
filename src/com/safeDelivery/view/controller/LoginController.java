@@ -274,7 +274,7 @@ public class LoginController implements Initializable {
 				lblErrorEmailConn.setText("Veuillez saiser une adresse email vailde");
 			}
 			if (tPass.getText() == null || tPass.getText().length() < 6) {
-				error = false;
+				error = true;
 				tPass.setText("");
 				lblErrorPassConn.setText("Mot de passe incorrecte. Au moins 6 caractères.");
 			}
@@ -514,6 +514,7 @@ public class LoginController implements Initializable {
 //     	List<String> villeFindAll = villeService.findAll();
 //		List<String> zoneFindAll = zoneService.findAll();
 		new Thread(new Runnable() {
+			
 			@Override
 			public void run() {
 				try {
@@ -536,6 +537,7 @@ public class LoginController implements Initializable {
 					alert.showAndWait();
 					Platform.exit();
 				}
+				
 			}
 		});
 		
