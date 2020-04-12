@@ -73,47 +73,6 @@
                         <Button fx:id="choixResto" layoutX="55.0" layoutY="196.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="59.0" prefWidth="275.0" styleClass="buttonInscr" stylesheets="@application.css" text="Restaurateur" />
                      </children>
                   </Pane>
-                  <Pane fx:id="addRestaurant" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffff;">
-                     <children>
-                        <TextField fx:id="tNomResto" layoutX="60.0" layoutY="81.0" prefHeight="35.0" prefWidth="245.0" promptText="Votre restaurant" />
-                        <Button fx:id="btnValidResto" layoutX="191.0" layoutY="343.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="35.0" prefWidth="120.0" styleClass="button1" stylesheets="@application.css" text="Terminer" />
-                        <ImageView fx:id="btnBackResto" fitHeight="30.0" fitWidth="47.0" layoutX="50.0" layoutY="33.0" onMouseClicked="#handleMouseEvent" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../icons/icons8_back_30px.png" />
-                           </image>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </ImageView>
-                        <Label fx:id="lblForgot11" layoutX="61.0" layoutY="57.0" text="Nom du restaurant">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="tAdresseResto" layoutX="60.0" layoutY="299.0" prefHeight="35.0" prefWidth="245.0" promptText="L'adresse de votre restaurant" />
-                        <Label fx:id="lblForgot112" layoutX="63.0" layoutY="276.0" text="Adresse">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="lblForgot113" layoutX="63.0" layoutY="132.0" text="Ville">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <ComboBox fx:id="cbVilleResto" layoutX="62.0" layoutY="155.0" prefHeight="35.0" prefWidth="245.0" promptText="Choisissez la ville" styleClass="combo-box" stylesheets="@application.css" />
-                        <Label fx:id="lblForgot1131" layoutX="63.0" layoutY="204.0" text="Zone ou quartier">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <ComboBox fx:id="cbZoneResto" layoutX="60.0" layoutY="227.0" prefHeight="35.0" prefWidth="245.0" promptText="Choisissez la ville" styleClass="combo-box" stylesheets="@application.css" />
-                        <Label fx:id="lblErrorNomResto" layoutX="61.0" layoutY="114.0" textFill="RED" />
-                        <Label fx:id="lblErrorVilleResto" layoutX="64.0" layoutY="190.0" textFill="RED" />
-                        <Label fx:id="lblErrorZoneResto" layoutX="62.0" layoutY="261.0" textFill="RED" />
-                        <Label fx:id="lblErrorAdresseResto" layoutX="65.0" layoutY="332.0" textFill="RED" />
-                     </children>
-                  </Pane>
                   <Pane fx:id="pnlSignUpNomPrenom" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffff;">
                      <children>
                         <ImageView fx:id="btnBackNomPrenom" fitHeight="30.0" fitWidth="47.0" layoutX="49.0" layoutY="41.0" onMouseClicked="#handleMouseEvent" pickOnBounds="true" preserveRatio="true">
@@ -146,6 +105,14 @@
                         <Label fx:id="lblErrorPrenom" layoutX="62.0" layoutY="131.0" textFill="RED" />
                         <Label fx:id="lblErrorNom" layoutX="61.0" layoutY="209.0" textFill="RED" />
                         <Label fx:id="lblErrorTel" layoutX="62.0" layoutY="290.0" textFill="RED" />
+                        <Label fx:id="lblAnnulerNomPrenom" layoutX="61.0" layoutY="318.0" onMouseClicked="#handleMouseEvent" text="Annuler" textFill="#5648f2" underline="true">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Label>
                      </children>
                   </Pane>
                   <Pane fx:id="pnlSignUpEmailPass" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffff;">
@@ -174,6 +141,63 @@
                         <PasswordField fx:id="tpassConfirm" layoutX="60.0" layoutY="248.0" prefHeight="35.0" prefWidth="245.0" promptText="Confirmer le mot de passe" stylesheets="@application.css" />
                         <Label fx:id="lblErrorEmail" layoutX="66.0" layoutY="148.0" textFill="#fb1010" />
                         <Label fx:id="lblErrorPass" layoutX="66.0" layoutY="283.0" textFill="#fb1010" />
+                        <Label fx:id="lblAnnulerEmailPass" layoutX="58.0" layoutY="317.0" onMouseClicked="#handleMouseEvent" text="Annuler" textFill="#5648f2" underline="true">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane fx:id="addRestaurant" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffff;">
+                     <children>
+                        <TextField fx:id="tNomResto" layoutX="60.0" layoutY="81.0" prefHeight="35.0" prefWidth="245.0" promptText="Votre restaurant" />
+                        <Button fx:id="btnValidResto" layoutX="191.0" layoutY="343.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="35.0" prefWidth="120.0" styleClass="button1" stylesheets="@application.css" text="Terminer" />
+                        <ImageView fx:id="btnBackResto" fitHeight="30.0" fitWidth="47.0" layoutX="50.0" layoutY="33.0" onMouseClicked="#handleMouseEvent" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../icons/icons8_back_30px.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <Label fx:id="lblForgot11" layoutX="61.0" layoutY="57.0" text="Nom du restaurant">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="tAdresseResto" layoutX="60.0" layoutY="296.0" prefHeight="35.0" prefWidth="245.0" promptText="L'adresse de votre restaurant" />
+                        <Label fx:id="lblForgot112" layoutX="63.0" layoutY="273.0" text="Adresse">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lblForgot113" layoutX="63.0" layoutY="129.0" text="Ville">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="cbVilleResto" layoutX="62.0" layoutY="152.0" prefHeight="35.0" prefWidth="245.0" promptText="Choisissez la ville" styleClass="combo-box" stylesheets="@application.css" />
+                        <Label fx:id="lblForgot1131" layoutX="63.0" layoutY="202.0" text="Zone ou quartier">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="cbZoneResto" layoutX="60.0" layoutY="225.0" prefHeight="35.0" prefWidth="245.0" promptText="Choisissez la ville" styleClass="combo-box" stylesheets="@application.css" />
+                        <Label fx:id="lblErrorNomResto" layoutX="61.0" layoutY="114.0" textFill="RED" />
+                        <Label fx:id="lblErrorVilleResto" layoutX="64.0" layoutY="190.0" textFill="RED" />
+                        <Label fx:id="lblErrorZoneResto" layoutX="62.0" layoutY="261.0" textFill="RED" />
+                        <Label fx:id="lblErrorAdresseResto" layoutX="65.0" layoutY="332.0" textFill="RED" />
+                        <Label fx:id="lblAnnulerResto" layoutX="70.0" layoutY="345.0" onMouseClicked="#handleMouseEvent" text="Annuler" textFill="#5648f2" underline="true">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Label>
                      </children>
                   </Pane>
                   <Pane fx:id="pnlLogin" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffff;">

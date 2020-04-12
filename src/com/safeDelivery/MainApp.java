@@ -18,19 +18,6 @@ public class MainApp extends Application {
 	private Stage primaryStage;
     private BorderPane rootLayout;
     private AnchorPane main;
-	
-//	@Override
-//	public void start(Stage primaryStage) {
-//		try {
-//			BorderPane root = (BorderPane)FXMLLoader.load(getClass().getResource("view/MainBorder.fxml"));
-//			Scene scene = new Scene(root,600,400);
-//			scene.getStylesheets().add(getClass().getResource("view/application.css").toExternalForm());
-//			primaryStage.setScene(scene);
-//			primaryStage.show();
-//		} catch(Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
     
     @Override
     public void start(Stage primaryStage) {
