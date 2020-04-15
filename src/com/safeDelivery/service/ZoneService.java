@@ -8,4 +8,5 @@ public interface ZoneService {
 	public long existByName(String nom);
 	public long saveZone(Zone zone);
 	public List<String> findAll();
+	public List<Zone> findById(long id);
 }

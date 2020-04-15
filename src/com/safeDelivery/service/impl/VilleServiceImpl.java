@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.safeDelivery.model.Ville;
+import com.safeDelivery.model.Zone;
 import com.safeDelivery.service.VilleService;
 import com.safeDelivery.utils.SingletonConnexion;
 
@@ -101,6 +102,35 @@ public class VilleServiceImpl implements VilleService {
 					list.add(result.getString(2));
 				}
 				return list;
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public Ville findById(long id) {
+		try {
+			Connection conn = SingletonConnexion.startConnection();
+			if (conn != null) {
+				String query = "select * from ville where id = ?";
+				PreparedStatement ps = conn.prepareStatement(query);
+				ps.setLong(1, id);
+				ResultSet result = ps.executeQuery();
+				if (result.next()) {
+					Ville ville = new Ville(id, result.getString(2));
+					ps.close();
+					SingletonConnexion.closeConnection(conn);
+					return ville;
+				} else {
+					ps.close();
+					SingletonConnexion.closeConnection(conn);
+					return null;
+				}
+
 			} else {
 				return null;
 			}
