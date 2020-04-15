@@ -3,7 +3,7 @@ package com.safeDelivery.service;
 import com.safeDelivery.model.Plat;
 
 public interface PlatService {
-	public long addPlat(Plat plat);
-	public long deletePlat(Plat plat);
+	public long addPlat(Plat plat, long idResto);
 	public long changePlat(Plat oldPlat, Plat newPlat);
+	public int deletePlat(long idPlat, long idResto);
 }

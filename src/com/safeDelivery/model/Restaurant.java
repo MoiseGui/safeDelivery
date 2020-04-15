@@ -10,26 +10,26 @@ import javafx.beans.property.StringProperty;
 public class Restaurant {
 	private LongProperty id;
 	private StringProperty nom;
-	private StringProperty adresse;
+	private ObjectProperty<Adresse> adresse;
 	private ObjectProperty<Restaurateur> restaurateur;
 
 	public Restaurant() {
 		this.id = new SimpleLongProperty();
 		this.nom = new SimpleStringProperty();
-		this.adresse = new SimpleStringProperty();
+		this.adresse = new SimpleObjectProperty<Adresse>();
 		this.restaurateur = new SimpleObjectProperty<Restaurateur>();
 	}
 
-	public Restaurant(Long id, String nom, String adresse) {
+	public Restaurant(Long id, String nom, Adresse adresse) {
 		this.id = new SimpleLongProperty(id);
 		this.nom = new SimpleStringProperty(nom);
-		this.adresse = new SimpleStringProperty(adresse);
+		this.adresse = new SimpleObjectProperty<Adresse>(adresse);
 	}
 
-	public Restaurant(Long id, String nom, String adresse, Restaurateur restaurateur) {
+	public Restaurant(Long id, String nom, Adresse adresse, Restaurateur restaurateur) {
 		this.id = new SimpleLongProperty(id);
 		this.nom = new SimpleStringProperty(nom);
-		this.adresse = new SimpleStringProperty(adresse);
+		this.adresse = new SimpleObjectProperty<Adresse>(adresse);
 		this.restaurateur = new SimpleObjectProperty<Restaurateur>(restaurateur);
 	}
 
@@ -57,15 +57,15 @@ public class Restaurant {
 		this.nom.set(nom);
 	}
 
-	public String getAdress() {
+	public Adresse getAdress() {
 		return this.adresse.get();
 	}
 
-	public StringProperty  adresseProperty() {
+	public ObjectProperty<Adresse>  adresseProperty() {
 		return this.adresse;
 	}
 
-	public void setAdresse(String adresse) {
+	public void setAdresse(Adresse adresse) {
 		this.adresse.set(adresse);
 	}
 

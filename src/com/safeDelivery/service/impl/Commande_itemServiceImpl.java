@@ -12,7 +12,7 @@ import com.safeDelivery.model.Commande_item;
 import com.safeDelivery.service.Commande_itemService;
 import com.safeDelivery.utils.SingletonConnexion;
 
-public class Commande_itemServiceImpl implements Commande_itemService{
+public class Commande_itemServiceImpl implements Commande_itemService {
 
 	@Override
 	public int existsBy(Long id_commande, Long id_plat) {
@@ -22,22 +22,22 @@ public class Commande_itemServiceImpl implements Commande_itemService{
 				String query = "select count(*) from commande_item where id_commande = ? and id_plat = ?";
 				PreparedStatement ps = conn.prepareStatement(query);
 				ps.setLong(1, id_commande);
-				ps.setLong(1, id_plat);
-				
+				ps.setLong(2, id_plat);
+
 				ResultSet result = ps.executeQuery();
 				result.next();
 				int id = result.getInt(1);
-					if (id == 1) {
-						
-						ps.close();
-						SingletonConnexion.closeConnection(conn);
-						return 1;
-						
-					} else {
-						ps.close();
-						SingletonConnexion.closeConnection(conn);
-						return -1;
-					}
+				if (id == 1) {
+
+					ps.close();
+					SingletonConnexion.closeConnection(conn);
+					return 1;
+
+				} else {
+					ps.close();
+					SingletonConnexion.closeConnection(conn);
+					return -1;
+				}
 
 			} else {
 				return -2;
@@ -50,23 +50,23 @@ public class Commande_itemServiceImpl implements Commande_itemService{
 
 	@Override
 	public int addCommandeItem(Commande_item commande_item) {
-		try {
-			Connection conn = SingletonConnexion.startConnection();
-			if (conn != null) {
-				int ret = existsBy(commande_item.getId_commande(), commande_item.getId_plat());
-				if (ret < 0) {
+		int ret = existsBy(commande_item.getId_commande(), commande_item.getId_plat());
+		if (ret < 0) {
+			try {
+				Connection conn = SingletonConnexion.startConnection();
+				if (conn != null) {
 					String query = "insert into commande_item  values (?,?,?,?)";
 					PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 					ps.setLong(1, commande_item.getId_plat());
 					ps.setLong(2, commande_item.getId_commande());
 					ps.setLong(3, commande_item.getQte());
 					ps.setString(4, commande_item.getEtat());
-					
+
 					int count = ps.executeUpdate();
-					if (count == 1 ) {
-							ps.close();
-							SingletonConnexion.closeConnection(conn);
-							return 1;
+					if (count == 1) {
+						ps.close();
+						SingletonConnexion.closeConnection(conn);
+						return 1;
 					} else {
 						ps.close();
 						SingletonConnexion.closeConnection(conn);
@@ -75,12 +75,12 @@ public class Commande_itemServiceImpl implements Commande_itemService{
 				} else {
 					return -2;
 				}
-			} else {
-				return -1;
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return -4;
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return -4;
+		} else {
+			return -1;
 		}
 	}
 
@@ -96,7 +96,7 @@ public class Commande_itemServiceImpl implements Commande_itemService{
 					ps.setLong(1, commande_item.getId_plat());
 					ps.setLong(1, commande_item.getId_commande());
 					int count = ps.executeUpdate();
-					if (count ==1 ) {
+					if (count == 1) {
 						ps.close();
 						SingletonConnexion.closeConnection(conn);
 						return 1;
@@ -104,12 +104,12 @@ public class Commande_itemServiceImpl implements Commande_itemService{
 						ps.close();
 						SingletonConnexion.closeConnection(conn);
 						return -1;
-				}
-					
-				}else {
+					}
+
+				} else {
 					return -2;
 				}
-				
+
 			} else {
 				return -3;
 			}
@@ -119,7 +119,6 @@ public class Commande_itemServiceImpl implements Commande_itemService{
 		}
 
 	}
-
 
 	@Override
 	public List<Commande_item> findByIdCommande(Long id_commande) {
@@ -131,13 +130,13 @@ public class Commande_itemServiceImpl implements Commande_itemService{
 				String query = "select * from commande_item";
 				Statement statement = conn.createStatement();
 				ResultSet result = statement.executeQuery(query);
-				while(result.next()) {
-					
+				while (result.next()) {
+
 					comItem.setId_plat(result.getLong(1));
 					comItem.setId_commande(result.getLong(2));
 					comItem.setQte(result.getLong(3));
 					comItem.setEtat(result.getString(4));
-					
+
 					list.add(comItem);
 				}
 				return list;

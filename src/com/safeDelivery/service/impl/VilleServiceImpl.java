@@ -69,6 +69,9 @@ public class VilleServiceImpl implements VilleService {
 							SingletonConnexion.closeConnection(conn);
 							return rsgetint;
 						}
+						else {
+							return -5;
+						}
 					} else {
 						ps.close();
 						SingletonConnexion.closeConnection(conn);
@@ -81,7 +84,6 @@ public class VilleServiceImpl implements VilleService {
 				e.printStackTrace();
 				return -4;
 			}
-			return -5;
 		} else {
 			ville.setId(found);
 			return found;

@@ -120,7 +120,7 @@ public class ZoneServiceimpl implements ZoneService {
 	}
 
 	@Override
-	public List<Zone> findById(long id) {
+	public Zone findById(long id) {
 		try {
 			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
@@ -128,8 +128,7 @@ public class ZoneServiceimpl implements ZoneService {
 				PreparedStatement ps = conn.prepareStatement(query);
 				ps.setLong(1, id);
 				ResultSet result = ps.executeQuery();
-				List <Zone> zones = new ArrayList<Zone>();
-				while (result.next()) {
+				if (result.next()) {
 					VilleServiceImpl vsimpl = new VilleServiceImpl(); 
 					Ville ville = vsimpl.findById(result.getInt(3));
 					if(ville==null) {
@@ -137,15 +136,15 @@ public class ZoneServiceimpl implements ZoneService {
 					}
 					else {
 					Zone zone= new Zone(id, result.getString(2) , ville);
-					zones.add(zone);
 					ps.close();
 					SingletonConnexion.closeConnection(conn);
 
+					return zone;
 					}
 				}
-					return zones;
-					 
-				
+				else {
+					return null;
+				}
 			} else {
 				return null;
 			}

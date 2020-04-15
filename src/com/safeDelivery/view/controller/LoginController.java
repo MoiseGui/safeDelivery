@@ -425,7 +425,15 @@ public class LoginController implements Initializable {
 				RestaurateurServiceImpl restaurateurService = new RestaurateurServiceImpl();
 				restaurant.setNom(tNomResto.getText());
 				restaurant.setRestaurateur(restaurateur);
-				restaurant.setAdresse(tAdresseResto.getText());
+				Adresse adresse = new Adresse();
+//				VilleServiceImpl villeServiceImpl = new VilleServiceImpl();
+//				Ville ville = villeServiceImpl.findById(villeServiceImpl.existByName(cbVilleResto.getValue()));
+//				zone.setVille(ville);
+//				zone.setNom(cbZoneResto.getValue());
+				adresse.setDetail(tAdresseResto.getText());
+				ZoneServiceimpl zoneServiceimpl = new ZoneServiceimpl();
+				adresse.setZone(zoneServiceimpl.findById(zoneServiceimpl.existByName(cbZoneResto.getValue())));
+				restaurant.setAdresse(adresse);
 				long result = restaurateurService.addRestaurateur(restaurateur);
 				if (result <= 0) {
 					Alert alert = new Alert(AlertType.WARNING);

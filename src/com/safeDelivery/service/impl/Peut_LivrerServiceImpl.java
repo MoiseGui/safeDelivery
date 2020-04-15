@@ -32,7 +32,8 @@ public class Peut_LivrerServiceImpl implements Peut_LivrerService {
 					ResultSet result = ps.executeQuery();
 					while (result.next()) {
 						ZoneServiceimpl zoneServiceimpl = new ZoneServiceimpl();
-						return zoneServiceimpl.findById(result.getInt(1));
+						Zone zone = zoneServiceimpl.findById(result.getInt(1));
+						zones.add(zone);
 					}
 					return zones;
 				} else {

@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.safeDelivery.model.Adresse;
 import com.safeDelivery.model.Restaurant;
 import com.safeDelivery.model.Restaurateur;
 import com.safeDelivery.model.User;
@@ -31,7 +32,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 						String query = "insert into restaurant (nom, adresse, id_restaurateur) values (?,?,?)";
 						PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 						ps.setString(1, restaurant.getNom());
-						ps.setString(2, restaurant.getAdress());
+						ps.setLong(2, restaurant.getAdress().getId());
 						ps.setLong(3,rs);
 						int count = ps.executeUpdate();
 						if (count == 1) {
@@ -108,14 +109,50 @@ public class RestaurantServiceImpl implements RestaurantService {
 
 	@Override
 	public int modifyResto(Restaurant oldRestaurant, Restaurant newRestaurant) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public Restaurant findByRestaurateur(Restaurateur restaurateur) {
-		// TODO Auto-generated method stub
-		return null;
+	public Restaurant findByRestaurateur(long idRestaurateur) {
+		UserServiceImpl impl = new UserServiceImpl();
+		User user = impl.getUserById(idRestaurateur);
+		if(user == null) {
+			return null;
+		}
+		else {
+			try {
+				Connection conn = SingletonConnexion.startConnection();
+				if (conn != null) {
+					String query = "select * from restaurant where id_restaurateur = ?";
+					PreparedStatement ps = conn.prepareStatement(query);
+					ps.setLong(1, idRestaurateur);
+
+					ResultSet result = ps.executeQuery();
+					
+					if(result.next()) {
+						AdresseServiceImpl adresseServiceImpl = new AdresseServiceImpl();
+						Adresse adresse = adresseServiceImpl.findById(result.getLong(3));
+						if(adresse == null) {
+							return null;
+						}
+						else {
+							Restaurateur restaurateur = new Restaurateur(user);
+							Restaurant restaurant = new Restaurant(result.getLong(1), result.getString(2), adresse, restaurateur);
+							return restaurant;
+						}
+					}
+					else {
+						return null;
+					}
+
+				} else {
+					return null;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
 	}
 	
 }

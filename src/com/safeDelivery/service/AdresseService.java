@@ -3,6 +3,6 @@ package com.safeDelivery.service;
 import com.safeDelivery.model.Adresse;
 
 public interface AdresseService {
-	
-  public long saveAdresse(Adresse adresse);
+	public Adresse findById(long id);
+	public long saveAdresse(Adresse adresse);
 }

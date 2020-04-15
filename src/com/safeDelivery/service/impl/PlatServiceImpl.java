@@ -13,7 +13,7 @@ import com.safeDelivery.utils.SingletonConnexion;
 public class PlatServiceImpl implements PlatService {
 
 	@Override
-	public long addPlat(Plat plat) {
+	public long addPlat(Plat plat, long idResto) {
 		try {
 			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
@@ -29,6 +29,8 @@ public class PlatServiceImpl implements PlatService {
 						int rsgetint = rs.getInt(1);
 						ps.close();
 						SingletonConnexion.closeConnection(conn);
+						MenuServiceImpl impl = new MenuServiceImpl();
+						impl.addMenu(rsgetint, idResto);
 						return rsgetint;
 					} else {
 						return -4;
@@ -47,11 +49,6 @@ public class PlatServiceImpl implements PlatService {
 		}
 	}
 
-	@Override
-	public long deletePlat(Plat plat) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	@Override
 	public long changePlat(Plat oldPlat, Plat newPlat) {
@@ -78,6 +75,40 @@ public class PlatServiceImpl implements PlatService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return -3;
+		}
+	}
+
+	@Override
+	public int deletePlat(long idPlat, long idResto) {
+		MenuServiceImpl impl = new MenuServiceImpl();
+		int deleteMenu = impl.deleteMenu(idPlat, idResto);
+		if(deleteMenu == 1) {
+			try {
+				Connection conn = SingletonConnexion.startConnection();
+				if (conn != null) {
+					String query = "delete from plat where id = ? ";
+					PreparedStatement ps = conn.prepareStatement(query);
+					ps.setLong(1, idPlat);
+					int count = ps.executeUpdate();
+					if (count > 0) {
+						ps.close();
+						SingletonConnexion.closeConnection(conn);
+						return 1;
+					} else {
+						ps.close();
+						SingletonConnexion.closeConnection(conn);
+						return -1;
+					}
+				} else {
+					return -2;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return -3;
+			}
+		}
+		else {
+			return -4;
 		}
 	}
 
