@@ -27,20 +27,20 @@
 }
 
 .buttonInscr:hover{
-	-fx-text-fill: #431FA0;
+	-fx-text-fill: #3B56A2;
 }
 
 .buttonInscr:pressed{
-	-fx-text-fill: #371897;
+	-fx-text-fill: #3B56A2;
 }
 
 .buutonInscr:active{
-	-fx-text-fill: #80AFF5;
+	-fx-text-fill: #3B56A2;
 }
 
 
 .button1{
-	-fx-background-color: #3B60CF;
+	-fx-background-color: #3F548E;
 	-fx-text-fill: #ffffff;
 	-fx-cursor: hand ;
 	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
@@ -68,7 +68,7 @@
 }
 
 .button2:hover{
-	-fx-background-color: #E4EEFD;
+	-fx-background-color: #9AA1B6;
 }
 
 .button2:pressed{
@@ -215,7 +215,7 @@
 }
 
 .linear-grad{
-	-fx-background-color: linear-gradient(to bottom left, #3A5FCC, #3C62D2);
+	-fx-background-color: linear-gradient(to bottom left, #3B56A2,  #464F67);
 }
 
 
