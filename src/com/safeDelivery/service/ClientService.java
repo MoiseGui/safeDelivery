@@ -11,4 +11,6 @@ public interface ClientService {
 	public int disableClientByEmail(String email);
 
 	public int deleteClientByEmail(String email);
+	
+	public long existById(Client client);
 }

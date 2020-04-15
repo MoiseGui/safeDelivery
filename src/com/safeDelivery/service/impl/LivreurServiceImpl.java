@@ -2,6 +2,7 @@ package com.safeDelivery.service.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.safeDelivery.model.Livreur;
@@ -45,6 +46,34 @@ public class LivreurServiceImpl implements LivreurService {
 			}
 
 		} else {
+			return -1;
+		}
+	}
+
+	@Override
+	public long existByid(Livreur livreur) {
+		try {
+			Connection conn = SingletonConnexion.startConnection();
+			if (conn != null) {
+				String query = "select count(*) from livreur where id=?";
+				PreparedStatement ps = conn.prepareStatement(query);
+				ps.setLong(1, livreur.getId());
+				ResultSet result = ps.executeQuery();
+				result.next();
+				if (result.getInt(1) == 1) {
+					ps.close();
+					SingletonConnexion.closeConnection(conn);
+					return 1;
+				} else {
+					ps.close();
+					SingletonConnexion.closeConnection(conn);
+					return -3;
+				}
+			} else {
+				return -2;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 			return -1;
 		}
 	}
