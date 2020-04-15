@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.safeDelivery.model.User;
+import com.safeDelivery.model.Ville;
 import com.safeDelivery.service.UserService;
 import com.safeDelivery.utils.SingletonConnexion;
 import com.safeDelivery.utils.saltHashPassword;
@@ -182,6 +183,38 @@ public class UserServiceImpl implements UserService {
 			return -3;
 		}
 
+	}
+
+	@Override
+	public User getUserById(long id) {
+		try {
+			Connection conn = SingletonConnexion.startConnection();
+			if (conn != null) {
+				String query = "select * from user where id = ?";
+				PreparedStatement ps = conn.prepareStatement(query);
+				ps.setLong(1, id);
+				ResultSet result = ps.executeQuery();
+				if (result.next()) {
+					User user = new User(result.getLong(1), result.getString(2), result.getString(3),
+							result.getString(4), result.getString(5), result.getString(6), result.getInt(7),
+							result.getInt(8));
+
+					ps.close();
+					SingletonConnexion.closeConnection(conn);
+					return user;
+				} else {
+					ps.close();
+					SingletonConnexion.closeConnection(conn);
+					return null;
+				}
+
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }
