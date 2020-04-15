@@ -2,6 +2,7 @@ package com.safeDelivery.service.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -77,6 +78,35 @@ public class ClientServiceImpl implements ClientService {
 	public int deleteClientByEmail(String email) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public long existById(Client client) {
+		
+		try {
+			Connection conn = SingletonConnexion.startConnection();
+			if (conn != null) {
+				String query = "select count(*) from client where id=?";
+				PreparedStatement ps = conn.prepareStatement(query);
+				ps.setLong(1, client.getId());
+				ResultSet result = ps.executeQuery();
+				result.next();
+				if (result.getInt(1) == 1) {
+					ps.close();
+					SingletonConnexion.closeConnection(conn);
+					return 1;
+				} else {
+					ps.close();
+					SingletonConnexion.closeConnection(conn);
+					return -3;
+				}
+			} else {
+				return -2;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
 	}
 
 }
