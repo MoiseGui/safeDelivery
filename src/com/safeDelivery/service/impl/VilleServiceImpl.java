@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.safeDelivery.model.Ville;
-import com.safeDelivery.model.Zone;
 import com.safeDelivery.service.VilleService;
 import com.safeDelivery.utils.SingletonConnexion;
 
@@ -37,6 +36,8 @@ public class VilleServiceImpl implements VilleService {
 						return -1;
 					}
 				}else {
+					ps.close();
+					SingletonConnexion.closeConnection(conn);
 					return -4 ;
 				}
 
@@ -70,6 +71,8 @@ public class VilleServiceImpl implements VilleService {
 							return rsgetint;
 						}
 						else {
+							ps.close();
+							SingletonConnexion.closeConnection(conn);
 							return -5;
 						}
 					} else {
@@ -103,6 +106,8 @@ public class VilleServiceImpl implements VilleService {
 				while(result.next()) {
 					list.add(result.getString(2));
 				}
+				statement.close();
+				SingletonConnexion.closeConnection(conn);
 				return list;
 			} else {
 				return null;

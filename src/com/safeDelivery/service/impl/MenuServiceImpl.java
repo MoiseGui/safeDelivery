@@ -32,6 +32,8 @@ public class MenuServiceImpl implements MenuService {
 							SingletonConnexion.closeConnection(conn);
 							return rsgetint;
 						} else {
+							ps.close();
+							SingletonConnexion.closeConnection(conn);
 							return -5;
 						}
 					} else {

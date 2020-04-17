@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.safeDelivery.model.User;
-import com.safeDelivery.model.Ville;
 import com.safeDelivery.service.UserService;
 import com.safeDelivery.utils.SingletonConnexion;
 import com.safeDelivery.utils.saltHashPassword;
@@ -28,6 +27,8 @@ public class UserServiceImpl implements UserService {
 					ps.setString(2, saltHashPassword.generateHash(pass));
 				} catch (Exception e) {
 					e.printStackTrace();
+					ps.close();
+					SingletonConnexion.closeConnection(conn);
 					return -4;
 				}
 				ResultSet result = ps.executeQuery();
@@ -96,6 +97,8 @@ public class UserServiceImpl implements UserService {
 					try {
 						ps.setString(4, saltHashPassword.generateHash(user.getPass()));
 					} catch (NoSuchAlgorithmException e) {
+						ps.close();
+						SingletonConnexion.closeConnection(conn);
 						return -3;
 					}
 					ps.setString(5, user.getTel());
@@ -110,6 +113,8 @@ public class UserServiceImpl implements UserService {
 							SingletonConnexion.closeConnection(conn);
 							return id;
 						} else {
+							ps.close();
+							SingletonConnexion.closeConnection(conn);
 							return -5;
 						}
 					} else {

@@ -1,5 +1,7 @@
 package com.safeDelivery.model;
 
+import java.time.LocalDateTime;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.LongProperty;
 import javafx.beans.property.ObjectProperty;
@@ -15,6 +17,44 @@ public class Commande {
 	private DoubleProperty total;
 	private StringProperty etat;
 	private ObjectProperty<Livreur> livreur;
+	private ObjectProperty<LocalDateTime> dateCommande;
+	private ObjectProperty<LocalDateTime> dateLivraison;
+	
+	
+	public LocalDateTime getDateCommande() {
+		return dateCommande.get();
+	}
+
+	public void setDateCommande(LocalDateTime dateCommande) {
+		this.dateCommande.set(dateCommande);
+	}
+	
+	public ObjectProperty<LocalDateTime> dateCommandeProperty(){
+		return this.dateCommande;
+	}
+
+	public LocalDateTime getDateLivraison() {
+		return dateLivraison.get();
+	}
+
+	public void setDateLivraison(LocalDateTime dateLivraison) {
+		this.dateLivraison.set(dateLivraison);
+	}
+	
+	public ObjectProperty<LocalDateTime> dateLivraisonProperty(){
+		return this.dateLivraison;
+	}
+
+	public Commande(Long id, Client client, double total, String etat, Livreur livreur, LocalDateTime dateCommande,
+			LocalDateTime dateLivraison) {
+		this.id = new SimpleLongProperty(id);
+		this.client = new SimpleObjectProperty<Client>(client);
+		this.total = new SimpleDoubleProperty(total);
+		this.etat = new SimpleStringProperty(etat);
+		this.livreur = new SimpleObjectProperty<Livreur>(livreur);
+		this.dateCommande = new SimpleObjectProperty<LocalDateTime>(dateCommande);
+		this.dateLivraison = new SimpleObjectProperty<LocalDateTime>(dateLivraison);
+	}
 
 	public Commande() {
 		this.id = new SimpleLongProperty();

@@ -86,11 +86,11 @@ public class Commande_itemServiceImpl implements Commande_itemService {
 
 	@Override
 	public int deleteCommandeItem(Commande_item commande_item) {
-		try {
-			Connection conn = SingletonConnexion.startConnection();
-			if (conn != null) {
-				int ret = existsBy(commande_item.getId_commande(), commande_item.getId_plat());
-				if (ret > 0) {
+		int ret = existsBy(commande_item.getId_commande(), commande_item.getId_plat());
+		if (ret > 0) {
+			try {
+				Connection conn = SingletonConnexion.startConnection();
+				if (conn != null) {
 					String query = "delete from commande_item where id_plat = ? and id_commande = ? ";
 					PreparedStatement ps = conn.prepareStatement(query);
 					ps.setLong(1, commande_item.getId_plat());
@@ -107,15 +107,14 @@ public class Commande_itemServiceImpl implements Commande_itemService {
 					}
 
 				} else {
-					return -2;
+					return -3;
 				}
-
-			} else {
-				return -3;
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return -4;
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return -4;
+		} else {
+			return -2;
 		}
 
 	}
@@ -139,6 +138,8 @@ public class Commande_itemServiceImpl implements Commande_itemService {
 
 					list.add(comItem);
 				}
+				statement.close();
+				SingletonConnexion.closeConnection(conn);
 				return list;
 			} else {
 				return null;

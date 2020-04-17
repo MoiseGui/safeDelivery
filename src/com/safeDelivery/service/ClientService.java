@@ -1,5 +1,6 @@
 package com.safeDelivery.service;
 
+
 import com.safeDelivery.model.Client;
 import com.safeDelivery.model.User;
 
@@ -13,4 +14,6 @@ public interface ClientService {
 	public int deleteClientByEmail(String email);
 	
 	public long existById(Client client);
+	
+	public Client findById(Long id);
 }

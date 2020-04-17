@@ -35,6 +35,8 @@ public class Peut_LivrerServiceImpl implements Peut_LivrerService {
 						Zone zone = zoneServiceimpl.findById(result.getInt(1));
 						zones.add(zone);
 					}
+					ps.close();
+					SingletonConnexion.closeConnection(conn);
 					return zones;
 				} else {
 					return null;
@@ -76,6 +78,8 @@ public class Peut_LivrerServiceImpl implements Peut_LivrerService {
 							livreurs.add(livreur);
 						}
 					}
+					ps.close();
+					SingletonConnexion.closeConnection(conn);
 					return livreurs;
 				} else {
 					return null;

@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
+import com.safeDelivery.model.Adresse;
 import com.safeDelivery.model.Client;
 import com.safeDelivery.model.User;
 import com.safeDelivery.service.ClientService;
@@ -21,7 +21,7 @@ public class ClientServiceImpl implements ClientService {
 		User user = new User(client.getNom(), client.getPrenom(), client.getEmail(), client.getPass(), client.getTel(),
 				client.getCategorie(), client.getEnable());
 		long idUser = userserviceimpl.addUser(user);
-		System.out.println("l'id du user est = "+idUser);
+		System.out.println("l'id du user est = " + idUser);
 		if (idUser > 0) {
 			client.setId(idUser);
 			long idAdresse = adresseService.saveAdresse(client.getAdresse());
@@ -82,7 +82,7 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public long existById(Client client) {
-		
+
 		try {
 			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
@@ -106,6 +106,46 @@ public class ClientServiceImpl implements ClientService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return -1;
+		}
+	}
+
+	@Override
+	public Client findById(Long id) {
+		try {
+			Connection conn = SingletonConnexion.startConnection();
+			if (conn != null) {
+				String query = "select * from client where id = ?";
+				PreparedStatement ps = conn.prepareStatement(query);
+				ps.setLong(1, id);
+				ResultSet result = ps.executeQuery();
+				if (result.next()) {
+					Long idC = result.getLong(1);
+					AdresseServiceImpl adresseServiceImpl = new AdresseServiceImpl();
+					Adresse adresse = adresseServiceImpl.findById(result.getLong(2));
+					if (adresse == null) {
+						ps.close();
+						SingletonConnexion.closeConnection(conn);
+						return null;
+					} else {
+						UserServiceImpl userServiceImpl = new UserServiceImpl();
+						User user = userServiceImpl.getUserById(idC);
+						Client client = new Client(user, adresse);
+						ps.close();
+						SingletonConnexion.closeConnection(conn);
+
+						return client;
+					}
+				} else {
+					ps.close();
+					SingletonConnexion.closeConnection(conn);
+					return null;
+				}
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 

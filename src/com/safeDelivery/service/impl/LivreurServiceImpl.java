@@ -78,4 +78,36 @@ public class LivreurServiceImpl implements LivreurService {
 		}
 	}
 
+	@Override
+	public Livreur findById(long id) {
+		try {
+			Connection conn = SingletonConnexion.startConnection();
+			if (conn != null) {
+				String query = "select * from livreur where id = ?";
+				PreparedStatement ps = conn.prepareStatement(query);
+				ps.setLong(1, id);
+				ResultSet result = ps.executeQuery();
+				if (result.next()) {
+					
+						UserServiceImpl userServiceImpl = new UserServiceImpl();
+						User user = userServiceImpl.getUserById(result.getLong(1));
+						Livreur livreur = new Livreur(user);
+						ps.close();
+						SingletonConnexion.closeConnection(conn);
+
+						return livreur;
+				} else {
+					ps.close();
+					SingletonConnexion.closeConnection(conn);
+					return null;
+				}
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 }

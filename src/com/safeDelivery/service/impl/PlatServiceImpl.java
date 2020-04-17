@@ -33,6 +33,8 @@ public class PlatServiceImpl implements PlatService {
 						impl.addMenu(rsgetint, idResto);
 						return rsgetint;
 					} else {
+						ps.close();
+						SingletonConnexion.closeConnection(conn);
 						return -4;
 					}
 				} else {

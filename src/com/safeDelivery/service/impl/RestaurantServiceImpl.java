@@ -24,9 +24,9 @@ public class RestaurantServiceImpl implements RestaurantService {
 			long rs = userServiceImpl.existByEmailAndPass(restaurant.getRestaurateur().getEmail(), restaurant.getRestaurateur().getPass());
 			System.out.println("test si le restaurateur existe = " + rs);
 			if (rs >= 0) {
+				restaurant.getRestaurateur().setId(rs);
+//				User restaurateur = userServiceImpl.getUserByEmail(restaurant.getRestaurateur().getEmail());
 				try {
-					restaurant.getRestaurateur().setId(rs);
-					User restaurateur = userServiceImpl.getUserByEmail(restaurant.getRestaurateur().getEmail());
 					Connection conn = SingletonConnexion.startConnection();
 					if (conn != null) {
 						String query = "insert into restaurant (nom, adresse, id_restaurateur) values (?,?,?)";
@@ -96,6 +96,8 @@ public class RestaurantServiceImpl implements RestaurantService {
 						return -1;
 					}
 				} else {
+					ps.close();
+					SingletonConnexion.closeConnection(conn);
 					return -4;
 				}
 			} else {
@@ -133,15 +135,21 @@ public class RestaurantServiceImpl implements RestaurantService {
 						AdresseServiceImpl adresseServiceImpl = new AdresseServiceImpl();
 						Adresse adresse = adresseServiceImpl.findById(result.getLong(3));
 						if(adresse == null) {
+							ps.close();
+							SingletonConnexion.closeConnection(conn);
 							return null;
 						}
 						else {
 							Restaurateur restaurateur = new Restaurateur(user);
 							Restaurant restaurant = new Restaurant(result.getLong(1), result.getString(2), adresse, restaurateur);
+							ps.close();
+							SingletonConnexion.closeConnection(conn);
 							return restaurant;
 						}
 					}
 					else {
+						ps.close();
+						SingletonConnexion.closeConnection(conn);
 						return null;
 					}
 

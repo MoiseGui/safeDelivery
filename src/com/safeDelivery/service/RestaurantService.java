@@ -1,7 +1,6 @@
 package com.safeDelivery.service;
 
 import com.safeDelivery.model.Restaurant;
-import com.safeDelivery.model.Restaurateur;
 
 public interface RestaurantService {
 	public Restaurant findByRestaurateur(long idRestaurateur);

@@ -37,6 +37,8 @@ public class ZoneServiceimpl implements ZoneService {
 						return -1;
 					}
 				} else {
+					ps.close();
+					SingletonConnexion.closeConnection(conn);
 					return -4;
 				}
 			} else {
@@ -75,6 +77,11 @@ public class ZoneServiceimpl implements ZoneService {
 								SingletonConnexion.closeConnection(conn);
 								return id;
 							}
+							else {
+								ps.close();
+								SingletonConnexion.closeConnection(conn);
+								return -4;
+							}
 						} else {
 							ps.close();
 							SingletonConnexion.closeConnection(conn);
@@ -109,6 +116,8 @@ public class ZoneServiceimpl implements ZoneService {
 				while (result.next()) {
 					list.add(result.getString(2));
 				}
+				statement.close();
+				SingletonConnexion.closeConnection(conn);
 				return list;
 			} else {
 				return null;
@@ -129,13 +138,16 @@ public class ZoneServiceimpl implements ZoneService {
 				ps.setLong(1, id);
 				ResultSet result = ps.executeQuery();
 				if (result.next()) {
+					String nomZone = result.getString(2);
 					VilleServiceImpl vsimpl = new VilleServiceImpl(); 
 					Ville ville = vsimpl.findById(result.getInt(3));
 					if(ville==null) {
+						ps.close();
+						SingletonConnexion.closeConnection(conn);
 						return null;
 					}
 					else {
-					Zone zone= new Zone(id, result.getString(2) , ville);
+					Zone zone = new Zone(id, nomZone , ville);
 					ps.close();
 					SingletonConnexion.closeConnection(conn);
 
@@ -143,6 +155,8 @@ public class ZoneServiceimpl implements ZoneService {
 					}
 				}
 				else {
+					ps.close();
+					SingletonConnexion.closeConnection(conn);
 					return null;
 				}
 			} else {
