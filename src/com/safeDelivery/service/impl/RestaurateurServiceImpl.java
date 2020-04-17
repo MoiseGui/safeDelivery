@@ -10,10 +10,15 @@ import com.safeDelivery.service.RestaurateurService;
 import com.safeDelivery.utils.SingletonConnexion;
 
 public class RestaurateurServiceImpl implements RestaurateurService {
+	private Connection conn;
+
+	public RestaurateurServiceImpl(Connection connection) {
+		this.conn = connection;
+	}
 
 	@Override
 	public long addRestaurateur(Restaurateur restaurateur) {
-		UserServiceImpl userServiceimpl = new UserServiceImpl();
+		UserServiceImpl userServiceimpl = new UserServiceImpl(conn);
 		User user = new User(restaurateur.getNom(), restaurateur.getPrenom(), restaurateur.getEmail(), restaurateur.getPass(),
 				restaurateur.getTel(), restaurateur.getCategorie(), restaurateur.getEnable());
 		long idUser = userServiceimpl.addUser(user);
@@ -21,7 +26,7 @@ public class RestaurateurServiceImpl implements RestaurateurService {
 		if (idUser > 0) {
 			restaurateur.setId(idUser);
 			try {
-				Connection conn = SingletonConnexion.startConnection();
+//				Connection conn = SingletonConnexion.startConnection();
 				if (conn != null) {
 					String query = "insert into restaurateur (id) values (?)";
 					PreparedStatement ps = conn.prepareStatement(query);
@@ -29,11 +34,11 @@ public class RestaurateurServiceImpl implements RestaurateurService {
 					int count = ps.executeUpdate();
 					if (count > 0) {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return idUser;
 					} else {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return -5;
 					}
 				} else {

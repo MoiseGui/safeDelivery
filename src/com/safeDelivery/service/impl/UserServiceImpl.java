@@ -14,11 +14,16 @@ import com.safeDelivery.utils.SingletonConnexion;
 import com.safeDelivery.utils.saltHashPassword;
 
 public class UserServiceImpl implements UserService {
+	private Connection conn;
+
+	public UserServiceImpl(Connection connection) {
+		this.conn = connection;
+	}
 
 	@Override
 	public long existByEmailAndPass(String email, String pass) {
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "select count(*) from user where email = ? and pass = ?";
 				PreparedStatement ps = conn.prepareStatement(query);
@@ -28,18 +33,18 @@ public class UserServiceImpl implements UserService {
 				} catch (Exception e) {
 					e.printStackTrace();
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return -4;
 				}
 				ResultSet result = ps.executeQuery();
 				result.next();
 				if (result.getInt(1) == 1) {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return 1;
 				} else {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return -1;
 				}
 			} else {
@@ -54,7 +59,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserByEmail(String email) {
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "select * from user where email = ?";
 				PreparedStatement ps = conn.prepareStatement(query);
@@ -65,11 +70,11 @@ public class UserServiceImpl implements UserService {
 							result.getString(4), result.getString(5), result.getString(6), result.getInt(7),
 							result.getInt(8));
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return user;
 				} else {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return null;
 				}
 
@@ -85,7 +90,7 @@ public class UserServiceImpl implements UserService {
 	public long addUser(User user) {
 
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				User user1 = getUserByEmail(user.getEmail());
 				if (user1 == null) {
@@ -98,7 +103,7 @@ public class UserServiceImpl implements UserService {
 						ps.setString(4, saltHashPassword.generateHash(user.getPass()));
 					} catch (NoSuchAlgorithmException e) {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return -3;
 					}
 					ps.setString(5, user.getTel());
@@ -110,16 +115,16 @@ public class UserServiceImpl implements UserService {
 						if (rs.next()) {
 							long id = rs.getInt(1);
 							ps.close();
-							SingletonConnexion.closeConnection(conn);
+//							SingletonConnexion.closeConnection(conn);
 							return id;
 						} else {
 							ps.close();
-							SingletonConnexion.closeConnection(conn);
+//							SingletonConnexion.closeConnection(conn);
 							return -5;
 						}
 					} else {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return -4;
 					}
 				} else {
@@ -137,7 +142,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int disableUserByEmail(String email) {
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "update user set enable = 1 where email=? ";
 				PreparedStatement ps = conn.prepareStatement(query);
@@ -145,11 +150,11 @@ public class UserServiceImpl implements UserService {
 				int count = ps.executeUpdate();
 				if (count > 0) {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return 1;
 				} else {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return -1;
 				}
 			} else {
@@ -165,7 +170,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int deleteUserByEmail(String email) {
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "delete from user where email = ? ";
 				PreparedStatement ps = conn.prepareStatement(query);
@@ -173,11 +178,11 @@ public class UserServiceImpl implements UserService {
 				int count = ps.executeUpdate();
 				if (count > 0) {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return 1;
 				} else {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return -1;
 				}
 			} else {
@@ -193,7 +198,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserById(long id) {
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "select * from user where id = ?";
 				PreparedStatement ps = conn.prepareStatement(query);
@@ -205,11 +210,11 @@ public class UserServiceImpl implements UserService {
 							result.getInt(8));
 
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return user;
 				} else {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return null;
 				}
 

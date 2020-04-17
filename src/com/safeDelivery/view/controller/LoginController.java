@@ -1,6 +1,7 @@
 package com.safeDelivery.view.controller;
 
 import java.net.URL;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -50,6 +51,17 @@ import javafx.scene.shape.Circle;
 
 public class LoginController implements Initializable {
 	private MainApp mainApp;
+	private Connection connection;
+	
+	public Connection getConnection() {
+		return connection;
+	}
+
+	public void setConnection(Connection connection) {
+		if(connection == null) System.out.println("Connection nulle dans le controller");
+		this.connection = connection;
+		userService = new UserServiceImpl(connection);
+	}
 
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
@@ -66,7 +78,7 @@ public class LoginController implements Initializable {
 	Adresse adresse = new Adresse("pas d'adresse", zone);
 	ObservableList<String> villes;
 	ObservableList<String> zones;
-	UserServiceImpl userService = new UserServiceImpl();
+	UserServiceImpl userService;
 
 	 @FXML
 	    private AnchorPane container;
@@ -369,12 +381,12 @@ public class LoginController implements Initializable {
 					long i;
 					if (this.categorie == 1) {
 						client = new Client(user, adresse);
-						ClientServiceImpl clientservice = new ClientServiceImpl();
+						ClientServiceImpl clientservice = new ClientServiceImpl(connection);
 						i = clientservice.addClient(client);
 
 					} else {
 						livreur = new Livreur(user);
-						LivreurServiceImpl livreurService = new LivreurServiceImpl();
+						LivreurServiceImpl livreurService = new LivreurServiceImpl(connection);
 						i = livreurService.addLivreur(livreur);
 					}
 					if (i <= 0) {
@@ -422,7 +434,7 @@ public class LoginController implements Initializable {
 
 			if (!error) {
 				restaurateur = new Restaurateur(user);
-				RestaurateurServiceImpl restaurateurService = new RestaurateurServiceImpl();
+				RestaurateurServiceImpl restaurateurService = new RestaurateurServiceImpl(connection);
 				restaurant.setNom(tNomResto.getText());
 				restaurant.setRestaurateur(restaurateur);
 				Adresse adresse = new Adresse();
@@ -431,7 +443,7 @@ public class LoginController implements Initializable {
 //				zone.setVille(ville);
 //				zone.setNom(cbZoneResto.getValue());
 				adresse.setDetail(tAdresseResto.getText());
-				ZoneServiceimpl zoneServiceimpl = new ZoneServiceimpl();
+				ZoneServiceimpl zoneServiceimpl = new ZoneServiceimpl(connection);
 				adresse.setZone(zoneServiceimpl.findById(zoneServiceimpl.existByName(cbZoneResto.getValue())));
 				restaurant.setAdresse(adresse);
 				long result = restaurateurService.addRestaurateur(restaurateur);
@@ -530,8 +542,8 @@ public class LoginController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		VilleServiceImpl villeService = new VilleServiceImpl();
-		ZoneServiceimpl zoneService = new ZoneServiceimpl();
+		VilleServiceImpl villeService = new VilleServiceImpl(connection);
+		ZoneServiceimpl zoneService = new ZoneServiceimpl(connection);
 		
 		
 		try {

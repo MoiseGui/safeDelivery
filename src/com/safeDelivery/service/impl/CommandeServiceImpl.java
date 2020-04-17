@@ -18,13 +18,20 @@ import com.safeDelivery.utils.DateUtil;
 import com.safeDelivery.utils.SingletonConnexion;
 
 public class CommandeServiceImpl implements CommandeService {
-	ClientServiceImpl clientServiceImp = new ClientServiceImpl();
-	LivreurServiceImpl livreurServiceImp = new LivreurServiceImpl();
+	ClientServiceImpl clientServiceImp;
+	LivreurServiceImpl livreurServiceImp;
+	private Connection conn;
+
+	public CommandeServiceImpl(Connection connection) {
+		this.conn = connection;
+		clientServiceImp = new ClientServiceImpl(connection);
+		livreurServiceImp = new LivreurServiceImpl(connection);
+	}
 
 	@Override
 	public long existById(Commande commande) {
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "select count(*) from commande where id=?";
 				PreparedStatement ps = conn.prepareStatement(query);
@@ -33,11 +40,11 @@ public class CommandeServiceImpl implements CommandeService {
 				result.next();
 				if (result.getInt(1) == 1) {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return 1;
 				} else {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return -3;
 				}
 			} else {
@@ -58,7 +65,7 @@ public class CommandeServiceImpl implements CommandeService {
 			long result3 = livreurServiceImp.existByid(commande.getLivreur());
 			if (result2 == 1 && result3 == 1) {
 				try {
-					Connection conn = SingletonConnexion.startConnection();
+//					Connection conn = SingletonConnexion.startConnection();
 					if (conn != null) {
 						String query = "insert into commande (id_client,total,etat,id_livreur,dateLivraison) values (?,?,?,?,?)";
 						PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -77,16 +84,16 @@ public class CommandeServiceImpl implements CommandeService {
 							if (rs.next()) {
 								long id = rs.getInt(1);
 								ps.close();
-								SingletonConnexion.closeConnection(conn);
+//								SingletonConnexion.closeConnection(conn);
 								return id;
 							} else {
 								ps.close();
-								SingletonConnexion.closeConnection(conn);
+//								SingletonConnexion.closeConnection(conn);
 								return -5;
 							}
 						} else {
 							ps.close();
-							SingletonConnexion.closeConnection(conn);
+//							SingletonConnexion.closeConnection(conn);
 							return -4;
 						}
 					} else {
@@ -110,7 +117,7 @@ public class CommandeServiceImpl implements CommandeService {
 	@Override
 	public double getTotal(Commande commande) {
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 //				String query = "";
 			} else {
@@ -128,17 +135,17 @@ public class CommandeServiceImpl implements CommandeService {
 	public List<Commande> findByDate(LocalDate date) {
 		List<Commande> commandes = new ArrayList<Commande>();
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String realDate = DateUtil.format(date);
 				String query = "select * from commande where dateCommande like '" + realDate + "%'";
 				Statement statement = conn.createStatement();
 				ResultSet result = statement.executeQuery(query);
 				while (result.next()) {
-					ClientServiceImpl clientServiceImpl = new ClientServiceImpl();
+					ClientServiceImpl clientServiceImpl = new ClientServiceImpl(conn);
 					Client client = clientServiceImpl.findById(result.getLong(2));
 
-					LivreurServiceImpl livreurServiceImpl = new LivreurServiceImpl();
+					LivreurServiceImpl livreurServiceImpl = new LivreurServiceImpl(conn);
 					Livreur livreur = livreurServiceImpl.findById(result.getLong(5));
 
 					Commande commande = new Commande(result.getLong(1), client, result.getDouble(3),
@@ -147,7 +154,7 @@ public class CommandeServiceImpl implements CommandeService {
 					commandes.add(commande);
 				}
 				statement.close();
-				SingletonConnexion.closeConnection(conn);
+//				SingletonConnexion.closeConnection(conn);
 				return commandes;
 			} else {
 				return null;
@@ -161,29 +168,43 @@ public class CommandeServiceImpl implements CommandeService {
 	public List<Commande> findAll() {
 		List<Commande> commandes = new ArrayList<Commande>();
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "select * from commande";
-				Statement statement = conn.createStatement();
+				Statement statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
+					    ResultSet.CONCUR_READ_ONLY);
 				ResultSet result = statement.executeQuery(query);
+				try {
+					result.last();
+				    int size = result.getRow() - 1;
+				    System.out.println("Taille de résultat "+ size);
+				    result.beforeFirst();
+				}
+				catch(Exception ex) {
+					ex.printStackTrace();
+				    return null;
+				}
 				while (result.next()) {
-					long id = result.getLong(5);
-					ResultSet save = result;
-					ClientServiceImpl clientServiceImpl = new ClientServiceImpl();
+					ClientServiceImpl clientServiceImpl = new ClientServiceImpl(conn);
 					Client client = clientServiceImpl.findById(result.getLong(2));
+					if(client == null) System.out.println("Commande nulle");
 
-					LivreurServiceImpl livreurServiceImpl = new LivreurServiceImpl();
-					Livreur livreur = livreurServiceImpl.findById(id);
+					LivreurServiceImpl livreurServiceImpl = new LivreurServiceImpl(conn);
+					Livreur livreur = livreurServiceImpl.findById(result.getLong(5));
+					if(livreur == null) System.out.println("Commande nulle");
 
-					Commande commande = new Commande(save.getLong(1), client, save.getDouble(3),
-							save.getString(4), livreur, DateTimeUtil.parse(save.getString(6)),
-							DateTimeUtil.parse(save.getString(7)));
+					Commande commande = new Commande(result.getLong(1), client, result.getDouble(3),
+							result.getString(4), livreur, DateTimeUtil.parse(result.getString(6)),
+							DateTimeUtil.parse(result.getString(7)));
+					if(commande == null) System.out.println("Commande nulle");
 					commandes.add(commande);
 				}
 				statement.close();
-				SingletonConnexion.closeConnection(conn);
+//				SingletonConnexion.closeConnection(conn);
+				if(commandes.isEmpty()) System.out.println("Liste vide depuis findAll de commandes");
 				return commandes;
 			} else {
+				System.out.println("Passed by here");
 				return null;
 			}
 		} catch (SQLException e) {

@@ -14,12 +14,19 @@ import com.safeDelivery.service.ZoneService;
 import com.safeDelivery.utils.SingletonConnexion;
 
 public class ZoneServiceimpl implements ZoneService {
-	VilleServiceImpl villeserviceimpl = new VilleServiceImpl();
+	VilleServiceImpl villeserviceimpl;
+	private Connection conn;
+
+	public ZoneServiceimpl(Connection connection) {
+		this.conn = connection;
+		villeserviceimpl = new VilleServiceImpl(connection);
+	}
+
 
 	@Override
 	public long existByName(String nom) {
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "select id from zone where nom = ?";
 				PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -29,16 +36,16 @@ public class ZoneServiceimpl implements ZoneService {
 					int id = result.getInt(1);
 					if (id > 0) {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return id;
 					} else {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return -1;
 					}
 				} else {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return -4;
 				}
 			} else {
@@ -61,7 +68,7 @@ public class ZoneServiceimpl implements ZoneService {
 			zone.getVille().setId(rs);
 			if (rs >= 0) {
 				try {
-					Connection conn = SingletonConnexion.startConnection();
+//					Connection conn = SingletonConnexion.startConnection();
 					if (conn != null) {
 						String query = "insert into zone (nom,id_ville) values (?,?)";
 						PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -74,17 +81,16 @@ public class ZoneServiceimpl implements ZoneService {
 								int id = rs1.getInt(1);
 								ps.close();
 								System.out.println("l'id de la zone " + id);
-								SingletonConnexion.closeConnection(conn);
+//								SingletonConnexion.closeConnection(conn);
 								return id;
-							}
-							else {
+							} else {
 								ps.close();
-								SingletonConnexion.closeConnection(conn);
+//								SingletonConnexion.closeConnection(conn);
 								return -4;
 							}
 						} else {
 							ps.close();
-							SingletonConnexion.closeConnection(conn);
+//							SingletonConnexion.closeConnection(conn);
 							return -1;
 						}
 					} else {
@@ -108,7 +114,7 @@ public class ZoneServiceimpl implements ZoneService {
 	public List<String> findAll() {
 		List<String> list = new ArrayList<String>();
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "select * from zone";
 				Statement statement = conn.createStatement();
@@ -117,7 +123,7 @@ public class ZoneServiceimpl implements ZoneService {
 					list.add(result.getString(2));
 				}
 				statement.close();
-				SingletonConnexion.closeConnection(conn);
+//				SingletonConnexion.closeConnection(conn);
 				return list;
 			} else {
 				return null;
@@ -131,7 +137,7 @@ public class ZoneServiceimpl implements ZoneService {
 	@Override
 	public Zone findById(long id) {
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "select * from zone where id = ?";
 				PreparedStatement ps = conn.prepareStatement(query);
@@ -139,24 +145,21 @@ public class ZoneServiceimpl implements ZoneService {
 				ResultSet result = ps.executeQuery();
 				if (result.next()) {
 					String nomZone = result.getString(2);
-					VilleServiceImpl vsimpl = new VilleServiceImpl(); 
-					Ville ville = vsimpl.findById(result.getInt(3));
-					if(ville==null) {
+					Ville ville = villeserviceimpl.findById(result.getInt(3));
+					if (ville == null) {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return null;
-					}
-					else {
-					Zone zone = new Zone(id, nomZone , ville);
-					ps.close();
-					SingletonConnexion.closeConnection(conn);
+					} else {
+						Zone zone = new Zone(id, nomZone, ville);
+						ps.close();
+//						SingletonConnexion.closeConnection(conn);
 
-					return zone;
+						return zone;
 					}
-				}
-				else {
+				} else {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return null;
 				}
 			} else {
@@ -166,7 +169,7 @@ public class ZoneServiceimpl implements ZoneService {
 			e.printStackTrace();
 			return null;
 		}
-		
+
 	}
 
 }

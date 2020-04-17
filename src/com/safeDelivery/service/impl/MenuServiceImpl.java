@@ -10,13 +10,18 @@ import com.safeDelivery.service.MenuService;
 import com.safeDelivery.utils.SingletonConnexion;
 
 public class MenuServiceImpl implements MenuService {
+	private Connection conn;
+
+	public MenuServiceImpl(Connection connection) {
+		this.conn = connection;
+	}
 
 	@Override
 	public long addMenu(long idPlat, long idResto) {
 		int exist = exists(idPlat, idResto);
 		if (exist != 1) {
 			try {
-				Connection conn = SingletonConnexion.startConnection();
+//				Connection conn = SingletonConnexion.startConnection();
 				if (conn != null) {
 					String query = "insert into menu  values (?,?)";
 					PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -29,16 +34,16 @@ public class MenuServiceImpl implements MenuService {
 						if (rs.next()) {
 							int rsgetint = rs.getInt(1);
 							ps.close();
-							SingletonConnexion.closeConnection(conn);
+//							SingletonConnexion.closeConnection(conn);
 							return rsgetint;
 						} else {
 							ps.close();
-							SingletonConnexion.closeConnection(conn);
+//							SingletonConnexion.closeConnection(conn);
 							return -5;
 						}
 					} else {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return -2;
 					}
 				} else {
@@ -56,7 +61,7 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	public int exists(long idPlat, long idResto) {
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "select count(*) from menu where id_plat = ? and id_restaurant = ?";
 				PreparedStatement ps = conn.prepareStatement(query);
@@ -69,12 +74,12 @@ public class MenuServiceImpl implements MenuService {
 				if (id == 1) {
 
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return 1;
 
 				} else {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return -1;
 				}
 
@@ -90,7 +95,7 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	public int deleteMenu(long idPlat, long idResto) {
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "delete from menu where id_plat = ? and id_restaurant = ?";
 				PreparedStatement ps = conn.prepareStatement(query);
@@ -99,11 +104,11 @@ public class MenuServiceImpl implements MenuService {
 				int count = ps.executeUpdate();
 				if (count > 0) {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return 1;
 				} else {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return -1;
 				}
 			} else {

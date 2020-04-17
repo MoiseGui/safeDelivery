@@ -11,10 +11,15 @@ import com.safeDelivery.service.LivreurService;
 import com.safeDelivery.utils.SingletonConnexion;
 
 public class LivreurServiceImpl implements LivreurService {
+	private Connection conn;
+
+	public LivreurServiceImpl(Connection connection) {
+		this.conn = connection;
+	}
 
 	@Override
 	public long addLivreur(Livreur livreur) {
-		UserServiceImpl userServiceimpl = new UserServiceImpl();
+		UserServiceImpl userServiceimpl = new UserServiceImpl(conn);
 		User user = new User(livreur.getNom(), livreur.getPrenom(), livreur.getEmail(), livreur.getPass(),
 				livreur.getTel(), livreur.getCategorie(), livreur.getEnable());
 		long idUser = userServiceimpl.addUser(user);
@@ -22,7 +27,7 @@ public class LivreurServiceImpl implements LivreurService {
 		if (idUser > 0) {
 			livreur.setId(idUser);
 			try {
-				Connection conn = SingletonConnexion.startConnection();
+//				Connection conn = SingletonConnexion.startConnection();
 				if (conn != null) {
 					String query = "insert into livreur (id) values (?)";
 					PreparedStatement ps = conn.prepareStatement(query);
@@ -30,11 +35,11 @@ public class LivreurServiceImpl implements LivreurService {
 					int count = ps.executeUpdate();
 					if (count > 0) {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return idUser;
 					} else {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return -5;
 					}
 				} else {
@@ -53,7 +58,7 @@ public class LivreurServiceImpl implements LivreurService {
 	@Override
 	public long existByid(Livreur livreur) {
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "select count(*) from livreur where id=?";
 				PreparedStatement ps = conn.prepareStatement(query);
@@ -62,11 +67,11 @@ public class LivreurServiceImpl implements LivreurService {
 				result.next();
 				if (result.getInt(1) == 1) {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return 1;
 				} else {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return -3;
 				}
 			} else {
@@ -81,7 +86,7 @@ public class LivreurServiceImpl implements LivreurService {
 	@Override
 	public Livreur findById(long id) {
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "select * from livreur where id = ?";
 				PreparedStatement ps = conn.prepareStatement(query);
@@ -89,16 +94,16 @@ public class LivreurServiceImpl implements LivreurService {
 				ResultSet result = ps.executeQuery();
 				if (result.next()) {
 					
-						UserServiceImpl userServiceImpl = new UserServiceImpl();
+						UserServiceImpl userServiceImpl = new UserServiceImpl(conn);
 						User user = userServiceImpl.getUserById(result.getLong(1));
 						Livreur livreur = new Livreur(user);
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 
 						return livreur;
 				} else {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return null;
 				}
 			} else {

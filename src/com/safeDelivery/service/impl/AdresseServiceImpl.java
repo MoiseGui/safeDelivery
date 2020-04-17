@@ -12,7 +12,13 @@ import com.safeDelivery.service.AdresseService;
 import com.safeDelivery.utils.SingletonConnexion;
 
 public class AdresseServiceImpl implements AdresseService {
-	ZoneServiceimpl zoneserviceimpl = new ZoneServiceimpl();
+	private Connection conn;
+	ZoneServiceimpl zoneserviceimpl;
+
+	public AdresseServiceImpl(Connection connection) {
+		this.conn = connection;
+		zoneserviceimpl = new ZoneServiceimpl(connection);
+	}
 
 	@Override
 	public long saveAdresse(Adresse adresse) {
@@ -29,7 +35,7 @@ public class AdresseServiceImpl implements AdresseService {
 		}
 		try {
 			long i;
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "insert into adresse (detail,id_zone) values (?,?)";
 				PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -49,7 +55,7 @@ public class AdresseServiceImpl implements AdresseService {
 					i = -4;
 				}
 				ps.close();
-				SingletonConnexion.closeConnection(conn);
+//				SingletonConnexion.closeConnection(conn);
 				return i;
 			} else {
 				return -2;
@@ -64,7 +70,7 @@ public class AdresseServiceImpl implements AdresseService {
 	public Adresse findById(long id) {
 		try {
 			Adresse adresse = null;
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "select * from adresse where id = ?";
 				PreparedStatement ps = conn.prepareStatement(query);
@@ -73,23 +79,23 @@ public class AdresseServiceImpl implements AdresseService {
 				if (result.next()) {
 					long idA = result.getLong(1);
 					String detail = result.getString(2);
-					ZoneServiceimpl impl = new ZoneServiceimpl();
+					ZoneServiceimpl impl = new ZoneServiceimpl(conn);
 					Zone zone = impl.findById(result.getLong(3));
 					if(zone==null) {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return null;
 					}
 					else {
 					adresse = new Adresse(idA, detail, zone);
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return adresse;
 					}
 				}
 				else {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return null;
 				}
 			} else {

@@ -14,20 +14,25 @@ import com.safeDelivery.service.RestaurantService;
 import com.safeDelivery.utils.SingletonConnexion;
 
 public class RestaurantServiceImpl implements RestaurantService {
+	private Connection conn;
+
+	public RestaurantServiceImpl(Connection connection) {
+		this.conn = connection;
+	}
 
 	@Override
 	public long addRestaurant(Restaurant restaurant) {
 		long found = existByNom(restaurant.getNom());
 		if (found < 0) {
 			System.out.println("restaurant not found " + found);
-			UserServiceImpl userServiceImpl = new UserServiceImpl();
+			UserServiceImpl userServiceImpl = new UserServiceImpl(conn);
 			long rs = userServiceImpl.existByEmailAndPass(restaurant.getRestaurateur().getEmail(), restaurant.getRestaurateur().getPass());
 			System.out.println("test si le restaurateur existe = " + rs);
 			if (rs >= 0) {
 				restaurant.getRestaurateur().setId(rs);
 //				User restaurateur = userServiceImpl.getUserByEmail(restaurant.getRestaurateur().getEmail());
 				try {
-					Connection conn = SingletonConnexion.startConnection();
+//					Connection conn = SingletonConnexion.startConnection();
 					if (conn != null) {
 						String query = "insert into restaurant (nom, adresse, id_restaurateur) values (?,?,?)";
 						PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -41,18 +46,18 @@ public class RestaurantServiceImpl implements RestaurantService {
 								int id = rs1.getInt(1);
 								ps.close();
 								System.out.println("l'id du restaurant "+id);
-								SingletonConnexion.closeConnection(conn);
+//								SingletonConnexion.closeConnection(conn);
 								return id;
 							}
 							else {
 								ps.close();
 								System.out.println("erreur sur l'id du resto inséré restaurant ");
-								SingletonConnexion.closeConnection(conn);
+//								SingletonConnexion.closeConnection(conn);
 								return -4;
 							}
 						} else {
 							ps.close();
-							SingletonConnexion.closeConnection(conn);
+//							SingletonConnexion.closeConnection(conn);
 							return -1;
 						}
 					} else {
@@ -78,7 +83,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 	@Override
 	public long existByNom(String nom) {
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "select id from restaurant where nom = ?";
 				PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -88,16 +93,16 @@ public class RestaurantServiceImpl implements RestaurantService {
 					int id = result.getInt(1);
 					if (id > 0) {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return id;
 					} else {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return -1;
 					}
 				} else {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return -4;
 				}
 			} else {
@@ -116,14 +121,14 @@ public class RestaurantServiceImpl implements RestaurantService {
 
 	@Override
 	public Restaurant findByRestaurateur(long idRestaurateur) {
-		UserServiceImpl impl = new UserServiceImpl();
+		UserServiceImpl impl = new UserServiceImpl(conn);
 		User user = impl.getUserById(idRestaurateur);
 		if(user == null) {
 			return null;
 		}
 		else {
 			try {
-				Connection conn = SingletonConnexion.startConnection();
+//				Connection conn = SingletonConnexion.startConnection();
 				if (conn != null) {
 					String query = "select * from restaurant where id_restaurateur = ?";
 					PreparedStatement ps = conn.prepareStatement(query);
@@ -132,24 +137,24 @@ public class RestaurantServiceImpl implements RestaurantService {
 					ResultSet result = ps.executeQuery();
 					
 					if(result.next()) {
-						AdresseServiceImpl adresseServiceImpl = new AdresseServiceImpl();
+						AdresseServiceImpl adresseServiceImpl = new AdresseServiceImpl(conn);
 						Adresse adresse = adresseServiceImpl.findById(result.getLong(3));
 						if(adresse == null) {
 							ps.close();
-							SingletonConnexion.closeConnection(conn);
+//							SingletonConnexion.closeConnection(conn);
 							return null;
 						}
 						else {
 							Restaurateur restaurateur = new Restaurateur(user);
 							Restaurant restaurant = new Restaurant(result.getLong(1), result.getString(2), adresse, restaurateur);
 							ps.close();
-							SingletonConnexion.closeConnection(conn);
+//							SingletonConnexion.closeConnection(conn);
 							return restaurant;
 						}
 					}
 					else {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return null;
 					}
 

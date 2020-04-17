@@ -12,12 +12,18 @@ import com.safeDelivery.service.ClientService;
 import com.safeDelivery.utils.SingletonConnexion;
 
 public class ClientServiceImpl implements ClientService {
+	private Connection conn;
+	UserServiceImpl userserviceimpl;
 
-	UserServiceImpl userserviceimpl = new UserServiceImpl();
+	public ClientServiceImpl(Connection connection) {
+		this.conn = connection;
+		userserviceimpl = new UserServiceImpl(connection);
+	}
+
 
 	@Override
 	public long addClient(Client client) {
-		AdresseServiceImpl adresseService = new AdresseServiceImpl();
+		AdresseServiceImpl adresseService = new AdresseServiceImpl(conn);
 		User user = new User(client.getNom(), client.getPrenom(), client.getEmail(), client.getPass(), client.getTel(),
 				client.getCategorie(), client.getEnable());
 		long idUser = userserviceimpl.addUser(user);
@@ -28,7 +34,7 @@ public class ClientServiceImpl implements ClientService {
 			if (idAdresse > 0) {
 				client.getAdresse().setId(idAdresse);
 				try {
-					Connection conn = SingletonConnexion.startConnection();
+//					Connection conn = SingletonConnexion.startConnection();
 					if (conn != null) {
 						String query = "insert into client (id,adresse) values (?,?)";
 						PreparedStatement ps = conn.prepareStatement(query);
@@ -37,11 +43,11 @@ public class ClientServiceImpl implements ClientService {
 						int count = ps.executeUpdate();
 						if (count > 0) {
 							ps.close();
-							SingletonConnexion.closeConnection(conn);
+//							SingletonConnexion.closeConnection(conn);
 							return idUser;
 						} else {
 							ps.close();
-							SingletonConnexion.closeConnection(conn);
+//							SingletonConnexion.closeConnection(conn);
 							return -5;
 						}
 					} else {
@@ -84,7 +90,7 @@ public class ClientServiceImpl implements ClientService {
 	public long existById(Client client) {
 
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "select count(*) from client where id=?";
 				PreparedStatement ps = conn.prepareStatement(query);
@@ -93,11 +99,11 @@ public class ClientServiceImpl implements ClientService {
 				result.next();
 				if (result.getInt(1) == 1) {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return 1;
 				} else {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return -3;
 				}
 			} else {
@@ -112,32 +118,31 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public Client findById(Long id) {
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "select * from client where id = ?";
 				PreparedStatement ps = conn.prepareStatement(query);
 				ps.setLong(1, id);
 				ResultSet result = ps.executeQuery();
 				if (result.next()) {
-					Long idC = result.getLong(1);
-					AdresseServiceImpl adresseServiceImpl = new AdresseServiceImpl();
+					AdresseServiceImpl adresseServiceImpl = new AdresseServiceImpl(conn);
 					Adresse adresse = adresseServiceImpl.findById(result.getLong(2));
 					if (adresse == null) {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return null;
 					} else {
-						UserServiceImpl userServiceImpl = new UserServiceImpl();
-						User user = userServiceImpl.getUserById(idC);
+						UserServiceImpl userServiceImpl = new UserServiceImpl(conn);
+						User user = userServiceImpl.getUserById(result.getLong(1));
 						Client client = new Client(user, adresse);
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 
 						return client;
 					}
 				} else {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return null;
 				}
 			} else {

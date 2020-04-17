@@ -1,17 +1,20 @@
 package com.safeDelivery.test;
 
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
 
-import com.safeDelivery.model.Restaurateur;
-import com.safeDelivery.service.impl.RestaurateurServiceImpl;
+import com.safeDelivery.model.Zone;
+import com.safeDelivery.service.impl.ZoneServiceimpl;
+import com.safeDelivery.utils.SingletonConnexion;
 
 
 
 public class Test {
-//	public static void main(String[] args) throws NoSuchAlgorithmException {
+	public static void main(String[] args) throws NoSuchAlgorithmException {
 //		UserServiceImpl userService = new UserServiceImpl();
-//		VilleServiceImpl villeService = new VilleServiceImpl();
-//		ZoneServiceimpl zoneservice = new ZoneServiceimpl();
+	Connection connection = SingletonConnexion.startConnection();
+//		VilleServiceImpl villeService = new VilleServiceImpl(connection);
+		ZoneServiceimpl zoneservice = new ZoneServiceimpl(connection);
 //		AdresseServiceImpl adresseservice = new AdresseServiceImpl();
 //		ClientServiceImpl clientService = new ClientServiceImpl();
 //		LivreurServiceImpl livreurService = new LivreurServiceImpl();
@@ -29,10 +32,9 @@ public class Test {
 //	   int res3 = userService.deleteUserByEmail("sasuke@gmail.com");
 //	   System.out.println("le resultat est "+res3);
 
-		// test saveVille
-//	Ville ville = new Ville("konoha");
-//		int result = villeService.saveVille(ville);
-//		System.out.println("le resultat est = "+result);
+//		// test saveVille
+//		long result = villeService.existByName("Konoha");
+//		System.out.println("le resultat est = "+ result );
 //
 //		Ville ville1 = new Ville("h7");
 //		Zone zone = new Zone("zone51", ville1);
@@ -46,9 +48,10 @@ public class Test {
 
 		// test saveZone
 //		Zone zone = new Zone("zone1", ville);
-//		int result1 = zoneservice.saveZone(zone);
-//		System.out.println("le resultat "+result1);
+		Zone zone = zoneservice.findById(1);
+		System.out.println("le resultat "+zone.getNom());
 		
+		SingletonConnexion.closeConnection(connection);
 
 		
 		
@@ -74,5 +77,5 @@ public class Test {
 //		
 //		
 //		
-//	}
+	}
 }

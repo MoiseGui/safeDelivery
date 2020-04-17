@@ -11,11 +11,16 @@ import com.safeDelivery.service.PlatService;
 import com.safeDelivery.utils.SingletonConnexion;
 
 public class PlatServiceImpl implements PlatService {
+	private Connection conn;
+
+	public PlatServiceImpl(Connection connection) {
+		this.conn = connection;
+	}
 
 	@Override
 	public long addPlat(Plat plat, long idResto) {
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "insert into plat (nom, prix, description) values (?, ?, ?)";
 				PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -28,18 +33,18 @@ public class PlatServiceImpl implements PlatService {
 					if (rs.next()) {
 						int rsgetint = rs.getInt(1);
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
-						MenuServiceImpl impl = new MenuServiceImpl();
+//						SingletonConnexion.closeConnection(conn);
+						MenuServiceImpl impl = new MenuServiceImpl(conn);
 						impl.addMenu(rsgetint, idResto);
 						return rsgetint;
 					} else {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return -4;
 					}
 				} else {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return -3;
 				}
 			} else {
@@ -55,7 +60,7 @@ public class PlatServiceImpl implements PlatService {
 	@Override
 	public long changePlat(Plat oldPlat, Plat newPlat) {
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "update plat set nom = ?, prix = ?, description = ? where id = ?";
 				PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -65,7 +70,7 @@ public class PlatServiceImpl implements PlatService {
 				ps.setLong(4, oldPlat.getId());
 				int count = ps.executeUpdate();
 				ps.close();
-				SingletonConnexion.closeConnection(conn);
+//				SingletonConnexion.closeConnection(conn);
 				if (count == 1) {
 					return 1;
 				} else {
@@ -82,11 +87,11 @@ public class PlatServiceImpl implements PlatService {
 
 	@Override
 	public int deletePlat(long idPlat, long idResto) {
-		MenuServiceImpl impl = new MenuServiceImpl();
+		MenuServiceImpl impl = new MenuServiceImpl(conn);
 		int deleteMenu = impl.deleteMenu(idPlat, idResto);
 		if(deleteMenu == 1) {
 			try {
-				Connection conn = SingletonConnexion.startConnection();
+//				Connection conn = SingletonConnexion.startConnection();
 				if (conn != null) {
 					String query = "delete from plat where id = ? ";
 					PreparedStatement ps = conn.prepareStatement(query);
@@ -94,11 +99,11 @@ public class PlatServiceImpl implements PlatService {
 					int count = ps.executeUpdate();
 					if (count > 0) {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return 1;
 					} else {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return -1;
 					}
 				} else {

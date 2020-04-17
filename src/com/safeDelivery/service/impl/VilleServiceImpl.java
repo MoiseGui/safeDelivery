@@ -13,12 +13,19 @@ import com.safeDelivery.service.VilleService;
 import com.safeDelivery.utils.SingletonConnexion;
 
 public class VilleServiceImpl implements VilleService {
+	private Connection conn;
+	
+	
+
+	public VilleServiceImpl(Connection connection) {
+		this.conn = connection;
+	}
 
 	@Override
 	public long existByName(String nom) {
 
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "select id from ville where nom like ?";
 				PreparedStatement ps = conn.prepareStatement(query);
@@ -28,16 +35,16 @@ public class VilleServiceImpl implements VilleService {
 					int id = result.getInt(1);
 					if (id > 0) {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return id;
 					} else {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return -1;
 					}
 				}else {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return -4 ;
 				}
 
@@ -56,7 +63,7 @@ public class VilleServiceImpl implements VilleService {
 		System.out.println("found saveville "+found);
 		if (found < 0) {
 			try {
-				Connection conn = SingletonConnexion.startConnection();
+//				Connection conn = SingletonConnexion.startConnection();
 				if (conn != null) {
 					String query = "insert into ville (nom) values (?)";
 					PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -67,17 +74,17 @@ public class VilleServiceImpl implements VilleService {
 						if (rs.next()) {
 							int rsgetint = rs.getInt(1);
 							ps.close();
-							SingletonConnexion.closeConnection(conn);
+//							SingletonConnexion.closeConnection(conn);
 							return rsgetint;
 						}
 						else {
 							ps.close();
-							SingletonConnexion.closeConnection(conn);
+//							SingletonConnexion.closeConnection(conn);
 							return -5;
 						}
 					} else {
 						ps.close();
-						SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 						return -2;
 					}
 				} else {
@@ -98,7 +105,7 @@ public class VilleServiceImpl implements VilleService {
 	public List<String> findAll() {
 		List<String> list = new ArrayList<String>();
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "select * from ville";
 				Statement statement = conn.createStatement();
@@ -107,7 +114,7 @@ public class VilleServiceImpl implements VilleService {
 					list.add(result.getString(2));
 				}
 				statement.close();
-				SingletonConnexion.closeConnection(conn);
+//				SingletonConnexion.closeConnection(conn);
 				return list;
 			} else {
 				return null;
@@ -121,7 +128,7 @@ public class VilleServiceImpl implements VilleService {
 	@Override
 	public Ville findById(long id) {
 		try {
-			Connection conn = SingletonConnexion.startConnection();
+//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "select * from ville where id = ?";
 				PreparedStatement ps = conn.prepareStatement(query);
@@ -130,11 +137,11 @@ public class VilleServiceImpl implements VilleService {
 				if (result.next()) {
 					Ville ville = new Ville(id, result.getString(2));
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return ville;
 				} else {
 					ps.close();
-					SingletonConnexion.closeConnection(conn);
+//					SingletonConnexion.closeConnection(conn);
 					return null;
 				}
 
