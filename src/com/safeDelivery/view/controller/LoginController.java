@@ -542,31 +542,8 @@ public class LoginController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		VilleServiceImpl villeService = new VilleServiceImpl(connection);
-		ZoneServiceimpl zoneService = new ZoneServiceimpl(connection);
 		
-		
-		try {
-			List<String> villeFindAll = new ArrayList<String>(villeService.findAll());
-			List<String> zoneFindAll = new ArrayList<String>(zoneService.findAll());
-			villes = FXCollections.observableArrayList(villeFindAll);
-			zones = FXCollections.observableArrayList(zoneFindAll);
-			if (villes == null || zones == null || villes.isEmpty() || zones.isEmpty()) {
-				throw new ListInitException();
-			}
-//			System.out.println(villes);
-			cbVilleResto.setItems(villes);
-			cbZoneResto.setItems(zones);
-		} catch (Exception e) {
-			Alert alert = new Alert(AlertType.WARNING);
-//			alert.initOwner(mainApp.getPrimaryStage());
-//			System.out.println("hello world");
-			alert.setTitle("Safe Delivery");
-			alert.setHeaderText("Erreur lors du chargement de la page");
-			alert.setContentText("Vérifier votre connexion");
-			alert.showAndWait();
-			Platform.exit();
-		}
+//		fillVillesAndZones();
 		
 		
 		
@@ -602,6 +579,35 @@ public class LoginController implements Initializable {
 //		});
 		
 
+	}
+
+	public void fillVillesAndZones() {
+		VilleServiceImpl villeService = new VilleServiceImpl(connection);
+		ZoneServiceimpl zoneService = new ZoneServiceimpl(connection);
+		
+		
+		try {
+			List<String> villeFindAll = new ArrayList<String>(villeService.findAll());
+			List<String> zoneFindAll = new ArrayList<String>(zoneService.findAll());
+			villes = FXCollections.observableArrayList(villeFindAll);
+			zones = FXCollections.observableArrayList(zoneFindAll);
+			if (villes == null || zones == null || villes.isEmpty() || zones.isEmpty()) {
+				throw new ListInitException();
+			}
+//			System.out.println(villes);
+			cbVilleResto.setItems(villes);
+			cbZoneResto.setItems(zones);
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.WARNING);
+//			alert.initOwner(mainApp.getPrimaryStage());
+//			System.out.println("hello world");
+			alert.setTitle("Safe Delivery");
+			alert.setHeaderText("Erreur lors du chargement de la page");
+			alert.setContentText("Vérifier votre connexion");
+			alert.showAndWait();
+			Platform.exit();
+		}
+		
 	}
 
 }

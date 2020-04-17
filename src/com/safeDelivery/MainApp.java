@@ -66,6 +66,7 @@ public class MainApp extends Application {
 			controller.setMainApp(this);
 			connection = SingletonConnexion.startConnection();
 			controller.setConnection(connection);
+			controller.fillVillesAndZones();
 
 			// Give the controller access to the main app.
 			// PersonOverviewController controller = loader.getController();
