@@ -6,6 +6,9 @@ import java.util.List;
 import com.safeDelivery.model.Commande;
 
 public interface CommandeService {
+	
+	public Commande findById(long id);
+	
 	public List<Commande> findAll();
 	
 	public long existById(Commande commande);

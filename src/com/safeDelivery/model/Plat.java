@@ -12,14 +12,30 @@ public class Plat {
 	private StringProperty nom;
 	private DoubleProperty prix;
 	private StringProperty description;
+	private StringProperty image;
 	
 	
+
+	public String getImage() {
+		return image.get();
+	}
+
+
+	public void setImage(String image) {
+		this.image.set(image);
+	}
+	
+	public StringProperty imageProperty() {
+		return this.image;
+	}
+
 
 	public Plat() {
 		this.id = new SimpleLongProperty();
 		this.nom = new SimpleStringProperty();
 		this.prix = new SimpleDoubleProperty();
 		this.description = new SimpleStringProperty();
+		this.image = new SimpleStringProperty();
 	}
 	
 
@@ -28,6 +44,24 @@ public class Plat {
 		this.nom = new SimpleStringProperty(nom);
 		this.prix = new SimpleDoubleProperty(prix);
 		this.description = new SimpleStringProperty(description);
+		this.image = new SimpleStringProperty();
+	}
+	
+	public Plat(String nom, Double prix, String description, String image) {
+		this.id = new SimpleLongProperty();
+		this.nom = new SimpleStringProperty(nom);
+		this.prix = new SimpleDoubleProperty(prix);
+		this.description = new SimpleStringProperty(description);
+		this.image = new SimpleStringProperty(image);
+	}
+	
+	
+	public Plat(long id, String nom, Double prix, String description, String image) {
+		this.id = new SimpleLongProperty(id);
+		this.nom = new SimpleStringProperty(nom);
+		this.prix = new SimpleDoubleProperty(prix);
+		this.description = new SimpleStringProperty(description);
+		this.image = new SimpleStringProperty(image);
 	}
 
 

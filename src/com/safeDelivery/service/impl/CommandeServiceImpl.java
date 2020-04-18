@@ -12,6 +12,7 @@ import java.util.List;
 import com.safeDelivery.model.Client;
 import com.safeDelivery.model.Commande;
 import com.safeDelivery.model.Livreur;
+import com.safeDelivery.model.Ville;
 import com.safeDelivery.service.CommandeService;
 import com.safeDelivery.utils.DateTimeUtil;
 import com.safeDelivery.utils.DateUtil;
@@ -205,6 +206,45 @@ public class CommandeServiceImpl implements CommandeService {
 				return commandes;
 			} else {
 				System.out.println("Passed by here");
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public Commande findById(long id) {
+		try {
+//			Connection conn = SingletonConnexion.startConnection();
+			if (conn != null) {
+				String query = "select * from commande where id = ?";
+				PreparedStatement ps = conn.prepareStatement(query);
+				ps.setLong(1, id);
+				ResultSet result = ps.executeQuery();
+				if (result.next()) {
+					ClientServiceImpl clientServiceImpl = new ClientServiceImpl(conn);
+					Client client = clientServiceImpl.findById(result.getLong(2));
+					if(client == null) System.out.println("Commande nulle");
+
+					LivreurServiceImpl livreurServiceImpl = new LivreurServiceImpl(conn);
+					Livreur livreur = livreurServiceImpl.findById(result.getLong(5));
+					if(livreur == null) System.out.println("Commande nulle");
+
+					Commande commande = new Commande(result.getLong(1), client, result.getDouble(3),
+							result.getString(4), livreur, DateTimeUtil.parse(result.getString(6)),
+							DateTimeUtil.parse(result.getString(7)));
+					ps.close();
+//					SingletonConnexion.closeConnection(conn);
+					return commande;
+				} else {
+					ps.close();
+//					SingletonConnexion.closeConnection(conn);
+					return null;
+				}
+
+			} else {
 				return null;
 			}
 		} catch (SQLException e) {

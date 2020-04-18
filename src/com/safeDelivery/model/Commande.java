@@ -59,7 +59,7 @@ public class Commande {
 	public Commande() {
 		this.id = new SimpleLongProperty();
 		this.client = new SimpleObjectProperty<Client>();
-		this.total = new SimpleDoubleProperty();
+		this.total = new SimpleDoubleProperty(0);
 		this.etat = new SimpleStringProperty();
 		this.livreur = new SimpleObjectProperty<Livreur>();
 	}

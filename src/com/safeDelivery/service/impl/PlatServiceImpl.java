@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.safeDelivery.model.Plat;
+import com.safeDelivery.model.Ville;
 import com.safeDelivery.service.PlatService;
 import com.safeDelivery.utils.SingletonConnexion;
 
@@ -116,6 +117,35 @@ public class PlatServiceImpl implements PlatService {
 		}
 		else {
 			return -4;
+		}
+	}
+
+	@Override
+	public Plat findById(long id) {
+		try {
+//			Connection conn = SingletonConnexion.startConnection();
+			if (conn != null) {
+				String query = "select * from plat where id = ?";
+				PreparedStatement ps = conn.prepareStatement(query);
+				ps.setLong(1, id);
+				ResultSet result = ps.executeQuery();
+				if (result.next()) {
+					Plat plat = new Plat(result.getLong(1), result.getString(2), result.getDouble(3), result.getString(4), result.getString(5));
+					ps.close();
+//					SingletonConnexion.closeConnection(conn);
+					return plat;
+				} else {
+					ps.close();
+//					SingletonConnexion.closeConnection(conn);
+					return null;
+				}
+
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 

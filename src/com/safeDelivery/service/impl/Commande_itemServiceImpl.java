@@ -8,7 +8,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.safeDelivery.model.Commande;
 import com.safeDelivery.model.Commande_item;
+import com.safeDelivery.model.Plat;
 import com.safeDelivery.service.Commande_itemService;
 import com.safeDelivery.utils.SingletonConnexion;
 
@@ -20,7 +22,7 @@ public class Commande_itemServiceImpl implements Commande_itemService {
 	}
 
 	@Override
-	public int existsBy(Long id_commande, Long id_plat) {
+	public int existsBy(long id_commande, long id_plat) {
 		try {
 //			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
@@ -55,15 +57,15 @@ public class Commande_itemServiceImpl implements Commande_itemService {
 
 	@Override
 	public int addCommandeItem(Commande_item commande_item) {
-		int ret = existsBy(commande_item.getId_commande(), commande_item.getId_plat());
+		int ret = existsBy(commande_item.getCommande().getId(), commande_item.getPlat().getId());
 		if (ret < 0) {
 			try {
 //				Connection conn = SingletonConnexion.startConnection();
 				if (conn != null) {
 					String query = "insert into commande_item  values (?,?,?,?)";
 					PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-					ps.setLong(1, commande_item.getId_plat());
-					ps.setLong(2, commande_item.getId_commande());
+					ps.setLong(1, commande_item.getPlat().getId());
+					ps.setLong(2, commande_item.getCommande().getId());
 					ps.setLong(3, commande_item.getQte());
 					ps.setString(4, commande_item.getEtat());
 
@@ -91,15 +93,15 @@ public class Commande_itemServiceImpl implements Commande_itemService {
 
 	@Override
 	public int deleteCommandeItem(Commande_item commande_item) {
-		int ret = existsBy(commande_item.getId_commande(), commande_item.getId_plat());
+		int ret = existsBy(commande_item.getCommande().getId(), commande_item.getPlat().getId());
 		if (ret > 0) {
 			try {
 //				Connection conn = SingletonConnexion.startConnection();
 				if (conn != null) {
 					String query = "delete from commande_item where id_plat = ? and id_commande = ? ";
 					PreparedStatement ps = conn.prepareStatement(query);
-					ps.setLong(1, commande_item.getId_plat());
-					ps.setLong(1, commande_item.getId_commande());
+					ps.setLong(1, commande_item.getPlat().getId());
+					ps.setLong(1, commande_item.getCommande().getId());
 					int count = ps.executeUpdate();
 					if (count == 1) {
 						ps.close();
@@ -125,25 +127,31 @@ public class Commande_itemServiceImpl implements Commande_itemService {
 	}
 
 	@Override
-	public List<Commande_item> findByIdCommande(Long id_commande) {
+	public List<Commande_item> findByIdCommande(long id_commande) {
 		List<Commande_item> list = new ArrayList<Commande_item>();
-		Commande_item comItem = new Commande_item();
+		
 		try {
 //			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
-				String query = "select * from commande_item";
-				Statement statement = conn.createStatement();
-				ResultSet result = statement.executeQuery(query);
+				String query = "select * from commande_item where id_commande = ?";
+				PreparedStatement ps = conn.prepareStatement(query);
+				ps.setLong(1, id_commande);
+				ResultSet result = ps.executeQuery();
 				while (result.next()) {
-
-					comItem.setId_plat(result.getLong(1));
-					comItem.setId_commande(result.getLong(2));
-					comItem.setQte(result.getLong(3));
-					comItem.setEtat(result.getString(4));
+					PlatServiceImpl platServiceImpl = new PlatServiceImpl(conn);
+					Plat plat = platServiceImpl.findById(result.getLong(1));
+					
+					CommandeServiceImpl commandeServiceImpl = new CommandeServiceImpl(conn);
+					Commande commande = commandeServiceImpl.findById(result.getLong(2));
+					Commande_item comItem = new Commande_item(plat, commande, result.getLong(3), result.getString(4));
+//					comItem.setId_plat(result.getLong(1));
+//					comItem.setId_commande(result.getLong(2));
+//					comItem.setQte(result.getLong(3));
+//					comItem.setEtat(result.getString(4));
 
 					list.add(comItem);
 				}
-				statement.close();
+				ps.close();
 //				SingletonConnexion.closeConnection(conn);
 				return list;
 			} else {
@@ -152,6 +160,35 @@ public class Commande_itemServiceImpl implements Commande_itemService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+	
+	@Override
+	public int setEtat(long id_commande, long id_plat, String etat) {
+		try {
+//			Connection conn = SingletonConnexion.startConnection();
+			if (conn != null) {
+				String query = "update commande_item set etat = ? where id_commande = ? and id_plat = ?";
+				PreparedStatement ps = conn.prepareStatement(query);
+				ps.setString(1, etat);
+				ps.setLong(2, id_commande);
+				ps.setLong(3, id_commande);
+				int count = ps.executeUpdate();
+				if (count == 1) {
+					ps.close();
+//					SingletonConnexion.closeConnection(conn);
+					return 1;
+				} else {
+					ps.close();
+//					SingletonConnexion.closeConnection(conn);
+					return -3;
+				}
+			} else {
+				return -2;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -4;
 		}
 	}
 

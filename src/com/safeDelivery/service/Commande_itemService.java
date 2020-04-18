@@ -7,9 +7,10 @@ import com.safeDelivery.model.Commande_item;
 
 public interface Commande_itemService {
 	
-	public int existsBy(Long id_commande,Long id_plat);
+	public int existsBy(long id_commande,long id_plat);
 	public int addCommandeItem(Commande_item commande_item);
 	public int deleteCommandeItem(Commande_item commande_item);
-	public List<Commande_item> findByIdCommande(Long id_commande);
+	public int setEtat(long id_commande,long id_plat, String etat);
+	public List<Commande_item> findByIdCommande(long id_commande);
 	
 }
