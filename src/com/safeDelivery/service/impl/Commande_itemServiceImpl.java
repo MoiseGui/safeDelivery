@@ -172,7 +172,7 @@ public class Commande_itemServiceImpl implements Commande_itemService {
 				PreparedStatement ps = conn.prepareStatement(query);
 				ps.setString(1, etat);
 				ps.setLong(2, id_commande);
-				ps.setLong(3, id_commande);
+				ps.setLong(3, id_plat);
 				int count = ps.executeUpdate();
 				if (count == 1) {
 					ps.close();
