@@ -67,7 +67,7 @@ public class Commande_itemServiceImpl implements Commande_itemService {
 					ps.setLong(1, commande_item.getPlat().getId());
 					ps.setLong(2, commande_item.getCommande().getId());
 					ps.setLong(3, commande_item.getQte());
-					ps.setString(4, commande_item.getEtat());
+					ps.setString(4, "En attente");
 
 					int count = ps.executeUpdate();
 					if (count == 1) {
