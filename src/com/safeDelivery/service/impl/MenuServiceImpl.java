@@ -93,14 +93,13 @@ public class MenuServiceImpl implements MenuService {
 	}
 
 	@Override
-	public int deleteMenu(long idPlat, long idResto) {
+	public int deleteMenu(long idPlat) {
 		try {
 //			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
-				String query = "delete from menu where id_plat = ? and id_restaurant = ?";
+				String query = "delete from menu where id_plat = ?";
 				PreparedStatement ps = conn.prepareStatement(query);
 				ps.setLong(1, idPlat);
-				ps.setLong(2, idResto);
 				int count = ps.executeUpdate();
 				if (count > 0) {
 					ps.close();

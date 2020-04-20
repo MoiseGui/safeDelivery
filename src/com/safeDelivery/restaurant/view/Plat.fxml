@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox alignment="CENTER_LEFT" prefHeight="79.0" prefWidth="743.0" spacing="10.0" style="-fx-background-color: transparent; -fx-border-radius: 5;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.safeDelivery.restaurant.view.controller.PlatController">
+   <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="79.0" prefWidth="585.0" spacing="75.0" style="-fx-background-color: transparent; -fx-border-radius: 5;">
+         <effect>
+            <DropShadow />
+         </effect>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets left="5.0" />
+         </padding>
+         <children>
+            <ImageView fx:id="img_plat" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../images/food-5.jpg" />
+               </image></ImageView>
+            <Label fx:id="lbl_nomPlat" prefHeight="17.0" prefWidth="109.0" text="Nom Plat" textFill="#e7e5e5" />
+            <Label fx:id="lbl_prixPlat" text="0" textFill="#e7e5e5" />
+            <Label fx:id="lbl_revenuPlat" text="0" textFill="#e7e5e5" />
+         </children>
+      </HBox>
+      <Button fx:id="btn_EditPlat" mnemonicParsing="false" onAction="#buttonActionHandler" prefHeight="27.0" prefWidth="32.0" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="28.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../icons/icons8_edit_60px_1.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="btn_deletePlat" layoutX="610.0" layoutY="28.0" mnemonicParsing="false" onAction="#buttonActionHandler" prefHeight="27.0" prefWidth="32.0" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fitHeight="29.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../icons/icons8_trash_52px.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+   </children>
+   <effect>
+      <DropShadow />
+   </effect>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+   <padding>
+      <Insets left="5.0" right="10.0" />
+   </padding>
+</HBox>

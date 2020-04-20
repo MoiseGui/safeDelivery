@@ -129,7 +129,7 @@ public class Commande_itemServiceImpl implements Commande_itemService {
 	@Override
 	public List<Commande_item> findByIdCommande(long id_commande) {
 		List<Commande_item> list = new ArrayList<Commande_item>();
-		
+
 		try {
 //			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
@@ -140,7 +140,7 @@ public class Commande_itemServiceImpl implements Commande_itemService {
 				while (result.next()) {
 					PlatServiceImpl platServiceImpl = new PlatServiceImpl(conn);
 					Plat plat = platServiceImpl.findById(result.getLong(1));
-					
+
 					CommandeServiceImpl commandeServiceImpl = new CommandeServiceImpl(conn);
 					Commande commande = commandeServiceImpl.findById(result.getLong(2));
 					Commande_item comItem = new Commande_item(plat, commande, result.getLong(3), result.getString(4));
@@ -162,7 +162,42 @@ public class Commande_itemServiceImpl implements Commande_itemService {
 			return null;
 		}
 	}
-	
+
+	public List<Commande_item> findByIdCommandeAndIdResto(long id_commande, long id_resto) {
+		List<Commande_item> list = new ArrayList<Commande_item>();
+
+		try {
+//					Connection conn = SingletonConnexion.startConnection();
+			if (conn != null) {
+//				System.out.println("id reto "+id_resto+" id commande "+ id_commande);
+				String query = "select commande_item.id_plat, commande_item.id_commande, commande_item.qte, commande_item.etat from restaurant, menu, plat, commande_item where restaurant.id = menu.id_restaurant and menu.id_plat = plat.id and plat.id = commande_item.id_plat and restaurant.id = ? and commande_item.id_commande = ?";
+				PreparedStatement ps = conn.prepareStatement(query);
+				ps.setLong(1, id_resto);
+				ps.setLong(2, id_commande);
+				ResultSet result = ps.executeQuery();
+				while (result.next()) {
+//					System.out.println("i have come here");
+					PlatServiceImpl platServiceImpl = new PlatServiceImpl(conn);
+					Plat plat = platServiceImpl.findById(result.getLong(1));
+
+					CommandeServiceImpl commandeServiceImpl = new CommandeServiceImpl(conn);
+					Commande commande = commandeServiceImpl.findById(result.getLong(2));
+					Commande_item comItem = new Commande_item(plat, commande, result.getLong(3), result.getString(4));
+
+					list.add(comItem);
+				}
+				ps.close();
+//						SingletonConnexion.closeConnection(conn);
+				return list;
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	@Override
 	public int setEtat(long id_commande, long id_plat, String etat) {
 		try {

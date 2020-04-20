@@ -1,13 +1,14 @@
 package com.safeDelivery.view.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 import com.safeDelivery.MainApp;
 import com.safeDelivery.exceptions.ListInitException;
@@ -19,8 +20,11 @@ import com.safeDelivery.model.Restaurateur;
 import com.safeDelivery.model.User;
 import com.safeDelivery.model.Ville;
 import com.safeDelivery.model.Zone;
+import com.safeDelivery.restaurant.MainResto;
+import com.safeDelivery.restaurant.view.controller.HomeController;
 import com.safeDelivery.service.impl.ClientServiceImpl;
 import com.safeDelivery.service.impl.LivreurServiceImpl;
+import com.safeDelivery.service.impl.RestaurantServiceImpl;
 import com.safeDelivery.service.impl.RestaurateurServiceImpl;
 import com.safeDelivery.service.impl.UserServiceImpl;
 import com.safeDelivery.service.impl.VilleServiceImpl;
@@ -34,7 +38,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -42,23 +49,30 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 
 public class LoginController implements Initializable {
+	private Stage primaryStage;
+	private BorderPane rootLayout;
 	private MainApp mainApp;
 	private Connection connection;
-	
+	private User userConnected = new User();
+
 	public Connection getConnection() {
 		return connection;
 	}
 
 	public void setConnection(Connection connection) {
-		if(connection == null) System.out.println("Connection nulle dans le controller");
+		if (connection == null)
+			System.out.println("Connection nulle dans le controller");
 		this.connection = connection;
 		userService = new UserServiceImpl(connection);
 	}
@@ -66,6 +80,18 @@ public class LoginController implements Initializable {
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
 	}
+	
+	
+
+	public Stage getPrimaryStage() {
+		return primaryStage;
+	}
+
+	public void setPrimaryStage(Stage primaryStage) {
+		this.primaryStage = primaryStage;
+	}
+
+
 
 	private int categorie; // 1 2 3
 	User user = new User();
@@ -80,188 +106,272 @@ public class LoginController implements Initializable {
 	ObservableList<String> zones;
 	UserServiceImpl userService;
 
-	 @FXML
-	    private AnchorPane container;
+	@FXML
+	private AnchorPane container;
 
-	    @FXML
-	    private Pane anchRoot;
+	@FXML
+	private Pane anchRoot;
 
-	    @FXML
-	    private Circle btnClose;
+	@FXML
+	private Circle btnClose;
 
-	    @FXML
-	    private Circle btnMin;
+	@FXML
+	private Circle btnMin;
 
-	    @FXML
-	    private Label lblForgot2;
+	@FXML
+	private Label lblForgot2;
 
-	    @FXML
-	    private StackPane pnlStack;
+	@FXML
+	private StackPane pnlStack;
 
-	    @FXML
-	    private Pane pnlChoix;
+	@FXML
+	private Pane pnlChoix;
 
-	    @FXML
-	    private ImageView btnBackChoix;
+	@FXML
+	private ImageView btnBackChoix;
 
-	    @FXML
-	    private Button choixClient;
+	@FXML
+	private Button choixClient;
 
-	    @FXML
-	    private Button choixLivreur;
+	@FXML
+	private Button choixLivreur;
 
-	    @FXML
-	    private Button choixResto;
+	@FXML
+	private Button choixResto;
 
-	    @FXML
-	    private Pane addRestaurant;
+	@FXML
+	private Pane addRestaurant;
 
-	    @FXML
-	    private TextField tNomResto;
+	@FXML
+	private TextField tNomResto;
 
-	    @FXML
-	    private Button btnValidResto;
+	@FXML
+	private Button btnValidResto;
 
-	    @FXML
-	    private ImageView btnBackResto;
+	@FXML
+	private ImageView btnBackResto;
 
-	    @FXML
-	    private Label lblForgot11;
+	@FXML
+	private Label lblForgot11;
 
-	    @FXML
-	    private TextField tAdresseResto;
+	@FXML
+	private TextField tAdresseResto;
 
-	    @FXML
-	    private Label lblForgot112;
+	@FXML
+	private Label lblForgot112;
 
-	    @FXML
-	    private Label lblForgot113;
+	@FXML
+	private Label lblForgot113;
 
-	    @FXML
-	    private ComboBox<String> cbVilleResto;
+	@FXML
+	private ComboBox<String> cbVilleResto;
 
-	    @FXML
-	    private Label lblForgot1131;
+	@FXML
+	private Label lblForgot1131;
 
-	    @FXML
-	    private ComboBox<String> cbZoneResto;
+	@FXML
+	private ComboBox<String> cbZoneResto;
 
-	    @FXML
-	    private Label lblErrorNomResto;
+	@FXML
+	private Label lblErrorNomResto;
 
-	    @FXML
-	    private Label lblErrorVilleResto;
+	@FXML
+	private Label lblErrorVilleResto;
 
-	    @FXML
-	    private Label lblErrorZoneResto;
+	@FXML
+	private Label lblErrorZoneResto;
 
-	    @FXML
-	    private Label lblErrorAdresseResto;
+	@FXML
+	private Label lblErrorAdresseResto;
 
-	    @FXML
-	    private Label lblAnnulerResto;
+	@FXML
+	private Label lblAnnulerResto;
 
-	    @FXML
-	    private Pane pnlSignUpNomPrenom;
+	@FXML
+	private Pane pnlSignUpNomPrenom;
 
-	    @FXML
-	    private ImageView btnBackNomPrenom;
+	@FXML
+	private ImageView btnBackNomPrenom;
 
-	    @FXML
-	    private TextField tprenom;
+	@FXML
+	private TextField tprenom;
 
-	    @FXML
-	    private Button btnContinuerNomPrenom;
+	@FXML
+	private Button btnContinuerNomPrenom;
 
-	    @FXML
-	    private Label lblForgot1111;
+	@FXML
+	private Label lblForgot1111;
 
-	    @FXML
-	    private TextField tnom;
+	@FXML
+	private TextField tnom;
 
-	    @FXML
-	    private Label lblForgot11111;
+	@FXML
+	private Label lblForgot11111;
 
-	    @FXML
-	    private TextField ttel;
+	@FXML
+	private TextField ttel;
 
-	    @FXML
-	    private Label lblForgot111111;
+	@FXML
+	private Label lblForgot111111;
 
-	    @FXML
-	    private Label lblErrorPrenom;
+	@FXML
+	private Label lblErrorPrenom;
 
-	    @FXML
-	    private Label lblErrorNom;
+	@FXML
+	private Label lblErrorNom;
 
-	    @FXML
-	    private Label lblErrorTel;
+	@FXML
+	private Label lblErrorTel;
 
-	    @FXML
-	    private Label lblAnnulerNomPrenom;
+	@FXML
+	private Label lblAnnulerNomPrenom;
 
-	    @FXML
-	    private Pane pnlSignUpEmailPass;
+	@FXML
+	private Pane pnlSignUpEmailPass;
 
-	    @FXML
-	    private ImageView btnBackEmailPass;
+	@FXML
+	private ImageView btnBackEmailPass;
 
-	    @FXML
-	    private TextField tEmailInsc;
+	@FXML
+	private TextField tEmailInsc;
 
-	    @FXML
-	    private Button btnContinuerEmailPass;
+	@FXML
+	private Button btnContinuerEmailPass;
 
-	    @FXML
-	    private Label lblForgot111;
+	@FXML
+	private Label lblForgot111;
 
-	    @FXML
-	    private PasswordField tPassInsc;
+	@FXML
+	private PasswordField tPassInsc;
 
-	    @FXML
-	    private PasswordField tpassConfirm;
+	@FXML
+	private PasswordField tpassConfirm;
 
-	    @FXML
-	    private Label lblErrorEmail;
+	@FXML
+	private Label lblErrorEmail;
 
-	    @FXML
-	    private Label lblErrorPass;
+	@FXML
+	private Label lblErrorPass;
 
-	    @FXML
-	    private Label lblAnnulerEmailPass;
+	@FXML
+	private Label lblAnnulerEmailPass;
 
-	    @FXML
-	    private Pane pnlLogin;
+	@FXML
+	private Pane pnlLogin;
 
-	    @FXML
-	    private TextField tEmail;
+	@FXML
+	private TextField tEmail;
+	
+	@FXML
+    private TextField tPassShowed;
 
-	    @FXML
-	    private PasswordField tPass;
+	@FXML
+	private PasswordField tPass;
 
-	    @FXML
-	    private Button btnConn;
+	@FXML
+	private Button btnConn;
 
-	    @FXML
-	    private Button btnInscr;
+	@FXML
+	private Button btnInscr;
 
-	    @FXML
-	    private Label lblForgot;
+	@FXML
+	private Label lblForgot;
 
-	    @FXML
-	    private Label lblForgot1;
+	@FXML
+	private Label lblForgot1;
 
-	    @FXML
-	    private Label lblErrorEmailConn;
+	@FXML
+	private Label lblErrorEmailConn;
 
-	    @FXML
-	    private Label lblErrorPassConn;
+	@FXML
+	private Label lblErrorPassConn;
+	
+	@FXML
+    private ImageView passShow;
+
+    @FXML
+    private ImageView passHide;
+
+	void showResto() throws IOException {
+//		System.out.println("User connected "+ userConnected);
+		Restaurateur restaurateur = new Restaurateur(userConnected);
+//		System.out.println("Restaurateur: "+restaurateur);
+		RestaurantServiceImpl impl = new RestaurantServiceImpl(connection);
+		Restaurant restaurant = impl.findByRestaurateur(restaurateur.getId());
+
+		// load a borderPane
+
+		try {
+//			primaryStage = new Stage();
+			this.primaryStage = new Stage();
+//			this.primaryStage.setResizable(false);
+//	        this.primaryStage
+			this.primaryStage.setTitle("SafeDelivery - " + restaurant.getNom());
+			this.primaryStage.getIcons().add(new Image("file:resources/images/logo_sans_titre.png"));
+
+			// Load root layout from fxml file.
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/MainBorderDashboard.fxml"));
+			rootLayout = (BorderPane) loader.load();
+			// Show the scene containing the root layout.
+			Scene scene = new Scene(rootLayout);
+			primaryStage.setScene(scene);
+			primaryStage.initOwner(mainApp.getPrimaryStage());
+			primaryStage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// load the dashboard Anchorpane
+
+		FXMLLoader restoLoader = new FXMLLoader();
+		restoLoader.setLocation(MainResto.class.getResource("view/Home.fxml"));
+
+		Parent root = (AnchorPane) restoLoader.load();
+
+		HomeController controller = restoLoader.getController();
+		controller.setRestaurant(restaurant);
+		controller.setMain(this);
+		controller.setStage(primaryStage);
+		if (connection == null) {
+			System.out.println("Connection nulle dans loginController");
+		}
+		controller.setConnection(connection);
+
+//        primaryStage.setScene(new Scene(root));
+
+		rootLayout.setCenter(root);
+//        primaryStage.show();
+		controller.loadAllCommandes(LocalDate.now());
+		controller.setNomResto();
+
+	}
+
+	void showDashboard() {
+//		System.out.println("UserConnected id " + this.userConnected.getId());
+		if (this.userConnected != null) {
+//			System.out.println("User categorie " + this.userConnected.getCategorie());
+			if (this.userConnected.getCategorie() == 2) {
+				try {
+					showResto();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+		} else {
+			System.out.println("UserConnected null");
+		}
+
+	}
 
 	@FXML
 	void handleButtonAction(ActionEvent event) {
 		// choix du type d'inscription
 
 		if (event.getSource().equals(btnInscr)) {
+//			new SlideInLeft(pnlChoix);
 			new ZoomIn(pnlChoix).play();
 			pnlChoix.toFront();
 		}
@@ -285,22 +395,48 @@ public class LoginController implements Initializable {
 		}
 		// panel : Email and password
 		if (event.getSource().equals(btnConn)) {
+			lblErrorEmailConn.setText("");
+			lblErrorPassConn.setText("");
 			boolean error = false;
 			if (tEmail.getText() == null || tEmail.getText().isEmpty() || !isValidEmail(tEmail.getText())) {
 				error = true;
 				tEmail.setText("");
 				lblErrorEmailConn.setText("Veuillez saiser une adresse email vailde");
 			}
-			if (tPass.getText() == null || tPass.getText().length() < 6) {
-				error = true;
-				tPass.setText("");
-				lblErrorPassConn.setText("Mot de passe incorrecte. Au moins 6 caractères.");
+			if(tPass.isVisible()) {
+				if (tPass.getText() == null || tPass.getText().length() < 6) {
+					error = true;
+					tPass.setText("");
+					lblErrorPassConn.setText("Mot de passe incorrecte. Au moins 6 caractères.");
+				}
+			}
+			else {
+				if (tPassShowed.getText() == null || tPassShowed.getText().length() < 6) {
+					error = true;
+					tPassShowed.setText("");
+					lblErrorPassConn.setText("Mot de passe incorrecte. Au moins 6 caractères.");
+				}
 			}
 
 			if (!error) {
-				long exist = userService.existByEmailAndPass(tEmail.getText(), tPass.getText());
-				tPass.setText("");
-				tEmail.setText("");
+				
+				lblErrorEmailConn.setText("");
+				lblErrorPassConn.setText("");
+				
+				userService = new UserServiceImpl(connection);
+				String email = tEmail.getText();
+				String pass;
+				
+				if(tPass.isVisible()) {
+					pass = tPass.getText();
+					tPass.setText("");
+				}
+				else {
+					pass = tPassShowed.getText();
+					tPassShowed.setText("");
+				}
+				long exist = userService.existByEmailAndPass(email, pass);
+//				tEmail.setText("");
 				if (exist <= 0) {
 					Alert alert = new Alert(AlertType.WARNING);
 					alert.initOwner(mainApp.getPrimaryStage());
@@ -309,12 +445,14 @@ public class LoginController implements Initializable {
 					alert.setContentText("Email ou mot de passe incorrect");
 					alert.showAndWait();
 				} else {
+					this.userConnected = userService.getUserByEmail(email);
 					Alert alert = new Alert(AlertType.INFORMATION);
 					alert.initOwner(mainApp.getPrimaryStage());
 					alert.setTitle("Safe Delivery");
 					alert.setHeaderText("Succès");
 					alert.setContentText("Votre êtes connecté");
 					alert.showAndWait();
+					showDashboard();
 				}
 			}
 		}
@@ -461,6 +599,7 @@ public class LoginController implements Initializable {
 					alert.setHeaderText("Succès");
 					alert.setContentText("Votre compte a été créée avec succès. Connectez-vous.");
 					alert.showAndWait();
+
 				}
 				clearInputs();
 				new ZoomIn(pnlLogin).play();
@@ -473,13 +612,14 @@ public class LoginController implements Initializable {
 
 	@FXML
 	void handleMouseEvent(MouseEvent event) {
-		
-		if(event.getSource().equals(lblAnnulerNomPrenom) || event.getSource().equals(lblAnnulerEmailPass) || event.getSource().equals(lblAnnulerResto)) {
+
+		if (event.getSource().equals(lblAnnulerNomPrenom) || event.getSource().equals(lblAnnulerEmailPass)
+				|| event.getSource().equals(lblAnnulerResto)) {
 			clearInputs();
 			new ZoomIn(pnlLogin).play();
 			pnlLogin.toFront();
 		}
-		
+
 		if (event.getSource().equals(btnBackChoix)) {
 			new ZoomIn(pnlLogin).play();
 			pnlLogin.toFront();
@@ -543,49 +683,12 @@ public class LoginController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
-//		fillVillesAndZones();
-		
-		
-		
-//     	List<String> villeFindAll = villeService.findAll();
-//		List<String> zoneFindAll = zoneService.findAll();
-//		new Thread(new Runnable() {
-//			
-//			@Override
-//			public void run() {
-//				try {
-//					List<String> villeFindAll = new ArrayList<String>(villeService.findAll());
-//					List<String> zoneFindAll = new ArrayList<String>(zoneService.findAll());
-//					villes = FXCollections.observableArrayList(villeFindAll);
-//					zones = FXCollections.observableArrayList(zoneFindAll);
-//					if (villes == null || zones == null || villes.isEmpty() || zones.isEmpty()) {
-//						throw new ListInitException();
-//					}
-//					System.out.println(villes);
-//					cbVilleResto.setItems(villes);
-//					cbZoneResto.setItems(zones);
-//				} catch (Exception e) {
-//					Alert alert = new Alert(AlertType.WARNING);
-////					alert.initOwner(mainApp.getPrimaryStage());
-//					System.out.println("hello world");
-//					alert.setTitle("Safe Delivery");
-//					alert.setHeaderText("Erreur lors du chargement de la page");
-//					alert.setContentText("Vérifier votre connexion");
-//					alert.showAndWait();
-//					Platform.exit();
-//				}
-//				
-//			}
-//		});
-		
-
 	}
 
 	public void fillVillesAndZones() {
 		VilleServiceImpl villeService = new VilleServiceImpl(connection);
 		ZoneServiceimpl zoneService = new ZoneServiceimpl(connection);
-		
-		
+
 		try {
 			List<String> villeFindAll = new ArrayList<String>(villeService.findAll());
 			List<String> zoneFindAll = new ArrayList<String>(zoneService.findAll());
@@ -607,7 +710,25 @@ public class LoginController implements Initializable {
 			alert.showAndWait();
 			Platform.exit();
 		}
-		
+
+	}
+	
+	@FXML
+	void showOrhide(MouseEvent event) {
+		if(event.getSource().equals(passShow)) {
+			passShow.setVisible(false);
+			passHide.setVisible(true);
+			tPassShowed.setVisible(true);
+			tPassShowed.setText(tPass.getText());
+			tPass.setVisible(false);
+		}
+		else {
+			passHide.setVisible(false);
+			passShow.setVisible(true);
+			tPass.setVisible(true);
+			tPass.setText(tPassShowed.getText());
+			tPassShowed.setVisible(false);
+		}
 	}
 
 }

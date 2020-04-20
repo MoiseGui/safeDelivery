@@ -9,6 +9,6 @@
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javaFx"/>
 	<classpathentry kind="lib" path="AnimateFX-1.2.0.jar"/>
-	<classpathentry kind="lib" path="mysql-connector-java-8.0.19.jar"/>
+	<classpathentry kind="lib" path="mysql-connector-java-8.0.19.jar" sourcepath="C:/Users/besto/.m2/repository/mysql/mysql-connector-java/8.0.19/mysql-connector-java-8.0.19-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

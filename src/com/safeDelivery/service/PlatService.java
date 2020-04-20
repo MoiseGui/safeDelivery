@@ -6,5 +6,5 @@ public interface PlatService {
 	public Plat findById(long id);
 	public long addPlat(Plat plat, long idResto);
 	public long changePlat(Plat oldPlat, Plat newPlat);
-	public int deletePlat(long idPlat, long idResto);
+	public int deletePlat(long idPlat);
 }

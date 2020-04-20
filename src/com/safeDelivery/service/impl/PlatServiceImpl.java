@@ -5,11 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.safeDelivery.model.Plat;
-import com.safeDelivery.model.Ville;
 import com.safeDelivery.service.PlatService;
-import com.safeDelivery.utils.SingletonConnexion;
 
 public class PlatServiceImpl implements PlatService {
 	private Connection conn;
@@ -57,7 +57,6 @@ public class PlatServiceImpl implements PlatService {
 		}
 	}
 
-
 	@Override
 	public long changePlat(Plat oldPlat, Plat newPlat) {
 		try {
@@ -87,14 +86,14 @@ public class PlatServiceImpl implements PlatService {
 	}
 
 	@Override
-	public int deletePlat(long idPlat, long idResto) {
+	public int deletePlat(long idPlat) {
 		MenuServiceImpl impl = new MenuServiceImpl(conn);
-		int deleteMenu = impl.deleteMenu(idPlat, idResto);
-		if(deleteMenu == 1) {
+		int deleteMenu = impl.deleteMenu(idPlat);
+		if (deleteMenu == 1) {
 			try {
 //				Connection conn = SingletonConnexion.startConnection();
 				if (conn != null) {
-					String query = "delete from plat where id = ? ";
+					String query = "update plat set deleted = 1 where id = ? ";
 					PreparedStatement ps = conn.prepareStatement(query);
 					ps.setLong(1, idPlat);
 					int count = ps.executeUpdate();
@@ -114,8 +113,7 @@ public class PlatServiceImpl implements PlatService {
 				e.printStackTrace();
 				return -3;
 			}
-		}
-		else {
+		} else {
 			return -4;
 		}
 	}
@@ -125,12 +123,96 @@ public class PlatServiceImpl implements PlatService {
 		try {
 //			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
-				String query = "select * from plat where id = ?";
+				String query = "select * from plat where id = ? and deleted = 0";
 				PreparedStatement ps = conn.prepareStatement(query);
 				ps.setLong(1, id);
 				ResultSet result = ps.executeQuery();
 				if (result.next()) {
-					Plat plat = new Plat(result.getLong(1), result.getString(2), result.getDouble(3), result.getString(4), result.getString(5));
+					Plat plat = new Plat(result.getLong(1), result.getString(2), result.getDouble(3),
+							result.getString(4), result.getString(5));
+					ps.close();
+//					SingletonConnexion.closeConnection(conn);
+					return plat;
+				} else {
+					ps.close();
+//					SingletonConnexion.closeConnection(conn);
+					return null;
+				}
+
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public List<Plat> findByIdRestaurant(long id) {
+		try {
+			if (conn != null) {
+				String query = "select id, nom, prix, description, image from plat,menu where id = id_plat and  id_restaurant = ? and deleted = 0";
+				PreparedStatement ps = conn.prepareStatement(query);
+				ps.setLong(1, id);
+				ResultSet result = ps.executeQuery();
+				List<Plat> plats = new ArrayList<Plat>();
+				while (result.next()) {
+					Plat plat = new Plat(result.getLong(1), result.getString(2), result.getDouble(3),
+							result.getString(4), result.getString(5));
+					plats.add(plat);
+				}
+				ps.close();
+				return plats;
+
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public double getRevenu(long id, double prix) {
+		try {
+			if (conn != null) {
+				String query = "select sum(qte) from commande_item where id_plat = ?";
+				PreparedStatement ps = conn.prepareStatement(query);
+				ps.setLong(1, id);
+				ResultSet result = ps.executeQuery();
+				if(result.next()) {
+					double qte = result.getDouble(1);
+					if (qte > 0) {
+						ps.close();
+						return qte*prix;
+					} else {
+						ps.close();
+						return 0;
+					}
+				}
+				else {
+					ps.close();
+					return -4;
+				}
+			} else {
+				return -2;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -3;
+		}
+	}
+	
+	public Plat getJamaisCmd() {
+		try {
+//			Connection conn = SingletonConnexion.startConnection();
+			if (conn != null) {
+				String query = "select * from plat where id = ? and deleted = 0";
+				PreparedStatement ps = conn.prepareStatement(query);
+				ResultSet result = ps.executeQuery();
+				if (result.next()) {
+					Plat plat = new Plat(result.getLong(1), result.getString(2), result.getDouble(3),
+							result.getString(4), result.getString(5));
 					ps.close();
 //					SingletonConnexion.closeConnection(conn);
 					return plat;

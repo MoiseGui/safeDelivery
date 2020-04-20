@@ -12,11 +12,9 @@ import java.util.List;
 import com.safeDelivery.model.Client;
 import com.safeDelivery.model.Commande;
 import com.safeDelivery.model.Livreur;
-import com.safeDelivery.model.Ville;
 import com.safeDelivery.service.CommandeService;
 import com.safeDelivery.utils.DateTimeUtil;
 import com.safeDelivery.utils.DateUtil;
-import com.safeDelivery.utils.SingletonConnexion;
 
 public class CommandeServiceImpl implements CommandeService {
 	ClientServiceImpl clientServiceImp;
@@ -104,12 +102,10 @@ public class CommandeServiceImpl implements CommandeService {
 					e.printStackTrace();
 					return -1;
 				}
-			}
-			else {
+			} else {
 				return -2;
 			}
-		}
-		else {
+		} else {
 			return -1;
 		}
 
@@ -172,37 +168,90 @@ public class CommandeServiceImpl implements CommandeService {
 //			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "select * from commande";
-				Statement statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
-					    ResultSet.CONCUR_READ_ONLY);
+				Statement statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+						ResultSet.CONCUR_READ_ONLY);
 				ResultSet result = statement.executeQuery(query);
 				try {
 					result.last();
-				    int size = result.getRow() - 1;
-				    System.out.println("Taille de résultat "+ size);
-				    result.beforeFirst();
-				}
-				catch(Exception ex) {
+					int size = result.getRow() - 1;
+					System.out.println("Taille de résultat " + size);
+					result.beforeFirst();
+				} catch (Exception ex) {
 					ex.printStackTrace();
-				    return null;
+					return null;
 				}
 				while (result.next()) {
 					ClientServiceImpl clientServiceImpl = new ClientServiceImpl(conn);
 					Client client = clientServiceImpl.findById(result.getLong(2));
-					if(client == null) System.out.println("Commande nulle");
+					if (client == null)
+						System.out.println("Commande nulle");
 
 					LivreurServiceImpl livreurServiceImpl = new LivreurServiceImpl(conn);
 					Livreur livreur = livreurServiceImpl.findById(result.getLong(5));
-					if(livreur == null) System.out.println("Commande nulle");
+					if (livreur == null)
+						System.out.println("Commande nulle");
 
 					Commande commande = new Commande(result.getLong(1), client, result.getDouble(3),
 							result.getString(4), livreur, DateTimeUtil.parse(result.getString(6)),
 							DateTimeUtil.parse(result.getString(7)));
-					if(commande == null) System.out.println("Commande nulle");
 					commandes.add(commande);
 				}
 				statement.close();
 //				SingletonConnexion.closeConnection(conn);
-				if(commandes.isEmpty()) System.out.println("Liste vide depuis findAll de commandes");
+				if (commandes.isEmpty())
+					System.out.println("Liste vide depuis findAll de commandes");
+				return commandes;
+			} else {
+				System.out.println("Passed by here");
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public List<Commande> findByrestaurant(long idResto) {
+		List<Commande> commandes = new ArrayList<Commande>();
+		try {
+//			Connection conn = SingletonConnexion.startConnection();
+			if (conn != null) {
+				String query = "select commande.id, commande.id_client, commande.total, commande.etat, commande.id_livreur, commande.dateCommande, commande.dateLivraison from restaurant, menu, plat, commande_item, commande where restaurant.id = menu.id_restaurant and menu.id_plat = plat.id and plat.id = commande_item.id_plat and commande_item.id_commande = commande.id and restaurant.id = ?";
+//				Statement statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
+//					    ResultSet.CONCUR_READ_ONLY);
+				PreparedStatement statement = conn.prepareStatement(query);
+				statement.setLong(1, idResto);
+				ResultSet result = statement.executeQuery();
+
+				try {
+					result.last();
+					int size = result.getRow() - 1;
+					System.out.println("Taille de résultat " + size);
+					result.beforeFirst();
+				} catch (Exception ex) {
+					ex.printStackTrace();
+					return null;
+				}
+				while (result.next()) {
+					ClientServiceImpl clientServiceImpl = new ClientServiceImpl(conn);
+					Client client = clientServiceImpl.findById(result.getLong(2));
+					if (client == null)
+						System.out.println("Commande nulle");
+
+					LivreurServiceImpl livreurServiceImpl = new LivreurServiceImpl(conn);
+					Livreur livreur = livreurServiceImpl.findById(result.getLong(5));
+					if (livreur == null)
+						System.out.println("Commande nulle");
+
+					Commande commande = new Commande(result.getLong(1), client, result.getDouble(3),
+							result.getString(4), livreur, DateTimeUtil.parse(result.getString(6)),
+							DateTimeUtil.parse(result.getString(7)));
+					commandes.add(commande);
+				}
+				statement.close();
+//				SingletonConnexion.closeConnection(conn);
+				if (commandes.isEmpty())
+					System.out.println("Liste vide depuis findAll de commandes");
 				return commandes;
 			} else {
 				System.out.println("Passed by here");
@@ -226,11 +275,13 @@ public class CommandeServiceImpl implements CommandeService {
 				if (result.next()) {
 					ClientServiceImpl clientServiceImpl = new ClientServiceImpl(conn);
 					Client client = clientServiceImpl.findById(result.getLong(2));
-					if(client == null) System.out.println("Commande nulle");
+					if (client == null)
+						System.out.println("Commande nulle");
 
 					LivreurServiceImpl livreurServiceImpl = new LivreurServiceImpl(conn);
 					Livreur livreur = livreurServiceImpl.findById(result.getLong(5));
-					if(livreur == null) System.out.println("Commande nulle");
+					if (livreur == null)
+						System.out.println("Commande nulle");
 
 					Commande commande = new Commande(result.getLong(1), client, result.getDouble(3),
 							result.getString(4), livreur, DateTimeUtil.parse(result.getString(6)),
