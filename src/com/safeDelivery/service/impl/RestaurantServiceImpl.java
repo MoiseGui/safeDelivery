@@ -5,13 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.safeDelivery.model.Adresse;
 import com.safeDelivery.model.Restaurant;
 import com.safeDelivery.model.Restaurateur;
 import com.safeDelivery.model.User;
 import com.safeDelivery.service.RestaurantService;
-import com.safeDelivery.utils.SingletonConnexion;
 
 public class RestaurantServiceImpl implements RestaurantService {
 	private Connection conn;
@@ -165,6 +166,30 @@ public class RestaurantServiceImpl implements RestaurantService {
 				e.printStackTrace();
 				return null;
 			}
+		}
+	}
+	
+	@Override
+	public List<String> findAll() {
+		List<String> list = new ArrayList<String>();
+		try {
+//			Connection conn = SingletonConnexion.startConnection();
+			if (conn != null) {
+				String query = "select * from restaurant";
+				Statement statement = conn.createStatement();
+				ResultSet result = statement.executeQuery(query);
+				while(result.next()) {
+					list.add(result.getString(2));
+				}
+				statement.close();
+//				SingletonConnexion.closeConnection(conn);
+				return list;
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 	

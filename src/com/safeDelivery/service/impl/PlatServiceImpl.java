@@ -230,5 +230,163 @@ public class PlatServiceImpl implements PlatService {
 			return null;
 		}
 	}
+	
+	@Override
+	public List<Plat> getRandomPlat() {
+		List<Plat> lists = new ArrayList<Plat>();
+		try {
+			if (conn != null) {
+				String query = "SELECT id, nom, prix, description, image FROM plat,menu where plat.id = menu.id_plat and deleted = 0 ORDER BY RAND() LIMIT 9";
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery(query);
+				while (rs.next()) {
+					Plat plat = new Plat(rs.getLong(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
+							rs.getString(5));
+					lists.add(plat);
+				}
+				st.close();
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return lists;
+
+	}
+
+	@Override
+	public List<Plat> findPlatByResto(String restaurant) {
+		List<Plat> lists = new ArrayList<Plat>();
+		try {
+			if (conn != null) {
+
+				String query = "select plat.* from plat,menu,restaurant where plat.id = menu.id_plat and restaurant.id = menu.id_restaurant and restaurant.nom = '"
+						+ restaurant + "'";
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery(query);
+				while (rs.next()) {
+					System.out.println("le plat " + rs.getLong(1) + rs.getString(2));
+					Plat plat = new Plat(rs.getLong(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
+							rs.getString(5));
+					lists.add(plat);
+				}
+				st.close();
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return lists;
+	}
+
+	@Override
+	public List<Plat> findPlatByVille(String ville) {
+		List<Plat> lists = new ArrayList<Plat>();
+		try {
+			if (conn != null) {
+				String query = "select * from plat,restaurant,adresse,zone,ville where plat.id = restaurant.id and restaurant.adresse = adresse.id and adresse.id =  zone.id and "
+						+ "zone.id = ville.id and ville.nom = '" + ville + "'";
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery(query);
+				while (rs.next()) {
+					Plat plat = new Plat(rs.getLong(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
+							rs.getString(5));
+					lists.add(plat);
+				}
+				st.close();
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return lists;
+	}
+
+	@Override
+	public List<Plat> findPlatByVilleAndResto(String ville, String restaurant) {
+		List<Plat> lists = new ArrayList<Plat>();
+		try {
+			if (conn != null) {
+				String query = "select * from plat,restaurant,adresse,zone,ville where plat.id = restaurant.id and restaurant.adresse = adresse.id and adresse.id =  zone.id and "
+						+ "zone.id = ville.id and ville.nom = '" + ville + "'" + " and restaurant.nom = '" + restaurant
+						+ "'";
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery(query);
+				while (rs.next()) {
+					Plat plat = new Plat(rs.getLong(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
+							rs.getString(5));
+					lists.add(plat);
+				}
+				st.close();
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return lists;
+
+	}
+
+	@Override
+	public long getIdByNom(String nomPlat) {
+		try {
+//			Connection conn = SingletonConnexion.startConnection();
+			if (conn != null) {
+				String query = "select id from plat where plat.nom = '" + nomPlat + "'";
+				Statement ps = conn.createStatement();
+				ResultSet result = ps.executeQuery(query);
+				if (result.next()) {
+					return result.getLong(1);
+				} else {
+					ps.close();
+//					SingletonConnexion.closeConnection(conn);
+					return -1;
+				}
+
+			} else {
+				return -2;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -3;
+		}
+	}
+
+	@Override
+	public Plat findByNom(String nomPlat) {
+		try {
+//			Connection conn = SingletonConnexion.startConnection();
+			if (conn != null) {
+				String query = "select * from plat where plat.nom = '" + nomPlat + "'";
+				Statement ps = conn.createStatement();
+				ResultSet result = ps.executeQuery(query);
+				if (result.next()) {
+					Plat plat = new Plat(result.getLong(1), result.getString(2), result.getDouble(3),
+							result.getString(4), result.getString(5));
+					ps.close();
+//					SingletonConnexion.closeConnection(conn);
+					return plat;
+				} else {
+					ps.close();
+//					SingletonConnexion.closeConnection(conn);
+					return null;
+				}
+
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 }

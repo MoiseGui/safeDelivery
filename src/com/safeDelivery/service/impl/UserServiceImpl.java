@@ -10,7 +10,6 @@ import java.sql.Statement;
 
 import com.safeDelivery.model.User;
 import com.safeDelivery.service.UserService;
-import com.safeDelivery.utils.SingletonConnexion;
 import com.safeDelivery.utils.saltHashPassword;
 
 public class UserServiceImpl implements UserService {

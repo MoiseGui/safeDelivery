@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.safeDelivery.model.Client;
 import com.safeDelivery.model.Commande;
+import com.safeDelivery.model.Commande_item;
 import com.safeDelivery.model.Livreur;
 import com.safeDelivery.service.CommandeService;
 import com.safeDelivery.utils.DateTimeUtil;
@@ -59,24 +60,16 @@ public class CommandeServiceImpl implements CommandeService {
 	public long addCommand(Commande commande) {
 
 		long result1 = existById(commande);
-		if (result1 == 1) {
+		if (result1 != 1) {
 			long result2 = clientServiceImp.existById(commande.getClient());
-			long result3 = livreurServiceImp.existByid(commande.getLivreur());
-			if (result2 == 1 && result3 == 1) {
+			if (result2  > 0) {
 				try {
 //					Connection conn = SingletonConnexion.startConnection();
 					if (conn != null) {
-						String query = "insert into commande (id_client,total,etat,id_livreur,dateLivraison) values (?,?,?,?,?)";
+						String query = "insert into commande (id_client,total) values (?,?)";
 						PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 						ps.setLong(1, commande.getClient().getId());
 						ps.setDouble(2, commande.getTotal());
-						ps.setString(3, commande.getEtat());
-						ps.setLong(4, commande.getLivreur().getId());
-						if (commande.getDateLivraison() == null) {
-							ps.setString(5, "");
-						} else {
-							ps.setString(5, DateTimeUtil.format(commande.getDateLivraison()));
-						}
 						int count = ps.executeUpdate();
 						if (count > 0) {
 							ResultSet rs = ps.getGeneratedKeys();
@@ -88,24 +81,26 @@ public class CommandeServiceImpl implements CommandeService {
 							} else {
 								ps.close();
 //								SingletonConnexion.closeConnection(conn);
-								return -5;
+								return -6;
 							}
 						} else {
 							ps.close();
 //							SingletonConnexion.closeConnection(conn);
-							return -4;
+							return -5;
 						}
 					} else {
 						return -4;
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
-					return -1;
+					return -3;
 				}
-			} else {
+			}
+			else {
 				return -2;
 			}
-		} else {
+		}
+		else {
 			return -1;
 		}
 

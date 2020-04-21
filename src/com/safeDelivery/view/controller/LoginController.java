@@ -24,6 +24,7 @@ import com.safeDelivery.restaurant.MainResto;
 import com.safeDelivery.restaurant.view.controller.HomeController;
 import com.safeDelivery.service.impl.ClientServiceImpl;
 import com.safeDelivery.service.impl.LivreurServiceImpl;
+import com.safeDelivery.service.impl.PlatServiceImpl;
 import com.safeDelivery.service.impl.RestaurantServiceImpl;
 import com.safeDelivery.service.impl.RestaurateurServiceImpl;
 import com.safeDelivery.service.impl.UserServiceImpl;
@@ -65,6 +66,7 @@ public class LoginController implements Initializable {
 	private MainApp mainApp;
 	private Connection connection;
 	private User userConnected = new User();
+	private Client clientConnected = new Client();
 
 	public Connection getConnection() {
 		return connection;
@@ -346,18 +348,45 @@ public class LoginController implements Initializable {
 		controller.setNomResto();
 
 	}
+	
+	private void showClient() throws IOException {
+		clientConnected = new Client(userConnected);
+		
+		
+		this.primaryStage = new Stage();
+//		this.primaryStage.setResizable(false);
+//        this.primaryStage
+		this.primaryStage.setTitle("SafeDelivery - " + clientConnected.getNom());
+		this.primaryStage.getIcons().add(new Image("file:resources/images/logo_sans_titre.png"));
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(MainApp.class.getResource("view/ClientHome.fxml"));
+		Parent root = loader.load();
+		ClientHomeController clientHomeController = loader.getController();
+		clientHomeController.setConnection(connection);
+		PlatServiceImpl platService = new PlatServiceImpl(this.connection);
+		clientHomeController.setMain(this.mainApp);
+		clientHomeController.setClient(clientConnected);
+		clientHomeController.setRandomPlat(platService.getRandomPlat());
+		clientHomeController.loadPlat();
+		VilleServiceImpl villeService = new VilleServiceImpl(this.connection);
+		clientHomeController.loadVilles(villeService.findAll());
+		RestaurantServiceImpl restaurantService = new RestaurantServiceImpl(this.connection);
+		clientHomeController.loadRestaurants(restaurantService.findAll());
+		primaryStage.setScene(new Scene(root));
+//		primaryStage.initStyle(StageStyle.UNDECORATED);
+		primaryStage.initOwner(mainApp.getPrimaryStage());
+		primaryStage.show();
+	}
 
-	void showDashboard() {
+	void showDashboard() throws IOException {
 //		System.out.println("UserConnected id " + this.userConnected.getId());
 		if (this.userConnected != null) {
 //			System.out.println("User categorie " + this.userConnected.getCategorie());
 			if (this.userConnected.getCategorie() == 2) {
-				try {
-					showResto();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				showResto();
+			}
+			else {
+				showClient();
 			}
 
 		} else {
@@ -366,8 +395,9 @@ public class LoginController implements Initializable {
 
 	}
 
+
 	@FXML
-	void handleButtonAction(ActionEvent event) {
+	void handleButtonAction(ActionEvent event) throws IOException {
 		// choix du type d'inscription
 
 		if (event.getSource().equals(btnInscr)) {
@@ -521,13 +551,17 @@ public class LoginController implements Initializable {
 						client = new Client(user, adresse);
 						ClientServiceImpl clientservice = new ClientServiceImpl(connection);
 						i = clientservice.addClient(client);
-
+						
+						
 					} else {
 						livreur = new Livreur(user);
 						LivreurServiceImpl livreurService = new LivreurServiceImpl(connection);
 						i = livreurService.addLivreur(livreur);
 					}
 					if (i <= 0) {
+						
+						System.out.println("Save client retourne " + i);
+						
 						Alert alert = new Alert(AlertType.WARNING);
 						alert.initOwner(mainApp.getPrimaryStage());
 						alert.setTitle("Safe Delivery");

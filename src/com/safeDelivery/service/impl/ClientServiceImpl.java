@@ -9,7 +9,6 @@ import com.safeDelivery.model.Adresse;
 import com.safeDelivery.model.Client;
 import com.safeDelivery.model.User;
 import com.safeDelivery.service.ClientService;
-import com.safeDelivery.utils.SingletonConnexion;
 
 public class ClientServiceImpl implements ClientService {
 	private Connection conn;
@@ -23,23 +22,18 @@ public class ClientServiceImpl implements ClientService {
 
 	@Override
 	public long addClient(Client client) {
-		AdresseServiceImpl adresseService = new AdresseServiceImpl(conn);
 		User user = new User(client.getNom(), client.getPrenom(), client.getEmail(), client.getPass(), client.getTel(),
 				client.getCategorie(), client.getEnable());
 		long idUser = userserviceimpl.addUser(user);
 		System.out.println("l'id du user est = " + idUser);
 		if (idUser > 0) {
 			client.setId(idUser);
-			long idAdresse = adresseService.saveAdresse(client.getAdresse());
-			if (idAdresse > 0) {
-				client.getAdresse().setId(idAdresse);
 				try {
 //					Connection conn = SingletonConnexion.startConnection();
 					if (conn != null) {
-						String query = "insert into client (id,adresse) values (?,?)";
+						String query = "insert into client (id) values (?)";
 						PreparedStatement ps = conn.prepareStatement(query);
 						ps.setLong(1, idUser);
-						ps.setLong(2, idAdresse);
 						int count = ps.executeUpdate();
 						if (count > 0) {
 							ps.close();
@@ -57,10 +51,6 @@ public class ClientServiceImpl implements ClientService {
 					e.printStackTrace();
 					return -3;
 				}
-
-			} else {
-				return -2;
-			}
 
 		} else {
 			return -1;
