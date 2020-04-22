@@ -345,6 +345,63 @@
                   </VBox>
                </children>
             </Pane>
+            <Pane fx:id="pnlLiv" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #77d8d8;">
+               <children>
+                  <Label layoutX="77.0" layoutY="40.0" text="Détail de livraison " textFill="WHITE">
+                     <font>
+                        <Font size="34.0" />
+                     </font>
+                  </Label>
+                  <Pane layoutX="100.0" layoutY="115.0" prefHeight="288.0" prefWidth="379.0" style="-fx-border-color: #fff;">
+                     <children>
+                        <Label layoutX="92.0" layoutY="14.0" prefHeight="26.0" prefWidth="171.0" text="Choisissez une ville">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="cbxVilleLiv" layoutX="86.0" layoutY="54.0" prefHeight="25.0" prefWidth="181.0" promptText="Ville" />
+                        <Label layoutX="86.0" layoutY="103.0" prefHeight="21.0" prefWidth="171.0" text="Choisissez une zone">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="cbxZoneLiv" layoutX="87.0" layoutY="148.0" prefHeight="25.0" prefWidth="181.0" promptText="zone" />
+                        <Label layoutX="92.0" layoutY="193.0" prefHeight="26.0" prefWidth="171.0" text="Saisissez votre adresse">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtAdres" layoutX="87.0" layoutY="235.0" prefHeight="25.0" prefWidth="181.0" promptText="adresse" />
+                     </children>
+                  </Pane>
+                  <Label layoutX="518.0" layoutY="153.0" prefHeight="35.0" prefWidth="234.0" style="-fx-font-weight: bold;" text="Total de votre commande  :" textFill="WHITE">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lblTotalLiv" layoutX="518.0" layoutY="199.0" prefHeight="50.0" prefWidth="138.0" text="0">
+                     <font>
+                        <Font size="34.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="btnPanierLiv" layoutX="518.0" layoutY="288.0" mnemonicParsing="false" onAction="#livrer" prefHeight="43.0" prefWidth="93.0" style="-fx-background-color: #f76a8c;" text="Panier">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Button>
+                  <Button fx:id="btnValiderLiv" layoutX="647.0" layoutY="289.0" mnemonicParsing="false" onAction="#livrer" prefHeight="43.0" prefWidth="93.0" style="-fx-background-color: #d4f8e8;" text="Valider">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Button>
+               </children>
+            </Pane>
          </children>
       </StackPane>
    </children>
