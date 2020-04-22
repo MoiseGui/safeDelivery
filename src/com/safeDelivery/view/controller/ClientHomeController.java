@@ -14,6 +14,7 @@ import com.safeDelivery.model.Panier;
 import com.safeDelivery.model.Plat;
 import com.safeDelivery.service.impl.PanierServiceImpl;
 import com.safeDelivery.service.impl.PlatServiceImpl;
+import com.safeDelivery.service.impl.RestaurantServiceImpl;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,6 +28,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -108,6 +110,8 @@ public class ClientHomeController implements Initializable {
 	@FXML
 	private Label lbl_panierCount;
 
+    @FXML
+    private TextField txtSearch;
 	@FXML
 	void HomeHandle(ActionEvent event) {
 		pnlHome.toFront();
@@ -122,7 +126,17 @@ public class ClientHomeController implements Initializable {
 	public void setPaniers(List<Panier> paniers) {
 		this.paniers = paniers;
 	}
+	  @FXML
+	    void search(MouseEvent event) {
+		  String value = txtSearch.getText();
+		  PlatServiceImpl platService  = new PlatServiceImpl(connection);
+		  if(!value.equals(""))
+		  {
+			  List<Plat> plats =  platService.findAllByNom(value);
+			  diplay(plats);
+		  }
 
+	    }
 	List<Plat> plats = new ArrayList<Plat>();
 	private MainApp main;
 	private Client client;
@@ -238,29 +252,111 @@ public class ClientHomeController implements Initializable {
 	void filterResto(ActionEvent event) {
 		PlatServiceImpl platService = new PlatServiceImpl(connection);
 		v1 = cbxresto.getValue();
-		if (!v1.equals("") && v2.equals("")) {
+		if (v1.equals("tous") && v2.equals("tous")) {
+			System.out.println("filtre resto j'ai cliqué sur tous ");
+			List<Plat> plats = platService.findAll();
+			if (plats == null) {
+				System.out.println(" first if null");
+			} else {
+				diplay(plats);
+				return;
+			}
+
+		}
+		if(v2.equals("tous") && !v1.equals("tous") && !v1.equals("")) {
+			List<Plat> plats = platService.findPlatByResto(v1);
+			if(plats == null)
+			{
+				System.out.println("vos plats sont nuls ");
+			}else {
+				diplay(plats);
+				return;
+			}
+			
+		}
+		if (v1.equals("tous") && !v2.equals("tous") && !v2.equals("")) {
+			System.out.println("filtre resto j'ai cliqué sur tous et l'autre n'est pas tous  ");
+			List<Plat> plats = platService.findPlatByVille(v2);
+			if (plats == null) {
+				System.out.println(" first if null");
+			} else {
+				diplay(plats);
+				return;
+			}
+
+		}
+		if (!v1.equals("") && v2.equals("") && !v1.equals("tous")) {
 			List<Plat> plats = platService.findPlatByResto(v1);
 			diplay(plats);
+			return;
 		}
-		if (!v1.equals("") && !v2.equals("")) {
+		if (!v1.equals("") && !v2.equals("") && !v2.equals("tous") && !v1.equals("tous")) {
+			System.out.println("hello motherfucker");
 			List<Plat> plats = platService.findPlatByVilleAndResto(v2, v1);
-			diplay(plats);
+			System.out.println("la ville est + "+v2+"  le restaurant est "+ v1);
+			if(plats == null )
+			{
+				System.out.println(plats.get(0).toString());
+				System.out.println("les plats quye vous avvez choisi sont nuls ");
+			}else {
+				System.out.println("ici c'est le else ");
+				System.out.println("le plat "+ plats.get(0));
+				diplay(plats);
+				return;
+			}
+			
 		}
-
 	}
 
 //ça marche
 	@FXML
 	void filterVille(ActionEvent event) {
 		PlatServiceImpl platService = new PlatServiceImpl(connection);
+		RestaurantServiceImpl restaurantService = new RestaurantServiceImpl(connection);
 		v2 = cbxville.getValue();
-		if (!v2.equals("") && v1.equals("")) {
+		if (v2.equals("tous")) {
+			List<Plat> plats = platService.findAll();
+			diplay(plats);
+			List<String> restaurants = restaurantService.findAll();
+			restaurants.add(0,"tous");
+			loadRestaurants(restaurants);
+			System.out.println("filtrer ville j'ai cliqué sur tous ");
+			return;
+		}
+		if (!v2.equals("") && !v2.equals("tous")) {
+			System.out.println("filtrer ville second if  ");
+			List<String> restaurants = restaurantService.findRestoByVille(v2);
+			restaurants.add(0,"tous");
+			loadRestaurants(restaurants);
+			List<Plat> plats = platService.findPlatByVille(v2);
+			if(plats == null )
+			{
+			  System.out.println("filtrer ville vos plats sont nuls");
+			}else {
+				System.out.println("plat "+ plats);
+				diplay(plats);
+			}
+			
+			
+			return;
+		}
+		if (!v2.equals("") && v1.equals("") && !v2.equals("tous") && !v1.equals("tous")) {
 			List<Plat> plats = platService.findPlatByVille(v2);
 			diplay(plats);
+			System.out.println("filtrer ville third if  ");
+			return;
 		}
-		if (!v1.equals("") && !v2.equals("")) {
+		if (!v1.equals("") && !v2.equals("") && !v2.equals("tous") && !v1.equals("tous")) {
 			List<Plat> plats = platService.findPlatByVilleAndResto(v2, v1);
 			diplay(plats);
+			System.out.println("filtrer ville fourth if");
+			return;
+		}
+		if (v2.equals("tous") && v1.equals("tous")) {
+			List<Plat> plats = platService.findAll();
+			diplay(plats);
+			System.out.println("filtrer ville fifth if");
+			return;
 		}
 	}
 
@@ -272,7 +368,6 @@ public class ClientHomeController implements Initializable {
 			return;
 		} else {
 			cbxville.setItems(lVilles);
-
 		}
 	}
 

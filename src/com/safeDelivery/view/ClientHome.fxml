@@ -192,73 +192,6 @@
       </VBox>
       <StackPane fx:id="mainPane" layoutX="258.0" prefHeight="576.0" prefWidth="793.0" style="-fx-background-color: #fff;">
          <children>
-            <Pane fx:id="pnlHome" prefHeight="900.0" prefWidth="793.0" style="-fx-background-color: #3E4C71;">
-               <children>
-                  <ScrollPane fx:id="pn" layoutY="135.0" prefHeight="440.0" prefWidth="794.0" style="-fx-background-color: #7733FF;">
-                     <content>
-                        <VBox fx:id="vbx" alignment="TOP_CENTER" prefHeight="532.0" prefWidth="809.0" spacing="10.0" style="-fx-background-color: #464F67;" stylesheets="@images/style.css">
-                           <padding>
-                              <Insets top="10.0" />
-                           </padding></VBox>
-                     </content>
-                  </ScrollPane>
-                  <VBox prefHeight="149.0" prefWidth="794.0">
-                     <children>
-                        <HBox prefHeight="69.0" prefWidth="794.0" spacing="140.0">
-                           <children>
-                              <Label prefHeight="42.0" prefWidth="353.0" text="Bienvenue chez Safe Delivery" textFill="WHITE">
-                                 <font>
-                                    <Font size="22.0" />
-                                 </font>
-                                 <HBox.margin>
-                                    <Insets bottom="40.0" left="30.0" right="200.0" />
-                                 </HBox.margin>
-                                 <padding>
-                                    <Insets top="10.0" />
-                                 </padding>
-                              </Label>
-                              <HBox prefHeight="46.0" prefWidth="128.0">
-                                 <children>
-                                    <ImageView fx:id="panier" fitHeight="70.0" fitWidth="63.0" onMouseClicked="#CartHandle" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../../../icons/icons8_add_shopping_cart_100px_1.png" />
-                                       </image>
-                                       <HBox.margin>
-                                          <Insets top="10.0" />
-                                       </HBox.margin>
-                                       <cursor>
-                                          <Cursor fx:constant="HAND" />
-                                       </cursor>
-                                    </ImageView>
-                                    <Label fx:id="lbl_panierCount" text="0" textFill="#aee3f2">
-                                       <font>
-                                          <Font size="31.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="65.0" prefWidth="764.0">
-                           <children>
-                              <Pane prefHeight="65.0" prefWidth="792.0">
-                                 <children>
-                                    <ComboBox fx:id="cbxville" layoutX="31.0" onAction="#filterVille" prefHeight="39.0" prefWidth="226.0" promptText="Sélectionnez votre ville" style="-fx-background-color: #fff;" />
-                                    <ComboBox fx:id="cbxresto" layoutX="270.0" layoutY="1.0" onAction="#filterResto" prefHeight="37.0" prefWidth="234.0" promptText="Sélectionnez votre restaurant" style="-fx-background-color: #fff; -fx-text-inner-color: #B2B2B2;" />
-                                    <TextField layoutX="516.0" layoutY="2.0" prefHeight="37.0" prefWidth="234.0" promptText="Rechercher votre plat" style="-fx-background-color: #fff;" />
-                                    <ImageView fitHeight="22.0" fitWidth="35.0" layoutX="727.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@images/icons8_Search_52px.png" />
-                                       </image>
-                                    </ImageView>
-                                 </children>
-                              </Pane>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-               </children>
-            </Pane>
             <Pane fx:id="pnlCart" prefHeight="554.0" prefWidth="793.0" style="-fx-background-color: #3E4C71;">
                <children>
                   <Label layoutX="57.0" layoutY="25.0" text="Panier" textFill="#e7e5e5">
@@ -343,6 +276,73 @@
                         <Font size="32.0" />
                      </font>
                   </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="pnlHome" prefHeight="900.0" prefWidth="793.0" style="-fx-background-color: #3E4C71;">
+               <children>
+                  <ScrollPane fx:id="pn" layoutY="135.0" prefHeight="440.0" prefWidth="794.0" style="-fx-background-color: #7733FF;">
+                     <content>
+                        <VBox fx:id="vbx" alignment="TOP_CENTER" prefHeight="532.0" prefWidth="809.0" spacing="10.0" style="-fx-background-color: #464F67;" stylesheets="@images/style.css">
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding></VBox>
+                     </content>
+                  </ScrollPane>
+                  <VBox prefHeight="149.0" prefWidth="794.0">
+                     <children>
+                        <HBox prefHeight="69.0" prefWidth="794.0" spacing="140.0">
+                           <children>
+                              <Label prefHeight="42.0" prefWidth="353.0" text="Bienvenue chez Safe Delivery" textFill="WHITE">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets bottom="40.0" left="30.0" right="200.0" />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets top="10.0" />
+                                 </padding>
+                              </Label>
+                              <HBox prefHeight="46.0" prefWidth="128.0">
+                                 <children>
+                                    <ImageView fx:id="panier" fitHeight="70.0" fitWidth="63.0" onMouseClicked="#CartHandle" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../../icons/icons8_add_shopping_cart_100px_1.png" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets top="10.0" />
+                                       </HBox.margin>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </ImageView>
+                                    <Label fx:id="lbl_panierCount" text="0" textFill="#aee3f2">
+                                       <font>
+                                          <Font size="31.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="65.0" prefWidth="764.0">
+                           <children>
+                              <Pane prefHeight="65.0" prefWidth="792.0">
+                                 <children>
+                                    <ComboBox fx:id="cbxville" layoutX="31.0" onAction="#filterVille" prefHeight="39.0" prefWidth="226.0" promptText="Sélectionnez votre ville" style="-fx-background-color: #fff;" />
+                                    <ComboBox fx:id="cbxresto" layoutX="270.0" layoutY="1.0" onAction="#filterResto" prefHeight="37.0" prefWidth="234.0" promptText="Sélectionnez votre restaurant" style="-fx-background-color: #fff; -fx-text-inner-color: #B2B2B2;" />
+                                    <TextField fx:id="txtSearch" layoutX="516.0" layoutY="2.0" prefHeight="37.0" prefWidth="234.0" promptText="Rechercher votre plat" style="-fx-background-color: #fff;" />
+                                    <ImageView fitHeight="22.0" fitWidth="35.0" layoutX="727.0" layoutY="10.0" onMouseClicked="#search" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/icons8_Search_52px.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
                </children>
             </Pane>
          </children>

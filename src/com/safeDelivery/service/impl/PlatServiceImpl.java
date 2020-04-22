@@ -180,17 +180,16 @@ public class PlatServiceImpl implements PlatService {
 				PreparedStatement ps = conn.prepareStatement(query);
 				ps.setLong(1, id);
 				ResultSet result = ps.executeQuery();
-				if(result.next()) {
+				if (result.next()) {
 					double qte = result.getDouble(1);
 					if (qte > 0) {
 						ps.close();
-						return qte*prix;
+						return qte * prix;
 					} else {
 						ps.close();
 						return 0;
 					}
-				}
-				else {
+				} else {
 					ps.close();
 					return -4;
 				}
@@ -202,7 +201,7 @@ public class PlatServiceImpl implements PlatService {
 			return -3;
 		}
 	}
-	
+
 	public Plat getJamaisCmd() {
 		try {
 //			Connection conn = SingletonConnexion.startConnection();
@@ -230,7 +229,7 @@ public class PlatServiceImpl implements PlatService {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public List<Plat> getRandomPlat() {
 		List<Plat> lists = new ArrayList<Plat>();
@@ -288,8 +287,8 @@ public class PlatServiceImpl implements PlatService {
 		List<Plat> lists = new ArrayList<Plat>();
 		try {
 			if (conn != null) {
-				String query = "select * from plat,restaurant,adresse,zone,ville where plat.id = restaurant.id and restaurant.adresse = adresse.id and adresse.id =  zone.id and "
-						+ "zone.id = ville.id and ville.nom = '" + ville + "'";
+				String query = "select plat.* from plat,menu,restaurant,adresse,zone,ville where plat.id = menu.id_plat and menu.id_restaurant = restaurant.id and restaurant.adresse = adresse.id and adresse.id_zone = zone.id and zone.id_ville = ville.id and ville.nom = '"
+						+ ville + "'";
 				Statement st = conn.createStatement();
 				ResultSet rs = st.executeQuery(query);
 				while (rs.next()) {
@@ -313,9 +312,8 @@ public class PlatServiceImpl implements PlatService {
 		List<Plat> lists = new ArrayList<Plat>();
 		try {
 			if (conn != null) {
-				String query = "select * from plat,restaurant,adresse,zone,ville where plat.id = restaurant.id and restaurant.adresse = adresse.id and adresse.id =  zone.id and "
-						+ "zone.id = ville.id and ville.nom = '" + ville + "'" + " and restaurant.nom = '" + restaurant
-						+ "'";
+				String query = "select plat.* from plat,menu,restaurant,adresse,zone,ville where plat.id = menu.id_plat and menu.id_restaurant = restaurant.id and restaurant.adresse = adresse.id and adresse.id_zone = zone.id and zone.id_ville = ville.id and ville.nom = '"
+						+ ville + "'" + " and restaurant.nom = '" + restaurant + "'";
 				Statement st = conn.createStatement();
 				ResultSet rs = st.executeQuery(query);
 				while (rs.next()) {
@@ -387,6 +385,56 @@ public class PlatServiceImpl implements PlatService {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	@Override
+	public List<Plat> findAll() {
+		List<Plat> lists = new ArrayList<Plat>();
+		try {
+			if (conn != null) {
+				String query = "SELECT id, nom, prix, description, image FROM plat,menu where plat.id = menu.id_plat and deleted = 0";
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery(query);
+				while (rs.next()) {
+					Plat plat = new Plat(rs.getLong(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
+							rs.getString(5));
+					lists.add(plat);
+				}
+				st.close();
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return lists;
+
+	}
+
+	@Override
+	public List<Plat> findAllByNom(String nom) {
+		List<Plat> lists = new ArrayList<Plat>();
+		try {
+			if (conn != null) {
+				String query = "select plat.* from plat where plat.nom like '%" + nom + "%'";
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery(query);
+				while (rs.next()) {
+					System.out.println("le plat " + rs.getLong(1) + rs.getString(2));
+					Plat plat = new Plat(rs.getLong(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
+							rs.getString(5));
+					lists.add(plat);
+				}
+				st.close();
+		} else {
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return lists;
 	}
 
 }

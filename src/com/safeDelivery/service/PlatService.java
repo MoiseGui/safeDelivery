@@ -15,4 +15,6 @@ public interface PlatService {
 	public List<Plat> findPlatByVille(String ville);
 	public List<Plat> findPlatByVilleAndResto(String ville, String restaurant);
 	public long getIdByNom(String nomPlat);
+	public List<Plat> findAll();
+	public List<Plat> findAllByNom(String nom);
 }
