@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 
@@ -74,7 +75,7 @@ public class PlatItemController implements Initializable {
 		PanierServiceImpl panierService = new PanierServiceImpl(conn);
 		Panier panier = new Panier(plat, client, 1);
 		int result = panierService.existsBy(client.getId(), plat.getId());
-		System.out.println("Résultat qte "+result);
+		System.out.println("Résultat qte " + result);
 		if (result > 0) {
 			panier.setQte(result + 1);
 			panierService.upgradePanier(client, plat.getId(), panier.getQte());
@@ -94,6 +95,10 @@ public class PlatItemController implements Initializable {
 		this.lblNom.setText(this.plat.getNom());
 		this.lblDesc.setText(this.plat.getDescription());
 		this.lblPrix.setText(this.plat.getPrix().toString());
+		
+		if (plat.getImage() != null && !plat.getImage().isEmpty()) {
+			ImgPlat.setImage(new Image(plat.getImage()));
+		}
 	}
 
 }

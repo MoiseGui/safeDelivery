@@ -171,4 +171,28 @@ public class ZoneServiceimpl implements ZoneService {
 
 	}
 
+
+	public List<String> findByVille(String value) {
+		List<String> list = new ArrayList<String>();
+		try {
+//			Connection conn = SingletonConnexion.startConnection();
+			if (conn != null) {
+				String query = "select zone.nom from zone,ville where zone.id_ville = ville.id and ville.nom like '"+ value +"'";
+				Statement statement = conn.createStatement();
+				ResultSet result = statement.executeQuery(query);
+				while (result.next()) {
+					list.add(result.getString(1));
+				}
+				statement.close();
+//				SingletonConnexion.closeConnection(conn);
+				return list;
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 }

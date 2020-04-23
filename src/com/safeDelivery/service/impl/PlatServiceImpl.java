@@ -167,7 +167,7 @@ public class PlatServiceImpl implements PlatService {
 		try {
 //			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
-				String query = "select * from plat where id = ? and deleted = 0";
+				String query = "select * from plat where id = ?";
 				PreparedStatement ps = conn.prepareStatement(query);
 				ps.setLong(1, id);
 				ResultSet result = ps.executeQuery();
@@ -177,7 +177,7 @@ public class PlatServiceImpl implements PlatService {
 
 					if (image == null || image.isEmpty()) {
 						System.out.println("image empty");
-						return null;
+//						return null;
 					}
 
 					Plat plat = new Plat(result.getLong(1), result.getString(2), result.getDouble(3),
@@ -298,12 +298,18 @@ public class PlatServiceImpl implements PlatService {
 		List<Plat> lists = new ArrayList<Plat>();
 		try {
 			if (conn != null) {
-				String query = "SELECT id, nom, prix, description, image FROM plat,menu where plat.id = menu.id_plat and deleted = 0 ORDER BY RAND() LIMIT 9";
+				String query = "SELECT id, nom, prix, description FROM plat,menu where plat.id = menu.id_plat and deleted = 0 ORDER BY RAND() LIMIT 9";
 				Statement st = conn.createStatement();
 				ResultSet rs = st.executeQuery(query);
 				while (rs.next()) {
+					String image = ImageUtil.DownloadImage(conn, rs.getLong(1));
+
+					if (image == null || image.isEmpty()) {
+						System.out.println("image empty");
+					}
+					
 					Plat plat = new Plat(rs.getLong(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
-							rs.getString(5));
+							image);
 					lists.add(plat);
 				}
 				st.close();
@@ -329,9 +335,14 @@ public class PlatServiceImpl implements PlatService {
 				Statement st = conn.createStatement();
 				ResultSet rs = st.executeQuery(query);
 				while (rs.next()) {
-					System.out.println("le plat " + rs.getLong(1) + rs.getString(2));
+					String image = ImageUtil.DownloadImage(conn, rs.getLong(1));
+
+					if (image == null || image.isEmpty()) {
+						System.out.println("image empty");
+					}
+					
 					Plat plat = new Plat(rs.getLong(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
-							rs.getString(5));
+							image);
 					lists.add(plat);
 				}
 				st.close();
@@ -350,13 +361,18 @@ public class PlatServiceImpl implements PlatService {
 		List<Plat> lists = new ArrayList<Plat>();
 		try {
 			if (conn != null) {
-				String query = "select * from plat,restaurant,adresse,zone,ville where plat.id = restaurant.id and restaurant.adresse = adresse.id and adresse.id =  zone.id and "
-						+ "zone.id = ville.id and ville.nom = '" + ville + "'";
+				String query = "select plat.* from plat,menu,restaurant,adresse,zone,ville where plat.id = menu.id_plat and menu.id_restaurant = restaurant.id and restaurant.adresse = adresse.id and adresse.id_zone = zone.id and zone.id_ville = ville.id AND ville.nom like '" + ville + "'";
 				Statement st = conn.createStatement();
 				ResultSet rs = st.executeQuery(query);
 				while (rs.next()) {
+					String image = ImageUtil.DownloadImage(conn, rs.getLong(1));
+
+					if (image == null || image.isEmpty()) {
+						System.out.println("image empty");
+					}
+					
 					Plat plat = new Plat(rs.getLong(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
-							rs.getString(5));
+							image);
 					lists.add(plat);
 				}
 				st.close();
@@ -375,14 +391,18 @@ public class PlatServiceImpl implements PlatService {
 		List<Plat> lists = new ArrayList<Plat>();
 		try {
 			if (conn != null) {
-				String query = "select * from plat,restaurant,adresse,zone,ville where plat.id = restaurant.id and restaurant.adresse = adresse.id and adresse.id =  zone.id and "
-						+ "zone.id = ville.id and ville.nom = '" + ville + "'" + " and restaurant.nom = '" + restaurant
-						+ "'";
+				String query = "select plat.* from plat,menu,restaurant,adresse,zone,ville where plat.id = menu.id_plat and menu.id_restaurant = restaurant.id and restaurant.adresse = adresse.id and adresse.id_zone = zone.id and zone.id_ville = ville.id AND ville.nom like '" + ville + "' and restaurant.nom like '" + restaurant +"'";
 				Statement st = conn.createStatement();
 				ResultSet rs = st.executeQuery(query);
 				while (rs.next()) {
+					String image = ImageUtil.DownloadImage(conn, rs.getLong(1));
+
+					if (image == null || image.isEmpty()) {
+						System.out.println("image empty");
+					}
+					
 					Plat plat = new Plat(rs.getLong(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
-							rs.getString(5));
+							image);
 					lists.add(plat);
 				}
 				st.close();
@@ -431,8 +451,14 @@ public class PlatServiceImpl implements PlatService {
 				Statement ps = conn.createStatement();
 				ResultSet result = ps.executeQuery(query);
 				if (result.next()) {
-					Plat plat = new Plat(result.getLong(1), result.getString(2), result.getDouble(3),
-							result.getString(4), result.getString(5));
+					String image = ImageUtil.DownloadImage(conn, result.getLong(1));
+
+					if (image == null || image.isEmpty()) {
+						System.out.println("image empty");
+					}
+					
+					Plat plat = new Plat(result.getLong(1), result.getString(2), result.getDouble(3), result.getString(4),
+							image);
 					ps.close();
 //					SingletonConnexion.closeConnection(conn);
 					return plat;
@@ -459,8 +485,14 @@ public class PlatServiceImpl implements PlatService {
 				Statement st = conn.createStatement();
 				ResultSet rs = st.executeQuery(query);
 				while (rs.next()) {
+					String image = ImageUtil.DownloadImage(conn, rs.getLong(1));
+
+					if (image == null || image.isEmpty()) {
+						System.out.println("image empty");
+					}
+					
 					Plat plat = new Plat(rs.getLong(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
-							rs.getString(5));
+							image);
 					lists.add(plat);
 				}
 				st.close();
@@ -480,13 +512,18 @@ public class PlatServiceImpl implements PlatService {
 		List<Plat> lists = new ArrayList<Plat>();
 		try {
 			if (conn != null) {
-				String query = "select plat.* from plat where plat.nom like '%" + nom + "%'";
+				String query = "select plat.* from plat,menu where plat.id = menu.id_plat and plat.nom like '%" + nom + "%'";
 				Statement st = conn.createStatement();
 				ResultSet rs = st.executeQuery(query);
 				while (rs.next()) {
-					System.out.println("le plat " + rs.getLong(1) + rs.getString(2));
+					String image = ImageUtil.DownloadImage(conn, rs.getLong(1));
+
+					if (image == null || image.isEmpty()) {
+						System.out.println("image empty");
+					}
+					
 					Plat plat = new Plat(rs.getLong(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
-							rs.getString(5));
+							image);
 					lists.add(plat);
 				}
 				st.close();

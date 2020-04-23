@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class PanierController implements Initializable {
@@ -22,7 +23,6 @@ public class PanierController implements Initializable {
 	private Plat plat;
 	private Panier panier;
 	private double total;
-	
 
 	public double getTotal() {
 		return total;
@@ -128,7 +128,7 @@ public class PanierController implements Initializable {
 			lblqte.setText(String.valueOf(quantite));
 			clientHomeController.updateTotal();
 		} else {
-			System.out.println("Resultat du delete"+panierService.deletePanier(panier));
+			System.out.println("Resultat du delete" + panierService.deletePanier(panier));
 			clientHomeController.removePanier(panier);
 		}
 	}
@@ -140,13 +140,17 @@ public class PanierController implements Initializable {
 	}
 
 	public void fillPanier(Panier panier) {
-		
+
 		total = panier.getPlat().getPrix() * panier.getQte();
-		
+
 		lblNom.setText(panier.getPlat().getNom());
 		lblPrix.setText(String.valueOf(panier.getPlat().getPrix()));
 		System.out.println("fill panier" + String.valueOf(panier.getQte()));
 		lblqte.setText(String.valueOf(panier.getQte()));
+
+		if (plat.getImage() != null && !plat.getImage().isEmpty()) {
+			img_plat.setImage(new Image(panier.getPlat().getImage()));
+		}
 
 	}
 

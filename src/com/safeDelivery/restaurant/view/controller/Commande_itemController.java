@@ -60,6 +60,9 @@ public class Commande_itemController implements Initializable {
 	}
 	
 	void fillCommandeItem() {
+		if(this.commande_item == null) System.out.println("Commande_iten");
+		if(this.commande_item.getPlat() == null) System.out.println("Plat");
+		if(this.commande_item.getPlat().getNom() == null) System.out.println(("Nom du plat"));
 		lbl_nomPlat.setText(this.commande_item.getPlat().getNom());
 		lbl_Qte.setText(String.valueOf(commande_item.getQte()));
 		lbl_total.setText(String.valueOf(this.commande_item.getPlat().getPrix() * this.commande_item.getQte()));

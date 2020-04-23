@@ -15,6 +15,7 @@ import com.safeDelivery.exceptions.ListInitException;
 import com.safeDelivery.model.Adresse;
 import com.safeDelivery.model.Client;
 import com.safeDelivery.model.Livreur;
+import com.safeDelivery.model.Plat;
 import com.safeDelivery.model.Restaurant;
 import com.safeDelivery.model.Restaurateur;
 import com.safeDelivery.model.User;
@@ -366,7 +367,9 @@ public class LoginController implements Initializable {
 		PlatServiceImpl platService = new PlatServiceImpl(this.connection);
 		clientHomeController.setMain(this.mainApp);
 		clientHomeController.setClient(clientConnected);
-		clientHomeController.setRandomPlat(platService.getRandomPlat());
+		List<Plat> plats = platService.getRandomPlat();
+		if(plats == null) System.out.println("Les randoms plas sont nulls");
+		clientHomeController.setRandomPlat(plats);
 		clientHomeController.loadPlat();
 		VilleServiceImpl villeService = new VilleServiceImpl(this.connection);
 		List<String> findAllVille = villeService.findAll();
@@ -379,6 +382,7 @@ public class LoginController implements Initializable {
 		primaryStage.setScene(new Scene(root));
 //		primaryStage.initStyle(StageStyle.UNDECORATED);
 		primaryStage.initOwner(mainApp.getPrimaryStage());
+		clientHomeController.setPrimaryStage(primaryStage);
 		primaryStage.show();
 	}
 
@@ -491,6 +495,8 @@ public class LoginController implements Initializable {
 			}
 		}
 		if (event.getSource().equals(btnContinuerEmailPass)) {
+			lblErrorEmail.setText("");
+			lblErrorPass.setText("");
 			boolean error = false;
 			if (tEmailInsc.getText() == null || tEmailInsc.getText().length() == 0
 					|| !isValidEmail(tEmailInsc.getText())) {
@@ -499,6 +505,13 @@ public class LoginController implements Initializable {
 //				tEmail.setStyle("-fx-background-color:red");
 //				tEmail.setStyle("-fx-border-color:#424242; -fx-border-width:1px;-fx-background-color:rgba(255, 255, 255, 0.87);");
 				lblErrorEmail.setText("Adresse email incorrecte");
+			}
+			else {
+				UserServiceImpl impl = new UserServiceImpl(connection);
+				if(impl.getUserByEmail(tEmailInsc.getText()) != null) {
+					error = true;
+					lblErrorEmail.setText("Adresse email déjà utilisée.");
+				}
 			}
 			if (tPassInsc.getText() == null || tpassConfirm.getText() == null || tPassInsc.getText().length() < 6) {
 				error = true;

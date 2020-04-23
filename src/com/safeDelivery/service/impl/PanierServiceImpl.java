@@ -220,8 +220,6 @@ public class PanierServiceImpl implements PanierService {
 	@Override
 	public long deleteByClientAndPlat(Client client, long plat) {
 		try {
-			PlatServiceImpl platservice  = new PlatServiceImpl(conn);
-//			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
 				String query = "delete from panier where id_client = ? and id_plat = ?";
 				PreparedStatement ps = conn.prepareStatement(query);
@@ -230,11 +228,9 @@ public class PanierServiceImpl implements PanierService {
 				int count = ps.executeUpdate();
 				if (count == 1) {
 					ps.close();
-//					SingletonConnexion.closeConnection(conn);
 					return 1;
 				} else {
 					ps.close();
-//					SingletonConnexion.closeConnection(conn);
 					return -1;
 				}
 

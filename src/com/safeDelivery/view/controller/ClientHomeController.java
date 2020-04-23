@@ -34,16 +34,26 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class ClientHomeController implements Initializable {
-
+	Stage primaryStage;
 	private Connection connection;
 	List<Plat> randomPlat = new ArrayList<Plat>();
+
+	public Stage getPrimaryStage() {
+		return primaryStage;
+	}
+
+	public void setPrimaryStage(Stage primaryStage) {
+		this.primaryStage = primaryStage;
+	}
 
 	@FXML
 	private Label lbl_nomClient;
@@ -153,11 +163,16 @@ public class ClientHomeController implements Initializable {
 	}
 
 	@FXML
-	void search(MouseEvent event) {
+	void search(KeyEvent event) {
+		System.out.println("i am in search");
 		String value = txtSearch.getText();
 		PlatServiceImpl platService = new PlatServiceImpl(connection);
-		if (!value.equals("")) {
+		if (!value.equals("") && !value.isEmpty() && !value.equals(" ")) {
 			List<Plat> plats = platService.findAllByNom(value);
+			diplay(plats);
+		}
+		else {
+			List<Plat> plats = platService.findAll();
 			diplay(plats);
 		}
 
@@ -279,6 +294,8 @@ public class ClientHomeController implements Initializable {
 	void filterResto(ActionEvent event) {
 		PlatServiceImpl platService = new PlatServiceImpl(connection);
 		v1 = cbxresto.getValue();
+		if(v1 == null) System.out.println("V1 nulle");
+		if(v2 == null) System.out.println("V2 nulle");
 		if (v1.equals("tous") && v2.equals("tous")) {
 			System.out.println("filtre resto j'ai cliqué sur tous ");
 			List<Plat> plats = platService.findAll();
@@ -320,8 +337,7 @@ public class ClientHomeController implements Initializable {
 			System.out.println("hello motherfucker");
 			List<Plat> plats = platService.findPlatByVilleAndResto(v2, v1);
 			System.out.println("la ville est + " + v2 + "  le restaurant est " + v1);
-			if (plats == null) {
-				System.out.println(plats.get(0).toString());
+			if (plats == null || plats.isEmpty()) {
 				System.out.println("les plats quye vous avvez choisi sont nuls ");
 			} else {
 				System.out.println("ici c'est le else ");
@@ -339,9 +355,9 @@ public class ClientHomeController implements Initializable {
 		PlatServiceImpl platService = new PlatServiceImpl(connection);
 		RestaurantServiceImpl restaurantService = new RestaurantServiceImpl(connection);
 		v2 = cbxville.getValue();
-		if (v2.equals("tous")) {
-			List<Plat> plats = platService.findAll();
-			diplay(plats);
+		if (v2.equals("tous") && !v1.equals("") && !v1.equals("tous")) {
+//			List<Plat> plats = platService.findAll();
+//			diplay(plats);
 			List<String> restaurants = restaurantService.findAll();
 			restaurants.add(0, "tous");
 			loadRestaurants(restaurants);
@@ -447,7 +463,6 @@ public class ClientHomeController implements Initializable {
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 
 		}
@@ -463,8 +478,9 @@ public class ClientHomeController implements Initializable {
 			zone = cbxZoneLiv.getValue();
 			ville = cbxVilleLiv.getValue();
 			adresse = txtAdres.getText();
-			if (zone == null || ville == null || adresse == null) {
+			if (zone == null || ville == null || adresse == null || adresse.isEmpty() || zone.isEmpty() || ville.isEmpty()) {
 				Alert alert = new Alert(AlertType.WARNING);
+				alert.initOwner(this.primaryStage);
 				alert.setTitle("Détail de votre commande");
 				alert.setHeaderText("Monsieur " + client.getNom() + " " + client.getPrenom());
 				alert.setContentText("Entrez l'adresse  de Votre livraison ");
@@ -476,10 +492,11 @@ public class ClientHomeController implements Initializable {
 			paniers.clear();
 			showPanier();
 			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.initOwner(this.primaryStage);
 			alert.setTitle("Détail de votre commande");
-			alert.setHeaderText("Monsieur " + client.getNom() + " " + client.getPrenom());
+			alert.setHeaderText("Commande validée !");
 			alert.setContentText(
-					" Votre commande sera livé dans les prochaines heures \n  Paiement : à la livraison \n Adresse "
+					" Votre commande sera livé dans les prochaines heures \nPaiement : à la livraison \nAdresse "
 							+ adresse);
 			alert.showAndWait();
 			pnlHome.toFront();
@@ -491,16 +508,16 @@ public class ClientHomeController implements Initializable {
 	void commander(ActionEvent event) throws IOException {
 
 		VilleServiceImpl villeService = new VilleServiceImpl(connection);
-		ZoneServiceimpl zoneService = new ZoneServiceimpl(connection);
+//		ZoneServiceimpl zoneService = new ZoneServiceimpl(connection);
 		List<String> villes = villeService.findAll();
-		List<String> zones = zoneService.findAll();
+//		List<String> zones = zoneService.findAll();
 		ObservableList<String> villess = FXCollections.observableArrayList(villes);
-		ObservableList<String> zoness = FXCollections.observableArrayList(zones);
-		if (villes == null || zones == null) {
+//		ObservableList<String> zoness = FXCollections.observableArrayList(zones);
+		if (villes == null) {
 			return;
 		} else {
 			cbxVilleLiv.setItems(villess);
-			cbxZoneLiv.setItems(zoness);
+//			cbxZoneLiv.setItems(zoness);
 		}
 		pnlLiv.toFront();
 
@@ -513,5 +530,19 @@ public class ClientHomeController implements Initializable {
 		paniers.clear();
 		showPanier();
 	}
+	
+	@FXML
+    void loadzoneLive(ActionEvent event) {
+		if(cbxVilleLiv.getValue() != null && !cbxVilleLiv.getValue().isEmpty()) {
+			ZoneServiceimpl zoneService = new ZoneServiceimpl(connection);
+			List<String> zones = zoneService.findByVille(cbxVilleLiv.getValue());
+			ObservableList<String> zoness = FXCollections.observableArrayList(zones);
+			if (zoness == null) {
+				return;
+			} else {
+				cbxZoneLiv.setItems(zoness);
+			}
+		}
+    }
 
 }

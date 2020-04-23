@@ -178,7 +178,8 @@ public class Commande_itemServiceImpl implements Commande_itemService {
 //					System.out.println("i have come here");
 					PlatServiceImpl platServiceImpl = new PlatServiceImpl(conn);
 					Plat plat = platServiceImpl.findById(result.getLong(1));
-
+					if(plat == null) System.out.println("Le plat est null dans le service pour l'id "+result.getLong(1));
+					else System.out.println("Le plat n'est pas vide dans le service");
 					CommandeServiceImpl commandeServiceImpl = new CommandeServiceImpl(conn);
 					Commande commande = commandeServiceImpl.findById(result.getLong(2));
 					Commande_item comItem = new Commande_item(plat, commande, result.getLong(3), result.getString(4));
