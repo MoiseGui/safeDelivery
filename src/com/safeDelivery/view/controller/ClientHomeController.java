@@ -14,6 +14,9 @@ import com.safeDelivery.model.Panier;
 import com.safeDelivery.model.Plat;
 import com.safeDelivery.service.impl.PanierServiceImpl;
 import com.safeDelivery.service.impl.PlatServiceImpl;
+import com.safeDelivery.service.impl.RestaurantServiceImpl;
+import com.safeDelivery.service.impl.VilleServiceImpl;
+import com.safeDelivery.service.impl.ZoneServiceimpl;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,10 +26,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -109,6 +115,29 @@ public class ClientHomeController implements Initializable {
 	private Label lbl_panierCount;
 
 	@FXML
+	private TextField txtSearch;
+	@FXML
+	private Pane pnlLiv;
+
+	@FXML
+	private ComboBox<String> cbxVilleLiv;
+
+	@FXML
+	private ComboBox<String> cbxZoneLiv;
+
+	@FXML
+	private TextField txtAdres;
+
+	@FXML
+	private Label lblTotalLiv;
+
+	@FXML
+	private Button btnPanierLiv;
+
+	@FXML
+	private Button btnValiderLiv;
+
+	@FXML
 	void HomeHandle(ActionEvent event) {
 		pnlHome.toFront();
 	}
@@ -121,6 +150,17 @@ public class ClientHomeController implements Initializable {
 
 	public void setPaniers(List<Panier> paniers) {
 		this.paniers = paniers;
+	}
+
+	@FXML
+	void search(MouseEvent event) {
+		String value = txtSearch.getText();
+		PlatServiceImpl platService = new PlatServiceImpl(connection);
+		if (!value.equals("")) {
+			List<Plat> plats = platService.findAllByNom(value);
+			diplay(plats);
+		}
+
 	}
 
 	List<Plat> plats = new ArrayList<Plat>();
@@ -215,6 +255,7 @@ public class ClientHomeController implements Initializable {
 			total += panier.getQte() * panier.getPlat().getPrix();
 		}
 		lbl_total.setText(String.valueOf(total));
+		lblTotalLiv.setText(String.valueOf(total));
 	}
 
 	public void setRandomPlat(List<Plat> randomPlat) {
@@ -238,29 +279,107 @@ public class ClientHomeController implements Initializable {
 	void filterResto(ActionEvent event) {
 		PlatServiceImpl platService = new PlatServiceImpl(connection);
 		v1 = cbxresto.getValue();
-		if (!v1.equals("") && v2.equals("")) {
+		if (v1.equals("tous") && v2.equals("tous")) {
+			System.out.println("filtre resto j'ai cliqué sur tous ");
+			List<Plat> plats = platService.findAll();
+			if (plats == null) {
+				System.out.println(" first if null");
+			} else {
+				diplay(plats);
+				return;
+			}
+
+		}
+		if (v2.equals("tous") && !v1.equals("tous") && !v1.equals("")) {
+			List<Plat> plats = platService.findPlatByResto(v1);
+			if (plats == null) {
+				System.out.println("vos plats sont nuls ");
+			} else {
+				diplay(plats);
+				return;
+			}
+
+		}
+		if (v1.equals("tous") && !v2.equals("tous") && !v2.equals("")) {
+			System.out.println("filtre resto j'ai cliqué sur tous et l'autre n'est pas tous  ");
+			List<Plat> plats = platService.findPlatByVille(v2);
+			if (plats == null) {
+				System.out.println(" first if null");
+			} else {
+				diplay(plats);
+				return;
+			}
+
+		}
+		if (!v1.equals("") && v2.equals("") && !v1.equals("tous")) {
 			List<Plat> plats = platService.findPlatByResto(v1);
 			diplay(plats);
+			return;
 		}
-		if (!v1.equals("") && !v2.equals("")) {
+		if (!v1.equals("") && !v2.equals("") && !v2.equals("tous") && !v1.equals("tous")) {
+			System.out.println("hello motherfucker");
 			List<Plat> plats = platService.findPlatByVilleAndResto(v2, v1);
-			diplay(plats);
-		}
+			System.out.println("la ville est + " + v2 + "  le restaurant est " + v1);
+			if (plats == null) {
+				System.out.println(plats.get(0).toString());
+				System.out.println("les plats quye vous avvez choisi sont nuls ");
+			} else {
+				System.out.println("ici c'est le else ");
+				System.out.println("le plat " + plats.get(0));
+				diplay(plats);
+				return;
+			}
 
+		}
 	}
 
 //ça marche
 	@FXML
 	void filterVille(ActionEvent event) {
 		PlatServiceImpl platService = new PlatServiceImpl(connection);
+		RestaurantServiceImpl restaurantService = new RestaurantServiceImpl(connection);
 		v2 = cbxville.getValue();
-		if (!v2.equals("") && v1.equals("")) {
+		if (v2.equals("tous")) {
+			List<Plat> plats = platService.findAll();
+			diplay(plats);
+			List<String> restaurants = restaurantService.findAll();
+			restaurants.add(0, "tous");
+			loadRestaurants(restaurants);
+			System.out.println("filtrer ville j'ai cliqué sur tous ");
+			return;
+		}
+		if (!v2.equals("") && !v2.equals("tous")) {
+			System.out.println("filtrer ville second if  ");
+			List<String> restaurants = restaurantService.findRestoByVille(v2);
+			restaurants.add(0, "tous");
+			loadRestaurants(restaurants);
+			List<Plat> plats = platService.findPlatByVille(v2);
+			if (plats == null) {
+				System.out.println("filtrer ville vos plats sont nuls");
+			} else {
+				System.out.println("plat " + plats);
+				diplay(plats);
+			}
+
+			return;
+		}
+		if (!v2.equals("") && v1.equals("") && !v2.equals("tous") && !v1.equals("tous")) {
 			List<Plat> plats = platService.findPlatByVille(v2);
 			diplay(plats);
+			System.out.println("filtrer ville third if  ");
+			return;
 		}
-		if (!v1.equals("") && !v2.equals("")) {
+		if (!v1.equals("") && !v2.equals("") && !v2.equals("tous") && !v1.equals("tous")) {
 			List<Plat> plats = platService.findPlatByVilleAndResto(v2, v1);
 			diplay(plats);
+			System.out.println("filtrer ville fourth if");
+			return;
+		}
+		if (v2.equals("tous") && v1.equals("tous")) {
+			List<Plat> plats = platService.findAll();
+			diplay(plats);
+			System.out.println("filtrer ville fifth if");
+			return;
 		}
 	}
 
@@ -272,7 +391,6 @@ public class ClientHomeController implements Initializable {
 			return;
 		} else {
 			cbxville.setItems(lVilles);
-
 		}
 	}
 
@@ -336,11 +454,56 @@ public class ClientHomeController implements Initializable {
 	}
 
 	@FXML
+	void livrer(ActionEvent event) throws IOException {
+		if (event.getSource().equals(btnPanierLiv)) {
+			pnlCart.toFront();
+		}
+		if (event.getSource().equals(btnValiderLiv)) {
+			String zone, ville, adresse;
+			zone = cbxZoneLiv.getValue();
+			ville = cbxVilleLiv.getValue();
+			adresse = txtAdres.getText();
+			if (zone == null || ville == null || adresse == null) {
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.setTitle("Détail de votre commande");
+				alert.setHeaderText("Monsieur " + client.getNom() + " " + client.getPrenom());
+				alert.setContentText("Entrez l'adresse  de Votre livraison ");
+				alert.showAndWait();
+				return;
+			}
+			PanierServiceImpl panierService = new PanierServiceImpl(connection);
+			panierService.validatePanier(paniers, Double.valueOf(lbl_total.getText()).doubleValue());
+			paniers.clear();
+			showPanier();
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Détail de votre commande");
+			alert.setHeaderText("Monsieur " + client.getNom() + " " + client.getPrenom());
+			alert.setContentText(
+					" Votre commande sera livé dans les prochaines heures \n  Paiement : à la livraison \n Adresse "
+							+ adresse);
+			alert.showAndWait();
+			pnlHome.toFront();
+
+		}
+	}
+
+	@FXML
 	void commander(ActionEvent event) throws IOException {
-		PanierServiceImpl panierService = new PanierServiceImpl(connection);
-		panierService.validatePanier(paniers, Double.valueOf(lbl_total.getText()).doubleValue());
-		paniers.clear();
-		showPanier();
+
+		VilleServiceImpl villeService = new VilleServiceImpl(connection);
+		ZoneServiceimpl zoneService = new ZoneServiceimpl(connection);
+		List<String> villes = villeService.findAll();
+		List<String> zones = zoneService.findAll();
+		ObservableList<String> villess = FXCollections.observableArrayList(villes);
+		ObservableList<String> zoness = FXCollections.observableArrayList(zones);
+		if (villes == null || zones == null) {
+			return;
+		} else {
+			cbxVilleLiv.setItems(villess);
+			cbxZoneLiv.setItems(zoness);
+		}
+		pnlLiv.toFront();
+
 	}
 
 	@FXML

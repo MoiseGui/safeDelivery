@@ -21,152 +21,264 @@
    <children>
       <VBox alignment="TOP_CENTER" prefHeight="576.0" prefWidth="256.0" style="-fx-background-color: #e7e5e5;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Pane prefHeight="146.0" prefWidth="256.0">
-               <children>
-                  <ImageView fitHeight="70.0" fitWidth="73.0" layoutX="93.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="70.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/avatar-icon-png-8.jpg" />
+               </image>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="50.0" />
+               </VBox.margin></ImageView>
+            <Label fx:id="lbl_nomClient" text="Nom  client" textFill="#58b0e0">
+               <font>
+                  <Font name="System Bold Italic" size="14.0" />
+               </font>
+            </Label>
+            <Label text="Geek Yassir Acaf" textFill="#e7e5e5">
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Label>
+            <Button fx:id="btnHome" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#HomeHandle" prefHeight="42.0" prefWidth="259.0" stylesheets="@../view/images/style.css" text="Accueil" textFill="#ccbdbd">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/avatar-icon-png-8.jpg" />
+                        <Image url="@../view/images/icons8_Home_32px.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="lbl_nomClient" layoutX="90.0" layoutY="108.0" text="Nom  client" textFill="#58b0e0">
-                     <font>
-                        <Font name="System Italic" size="14.0" />
-                     </font>
-                  </Label>
-               </children>
-            </Pane>
-            <VBox>
-               <children>
-                  <Button fx:id="btnHome" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#HomeHandle" prefHeight="42.0" prefWidth="259.0" stylesheets="@../view/images/style.css" text="Accueil" textFill="#ccbdbd">
-                     <graphic>
-                        <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../view/images/icons8_Home_32px.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <padding>
-                        <Insets left="50.0" />
-                     </padding>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Button fx:id="btnPanier" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onMouseClicked="#CartHandle" prefHeight="42.0" prefWidth="259.0" stylesheets="@../view/images/style.css" text="Mon Panier">
-                     <graphic>
-                        <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@images/icons8_Xbox_Menu_32px.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <padding>
-                        <Insets left="50.0" />
-                     </padding>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Button fx:id="btnOrders" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="259.0" stylesheets="@../view/images/style.css" text="Mes Commandes">
-                     <graphic>
-                        <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../view/images/icons8_Open_Envelope_32px.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <padding>
-                        <Insets left="50.0" />
-                     </padding>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Button fx:id="btnsales" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="259.0" stylesheets="@../view/images/style.css" text="Mon Compte">
-                     <graphic>
-                        <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../view/images/icons8_Box_32px.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <padding>
-                        <Insets left="50.0" />
-                     </padding>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Button fx:id="btnaddoperator" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="259.0" stylesheets="@../view/images/style.css" text="Confidentialité">
-                     <graphic>
-                        <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../view/images/icons8_Person_32px.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <padding>
-                        <Insets left="50.0" />
-                     </padding>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Button fx:id="btnremoveoperator" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="259.0" stylesheets="@../view/images/style.css" text="A Propos">
-                     <graphic>
-                        <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../view/images/icons8_Person_32px.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <padding>
-                        <Insets left="50.0" />
-                     </padding>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Button fx:id="btnSettings" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="259.0" stylesheets="@../view/images/style.css" text="Paramètre">
-                     <graphic>
-                        <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../view/images/icons8_Slider__32px.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <padding>
-                        <Insets left="50.0" />
-                     </padding>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-                  <Button fx:id="btnSignout" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="259.0" stylesheets="@../view/images/style.css" text="Quitter">
-                     <graphic>
-                        <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../view/images/icons8_Sign_Out_32px.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <padding>
-                        <Insets left="50.0" />
-                     </padding>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-               </children>
-            </VBox>
+               </graphic>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+               <font>
+                  <Font name="Andalus" size="17.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnPanier" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onMouseClicked="#CartHandle" prefHeight="42.0" prefWidth="259.0" stylesheets="@../view/images/style.css" text="Mon Panier">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/icons8_Xbox_Menu_32px.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+               <font>
+                  <Font name="Andalus" size="17.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnOrders" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="259.0" stylesheets="@../view/images/style.css" text="Mes Commandes">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../view/images/icons8_Open_Envelope_32px.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+               <font>
+                  <Font name="Andalus" size="17.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnsales" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="259.0" stylesheets="@../view/images/style.css" text="Mon Compte">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../view/images/icons8_Box_32px.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+               <font>
+                  <Font name="Andalus" size="17.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnaddoperator" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="259.0" stylesheets="@../view/images/style.css" text="Confidentialité">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../view/images/icons8_Person_32px.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+               <font>
+                  <Font name="Andalus" size="17.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnremoveoperator" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="259.0" stylesheets="@../view/images/style.css" text="A Propos">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../view/images/icons8_Person_32px.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+               <font>
+                  <Font name="Andalus" size="17.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnSettings" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="259.0" stylesheets="@../view/images/style.css" text="Paramètre">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../view/images/icons8_Slider__32px.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+               <font>
+                  <Font name="Andalus" size="17.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnSignout" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="259.0" stylesheets="@../view/images/style.css" text="Quitter">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../view/images/icons8_Sign_Out_32px.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+               <font>
+                  <Font name="Andalus" size="17.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
          </children>
       </VBox>
       <StackPane fx:id="mainPane" layoutX="258.0" prefHeight="576.0" prefWidth="793.0" style="-fx-background-color: #fff;">
          <children>
-            <Pane fx:id="pnlHome" prefHeight="900.0" prefWidth="793.0" style="-fx-background-color: #464F67;">
+            <Pane fx:id="pnlCart" prefHeight="554.0" prefWidth="793.0" style="-fx-background-color: #3E4C71;">
+               <children>
+                  <Label layoutX="57.0" layoutY="25.0" text="Panier" textFill="#e7e5e5">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="439.0" layoutY="94.0" text="Prix" textFill="#6797f2">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="237.0" layoutY="94.0" text="Plat" textFill="#6797f2">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+                  <HBox layoutX="11.0" layoutY="499.0" prefWidth="746.0">
+                     <children>
+                        <Button fx:id="btn_vider" mnemonicParsing="false" onAction="#viderPanier" prefHeight="44.0" style="-fx-background-color: #d7385e;" text="Vider le panier" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets left="120.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <graphic>
+                              <ImageView fitHeight="28.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../icons/icons8_trash_48px_1.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="btn_commander" mnemonicParsing="false" onAction="#commander" prefHeight="43.0" style="-fx-background-color: #639a67;" text="Commander" textFill="WHITE">
+                           <HBox.margin>
+                              <Insets left="290.0" />
+                           </HBox.margin>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="32.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../icons/icons8_paid_60px.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                     <padding>
+                        <Insets top="20.0" />
+                     </padding>
+                  </HBox>
+                  <ScrollPane fx:id="scpPanier" layoutX="11.0" layoutY="132.0" prefHeight="376.0" prefWidth="759.0" style="-fx-background-color: #3E4C71; -fx-border-color: #ffffff;">
+                     <content>
+                        <VBox fx:id="pnIPanier" prefHeight="371.0" prefWidth="744.0" spacing="5.0" style="-fx-background-color: #3E4C71;">
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+                  <Label layoutX="513.0" layoutY="94.0" prefHeight="32.0" prefWidth="125.0" text="Quantité" textFill="#6797f2">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbl_total" layoutX="545.0" layoutY="27.0" text="1000" textFill="#fa5f7e">
+                     <font>
+                        <Font name="System Bold" size="26.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="447.0" layoutY="20.0" prefHeight="47.0" prefWidth="102.0" text="Total :" textFill="WHITE">
+                     <font>
+                        <Font size="32.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Pane fx:id="pnlHome" prefHeight="900.0" prefWidth="793.0" style="-fx-background-color: #3E4C71;">
                <children>
                   <ScrollPane fx:id="pn" layoutY="135.0" prefHeight="440.0" prefWidth="794.0" style="-fx-background-color: #7733FF;">
                      <content>
@@ -219,8 +331,8 @@
                                  <children>
                                     <ComboBox fx:id="cbxville" layoutX="31.0" onAction="#filterVille" prefHeight="39.0" prefWidth="226.0" promptText="Sélectionnez votre ville" style="-fx-background-color: #fff;" />
                                     <ComboBox fx:id="cbxresto" layoutX="270.0" layoutY="1.0" onAction="#filterResto" prefHeight="37.0" prefWidth="234.0" promptText="Sélectionnez votre restaurant" style="-fx-background-color: #fff; -fx-text-inner-color: #B2B2B2;" />
-                                    <TextField layoutX="516.0" layoutY="2.0" prefHeight="37.0" prefWidth="234.0" promptText="Rechercher votre plat" style="-fx-background-color: #fff;" />
-                                    <ImageView fitHeight="22.0" fitWidth="35.0" layoutX="727.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                    <TextField fx:id="txtSearch" layoutX="516.0" layoutY="2.0" prefHeight="37.0" prefWidth="234.0" promptText="Rechercher votre plat" style="-fx-background-color: #fff;" />
+                                    <ImageView fitHeight="22.0" fitWidth="35.0" layoutX="727.0" layoutY="10.0" onMouseClicked="#search" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@images/icons8_Search_52px.png" />
                                        </image>
@@ -233,90 +345,61 @@
                   </VBox>
                </children>
             </Pane>
-            <Pane fx:id="pnlCart" prefHeight="554.0" prefWidth="793.0" style="-fx-background-color: #464F67;">
+            <Pane fx:id="pnlLiv" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #77d8d8;">
                <children>
-                  <Label layoutX="24.0" layoutY="11.0" text="Votre Panier" textFill="#e7e5e5">
+                  <Label layoutX="77.0" layoutY="40.0" text="Détail de livraison " textFill="WHITE">
                      <font>
-                        <Font size="35.0" />
+                        <Font size="34.0" />
                      </font>
                   </Label>
-                  <Label layoutX="439.0" layoutY="98.0" text="Prix" textFill="#6797f2">
-                     <font>
-                        <Font size="19.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="237.0" layoutY="98.0" text="Plat" textFill="#6797f2">
-                     <font>
-                        <Font size="19.0" />
-                     </font>
-                  </Label>
-                  <HBox layoutX="11.0" layoutY="499.0" prefWidth="746.0">
+                  <Pane layoutX="100.0" layoutY="115.0" prefHeight="288.0" prefWidth="379.0" style="-fx-border-color: #fff;">
                      <children>
-                        <Button fx:id="btn_vider" mnemonicParsing="false" onAction="#viderPanier" prefHeight="44.0" style="-fx-background-color: #d7385e;" text="Vider le panier" textFill="WHITE">
-                           <HBox.margin>
-                              <Insets left="100.0" />
-                           </HBox.margin>
+                        <Label layoutX="92.0" layoutY="14.0" prefHeight="26.0" prefWidth="171.0" text="Choisissez une ville">
                            <font>
-                              <Font name="System Bold" size="15.0" />
+                              <Font size="17.0" />
                            </font>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                           <graphic>
-                              <ImageView fitHeight="28.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../icons/icons8_trash_48px_1.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                        <Button fx:id="btn_commander" mnemonicParsing="false" onAction="#commander" prefHeight="43.0" style="-fx-background-color: #639a67;" text="Commander" textFill="WHITE">
-                           <HBox.margin>
-                              <Insets left="290.0" />
-                           </HBox.margin>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
+                        </Label>
+                        <ComboBox fx:id="cbxVilleLiv" layoutX="86.0" layoutY="54.0" prefHeight="25.0" prefWidth="181.0" promptText="Ville" />
+                        <Label layoutX="86.0" layoutY="103.0" prefHeight="21.0" prefWidth="171.0" text="Choisissez une zone">
                            <font>
-                              <Font name="System Bold" size="15.0" />
+                              <Font size="17.0" />
                            </font>
-                           <graphic>
-                              <ImageView fitHeight="32.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../icons/icons8_paid_60px.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
+                        </Label>
+                        <ComboBox fx:id="cbxZoneLiv" layoutX="87.0" layoutY="148.0" prefHeight="25.0" prefWidth="181.0" promptText="zone" />
+                        <Label layoutX="92.0" layoutY="193.0" prefHeight="26.0" prefWidth="171.0" text="Saisissez votre adresse">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtAdres" layoutX="87.0" layoutY="235.0" prefHeight="25.0" prefWidth="181.0" promptText="adresse" />
                      </children>
-                     <padding>
-                        <Insets top="20.0" />
-                     </padding>
-                  </HBox>
-                  <ScrollPane fx:id="scpPanier" layoutX="11.0" layoutY="132.0" prefHeight="376.0" prefWidth="759.0" style="-fx-background-color: #464F67; -fx-border-color: #ffffff;">
-                     <content>
-                        <VBox fx:id="pnIPanier" prefHeight="371.0" prefWidth="744.0" spacing="5.0" style="-fx-background-color: #464F67;">
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </VBox>
-                     </content>
-                  </ScrollPane>
-                  <Label layoutX="513.0" layoutY="98.0" prefHeight="32.0" prefWidth="125.0" text="Quantité" textFill="#6797f2">
+                  </Pane>
+                  <Label layoutX="518.0" layoutY="153.0" prefHeight="35.0" prefWidth="234.0" style="-fx-font-weight: bold;" text="Total de votre commande  :" textFill="WHITE">
                      <font>
-                        <Font size="19.0" />
+                        <Font size="17.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lbl_total" layoutX="527.0" layoutY="27.0" text="1000" textFill="#fa5f7e">
+                  <Label fx:id="lblTotalLiv" layoutX="518.0" layoutY="199.0" prefHeight="50.0" prefWidth="138.0" text="0">
                      <font>
-                        <Font name="System Italic" size="26.0" />
+                        <Font size="34.0" />
                      </font>
                   </Label>
-                  <Label layoutX="447.0" layoutY="20.0" prefHeight="47.0" prefWidth="85.0" text="Total :" textFill="WHITE">
-                     <font>
-                        <Font name="System Italic" size="26.0" />
-                     </font>
-                  </Label>
+                  <Button fx:id="btnPanierLiv" layoutX="518.0" layoutY="288.0" mnemonicParsing="false" onAction="#livrer" prefHeight="43.0" prefWidth="93.0" style="-fx-background-color: #f76a8c;" text="Panier">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Button>
+                  <Button fx:id="btnValiderLiv" layoutX="647.0" layoutY="289.0" mnemonicParsing="false" onAction="#livrer" prefHeight="43.0" prefWidth="93.0" style="-fx-background-color: #d4f8e8;" text="Valider">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <effect>
+                        <DropShadow />
+                     </effect>
+                  </Button>
                </children>
             </Pane>
          </children>

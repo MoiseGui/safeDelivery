@@ -10,4 +10,5 @@ public interface RestaurantService {
 	public long existByNom(String nom);
 	public int modifyResto(Restaurant oldRestaurant, Restaurant newRestaurant);
 	List<String> findAll();
+	public List<String> findRestoByVille(String ville);
 }

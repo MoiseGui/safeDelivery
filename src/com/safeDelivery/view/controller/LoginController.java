@@ -369,9 +369,13 @@ public class LoginController implements Initializable {
 		clientHomeController.setRandomPlat(platService.getRandomPlat());
 		clientHomeController.loadPlat();
 		VilleServiceImpl villeService = new VilleServiceImpl(this.connection);
-		clientHomeController.loadVilles(villeService.findAll());
+		List<String> findAllVille = villeService.findAll();
+		findAllVille.add(0,"tous");
+		clientHomeController.loadVilles(findAllVille);
 		RestaurantServiceImpl restaurantService = new RestaurantServiceImpl(this.connection);
-		clientHomeController.loadRestaurants(restaurantService.findAll());
+		List<String> findAllResto = restaurantService.findAll();
+		findAllResto.add(0,"tous");
+		clientHomeController.loadRestaurants(findAllResto);
 		primaryStage.setScene(new Scene(root));
 //		primaryStage.initStyle(StageStyle.UNDECORATED);
 		primaryStage.initOwner(mainApp.getPrimaryStage());

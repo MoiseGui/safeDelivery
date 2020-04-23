@@ -192,5 +192,29 @@ public class RestaurantServiceImpl implements RestaurantService {
 			return null;
 		}
 	}
+	@Override
+	public List<String> findRestoByVille(String ville) {
+		List<String> list = new ArrayList<String>();
+		try {
+//			Connection conn = SingletonConnexion.startConnection();
+			if (conn != null) {
+				String query = "select restaurant.nom from restaurant,adresse,zone,ville where restaurant.adresse = adresse.id and adresse.id_zone = zone.id and zone.id_ville = ville.id and ville.nom = ?";
+			    PreparedStatement ps = conn.prepareStatement(query);
+			    ps.setString(1,String.valueOf(ville));
+				ResultSet result = ps.executeQuery();
+				while(result.next()) {
+					list.add(result.getString(1));
+				}
+				ps.close();
+//				SingletonConnexion.closeConnection(conn);
+				return list;
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 }

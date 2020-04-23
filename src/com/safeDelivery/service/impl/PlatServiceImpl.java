@@ -450,5 +450,54 @@ public class PlatServiceImpl implements PlatService {
 			return null;
 		}
 	}
+	@Override
+	public List<Plat> findAll() {
+		List<Plat> lists = new ArrayList<Plat>();
+		try {
+			if (conn != null) {
+				String query = "SELECT id, nom, prix, description, image FROM plat,menu where plat.id = menu.id_plat and deleted = 0";
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery(query);
+				while (rs.next()) {
+					Plat plat = new Plat(rs.getLong(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
+							rs.getString(5));
+					lists.add(plat);
+				}
+				st.close();
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return lists;
+
+	}
+
+	@Override
+	public List<Plat> findAllByNom(String nom) {
+		List<Plat> lists = new ArrayList<Plat>();
+		try {
+			if (conn != null) {
+				String query = "select plat.* from plat where plat.nom like '%" + nom + "%'";
+				Statement st = conn.createStatement();
+				ResultSet rs = st.executeQuery(query);
+				while (rs.next()) {
+					System.out.println("le plat " + rs.getLong(1) + rs.getString(2));
+					Plat plat = new Plat(rs.getLong(1), rs.getString(2), rs.getDouble(3), rs.getString(4),
+							rs.getString(5));
+					lists.add(plat);
+				}
+				st.close();
+		} else {
+				return null;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return lists;
+	}
 
 }
