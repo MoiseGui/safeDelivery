@@ -118,10 +118,8 @@ public class ClientServiceImpl implements ClientService {
 					AdresseServiceImpl adresseServiceImpl = new AdresseServiceImpl(conn);
 					Adresse adresse = adresseServiceImpl.findById(result.getLong(2));
 					if (adresse == null) {
-						ps.close();
-//						SingletonConnexion.closeConnection(conn);
-						return null;
-					} else {
+						System.out.println("Adresse for client is null");
+					}
 						UserServiceImpl userServiceImpl = new UserServiceImpl(conn);
 						User user = userServiceImpl.getUserById(result.getLong(1));
 						Client client = new Client(user, adresse);
@@ -129,7 +127,6 @@ public class ClientServiceImpl implements ClientService {
 //						SingletonConnexion.closeConnection(conn);
 
 						return client;
-					}
 				} else {
 					ps.close();
 //					SingletonConnexion.closeConnection(conn);

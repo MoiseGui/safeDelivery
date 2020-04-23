@@ -1,10 +1,13 @@
 package com.safeDelivery.exceptions;
 
-import java.util.List;
-
 public class ListInitException  extends Exception{
 
-    public ListInitException ()
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public ListInitException ()
     {
      System.out.println("les listes sont vides");
     }

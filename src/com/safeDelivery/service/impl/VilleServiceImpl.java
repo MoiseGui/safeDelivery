@@ -10,7 +10,6 @@ import java.util.List;
 
 import com.safeDelivery.model.Ville;
 import com.safeDelivery.service.VilleService;
-import com.safeDelivery.utils.SingletonConnexion;
 
 public class VilleServiceImpl implements VilleService {
 	private Connection conn;

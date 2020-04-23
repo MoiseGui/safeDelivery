@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import com.safeDelivery.model.Livreur;
 import com.safeDelivery.model.User;
 import com.safeDelivery.service.LivreurService;
-import com.safeDelivery.utils.SingletonConnexion;
 
 public class LivreurServiceImpl implements LivreurService {
 	private Connection conn;

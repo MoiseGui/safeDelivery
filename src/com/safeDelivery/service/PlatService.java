@@ -1,14 +1,15 @@
 package com.safeDelivery.service;
 
+import java.io.File;
 import java.util.List;
 
 import com.safeDelivery.model.Plat;
 
 public interface PlatService {
 	public Plat findById(long id);
+	long addPlat(Plat plat, long idResto, File file);
 	public Plat findByNom(String nomPlat);
-	public long addPlat(Plat plat, long idResto);
-	public long changePlat(Plat oldPlat, Plat newPlat);
+	int changePlat(Plat oldPlat, Plat newPlat, File file);
 	public int deletePlat(long idPlat);
 	public List<Plat> getRandomPlat (); 
 	public List<Plat> findPlatByResto(String restaurant);
@@ -17,4 +18,5 @@ public interface PlatService {
 	public long getIdByNom(String nomPlat);
 	public List<Plat> findAll();
 	public List<Plat> findAllByNom(String nom);
+	
 }

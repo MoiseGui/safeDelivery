@@ -9,6 +9,6 @@ public interface RestaurantService {
 	public long addRestaurant(Restaurant restaurant);
 	public long existByNom(String nom);
 	public int modifyResto(Restaurant oldRestaurant, Restaurant newRestaurant);
-	public List<String> findAll();
+	List<String> findAll();
 	public List<String> findRestoByVille(String ville);
 }

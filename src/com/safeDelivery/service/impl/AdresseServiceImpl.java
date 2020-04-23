@@ -9,7 +9,6 @@ import java.sql.Statement;
 import com.safeDelivery.model.Adresse;
 import com.safeDelivery.model.Zone;
 import com.safeDelivery.service.AdresseService;
-import com.safeDelivery.utils.SingletonConnexion;
 
 public class AdresseServiceImpl implements AdresseService {
 	private Connection conn;

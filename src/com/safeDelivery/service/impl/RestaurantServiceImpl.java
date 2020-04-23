@@ -192,7 +192,6 @@ public class RestaurantServiceImpl implements RestaurantService {
 			return null;
 		}
 	}
-
 	@Override
 	public List<String> findRestoByVille(String ville) {
 		List<String> list = new ArrayList<String>();

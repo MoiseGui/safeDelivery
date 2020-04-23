@@ -21,11 +21,14 @@ import com.safeDelivery.utils.DateUtil;
 import com.safeDelivery.utils.DateUtilViewFormat;
 import com.safeDelivery.view.controller.LoginController;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -33,11 +36,14 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class HomeController implements Initializable {
 	Stage stage;
@@ -193,7 +199,7 @@ public class HomeController implements Initializable {
 		}
 	}
 
-	private void chargerMenus() {
+	public void chargerMenus() {
 		PlatServiceImpl platServiceImpl = new PlatServiceImpl(connection);
 		plats = platServiceImpl.findByIdRestaurant(this.restaurant.getId());
 
@@ -209,7 +215,7 @@ public class HomeController implements Initializable {
 
 	}
 
-	private void fillPlats() {
+	public void fillPlats() {
 		Node[] nodes = new Node[plats.size()];
 		pnlPlats.getChildren().clear();
 		for (int i = 0; i < nodes.length; i++) {
@@ -242,7 +248,7 @@ public class HomeController implements Initializable {
 		}
 	}
 
-	private void fillPlatStats(PlatServiceImpl impl) {
+	public void fillPlatStats(PlatServiceImpl impl) {
 		lbl_totalPlats.setText(String.valueOf(plats.size()));
 
 		String platMode = "Aucun";
@@ -353,13 +359,13 @@ public class HomeController implements Initializable {
 			System.out.println("Page chargée ");
 		}
 
-//    	Timeline timeline = new Timeline(new KeyFrame(
-//    	        Duration.millis(40000),
-//    	        ae -> loadAllCommandes(dateCommandes.getValue())));
-//    	timeline.play();
-//
-//
-//         System.out.println("Task scheduled.");
+    	Timeline timeline = new Timeline(new KeyFrame(
+    	        Duration.millis(30000),
+    	        ae -> loadAllCommandes(dateCommandes.getValue())));
+    	timeline.play();
+
+
+         System.out.println("Task scheduled.");
 	}
 
 	@FXML
@@ -409,8 +415,23 @@ public class HomeController implements Initializable {
 	}
 
 	@FXML
-	void buttonActionHandler() {
-		
+	void buttonActionHandler() throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(MainResto.class.getResource("view/EditPlat.fxml"));
+		BorderPane root = loader.load();
+		EditPlatController controller = loader.getController();
+		controller.setConnection(connection);
+		controller.setRestaurant(restaurant);
+		controller.setParent(this);
+		controller.fillPlat();
+		Stage primaryStage = new Stage();
+		primaryStage.setTitle("SafeDelivery - Ajouter un plat");
+		primaryStage.getIcons().add(new Image("file:resources/images/logo_sans_titre.png"));
+		primaryStage.setScene(new Scene(root));
+		primaryStage.setResizable(false);
+		controller.setStage(primaryStage);
+		primaryStage.initOwner(stage);
+		primaryStage.show();
 	}
 
 }

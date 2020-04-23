@@ -23,41 +23,54 @@
          <children>
             <BorderPane prefHeight="402.0" prefWidth="695.0" style="-fx-background-color: #fff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <left>
-                  <Pane fx:id="anchRoot" prefHeight="404.0" prefWidth="332.0" styleClass="linear-grad" stylesheets="@application.css" BorderPane.alignment="CENTER">
+                  <StackPane BorderPane.alignment="CENTER">
                      <children>
-                        <HBox layoutX="11.0" layoutY="11.0" prefHeight="15.0" prefWidth="47.0" spacing="5.0">
+                        <Pane prefHeight="404.0" prefWidth="332.0">
                            <children>
-                              <Circle fx:id="btnClose" fill="#fc5d57" onMouseClicked="#handleMouseEvent" radius="6.0" stroke="WHITE" strokeType="INSIDE" styleClass="cliquable" />
-                              <Circle fill="#fdbb2d" layoutX="16.0" layoutY="16.0" radius="6.0" stroke="WHITE" strokeType="INSIDE" />
-                              <Circle fx:id="btnMin" fill="#27c941" layoutX="38.0" layoutY="16.0" onMouseClicked="#handleMouseEvent" radius="6.0" stroke="WHITE" strokeType="INSIDE">
-                                 <cursor>
-                                    <Cursor fx:constant="HAND" />
-                                 </cursor>
-                              </Circle>
+                              <ImageView fitHeight="415.0" fitWidth="343.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+                                 <image>
+                                    <Image url="@../../../../../../Downloads/Images/4415_cropped_deg.jpg" />
+                                 </image>
+                              </ImageView>
                            </children>
-                        </HBox>
-                        <ImageView cache="true" cacheHint="QUALITY" fitHeight="107.0" fitWidth="132.0" layoutX="103.0" layoutY="84.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../icons/Vector_gray.png" />
-                           </image>
-                        </ImageView>
-                        <ImageView cache="true" cacheHint="QUALITY" fitHeight="107.0" fitWidth="132.0" layoutX="112.0" layoutY="95.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../icons/logo_sans_titre.png" />
-                           </image>
-                        </ImageView>
-                        <Label fx:id="lblForgot2" layoutX="77.0" layoutY="191.0" text="Safe Delivery" textFill="#fce2e2">
-                           <font>
-                              <Font name="System Bold" size="29.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="63.0" layoutY="282.0" text="On vous livre tout partout" textFill="#bcadad">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
+                        </Pane>
+                        <Pane fx:id="anchRoot" prefHeight="404.0" prefWidth="332.0" stylesheets="@application.css">
+                           <children>
+                              <HBox layoutX="11.0" layoutY="11.0" prefHeight="15.0" prefWidth="47.0" spacing="5.0">
+                                 <children>
+                                    <Circle fx:id="btnClose" fill="#fc5d57" onMouseClicked="#handleMouseEvent" radius="6.0" stroke="WHITE" strokeType="INSIDE" styleClass="cliquable" />
+                                    <Circle fill="#fdbb2d" layoutX="16.0" layoutY="16.0" radius="6.0" stroke="WHITE" strokeType="INSIDE" />
+                                    <Circle fx:id="btnMin" fill="#27c941" layoutX="38.0" layoutY="16.0" onMouseClicked="#handleMouseEvent" radius="6.0" stroke="WHITE" strokeType="INSIDE">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Circle>
+                                 </children>
+                              </HBox>
+                              <ImageView cache="true" cacheHint="QUALITY" fitHeight="107.0" fitWidth="132.0" layoutX="100.0" layoutY="70.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../icons/Vector_gray.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView cache="true" cacheHint="QUALITY" fitHeight="107.0" fitWidth="132.0" layoutX="109.0" layoutY="81.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../icons/logo_sans_titre.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="lblForgot2" layoutX="77.0" layoutY="181.0" text="Safe Delivery" textFill="#fce2e2">
+                                 <font>
+                                    <Font name="System Bold" size="29.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="63.0" layoutY="293.0" text="On vous livre tout partout" textFill="#bcadad">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
                      </children>
-                  </Pane>
+                  </StackPane>
                </left>
                <center>
                   <StackPane fx:id="pnlStack" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">

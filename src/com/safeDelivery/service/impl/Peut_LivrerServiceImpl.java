@@ -11,7 +11,6 @@ import com.safeDelivery.model.Livreur;
 import com.safeDelivery.model.User;
 import com.safeDelivery.model.Zone;
 import com.safeDelivery.service.Peut_LivrerService;
-import com.safeDelivery.utils.SingletonConnexion;
 
 public class Peut_LivrerServiceImpl implements Peut_LivrerService {
 	private Connection conn;

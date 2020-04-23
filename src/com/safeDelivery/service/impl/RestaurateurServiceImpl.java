@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import com.safeDelivery.model.Restaurateur;
 import com.safeDelivery.model.User;
 import com.safeDelivery.service.RestaurateurService;
-import com.safeDelivery.utils.SingletonConnexion;
 
 public class RestaurateurServiceImpl implements RestaurateurService {
 	private Connection conn;
