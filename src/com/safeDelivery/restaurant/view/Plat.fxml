@@ -24,7 +24,7 @@
          <children>
             <ImageView fx:id="img_plat" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../images/food-5.jpg" />
+                  <Image url="@../../../../images/image-not-found.jpg" />
                </image></ImageView>
             <Label fx:id="lbl_nomPlat" prefHeight="17.0" prefWidth="109.0" text="Nom Plat" textFill="#e7e5e5" />
             <Label fx:id="lbl_prixPlat" text="0" textFill="#e7e5e5" />

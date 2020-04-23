@@ -6,12 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.safeDelivery.model.Client;
 import com.safeDelivery.model.Commande;
-import com.safeDelivery.model.Commande_item;
 import com.safeDelivery.model.Livreur;
 import com.safeDelivery.service.CommandeService;
 import com.safeDelivery.utils.DateTimeUtil;
@@ -137,12 +137,20 @@ public class CommandeServiceImpl implements CommandeService {
 					ClientServiceImpl clientServiceImpl = new ClientServiceImpl(conn);
 					Client client = clientServiceImpl.findById(result.getLong(2));
 
-					LivreurServiceImpl livreurServiceImpl = new LivreurServiceImpl(conn);
-					Livreur livreur = livreurServiceImpl.findById(result.getLong(5));
+					Livreur livreur = null;
+					if(result.getLong(5) !=  0) {
+						LivreurServiceImpl livreurServiceImpl = new LivreurServiceImpl(conn);
+						livreur = livreurServiceImpl.findById(result.getLong(5));
+					}
+					
+					LocalDateTime dateLiv = null;
+					if(result.getString(7) != null) {
+						dateLiv = DateTimeUtil.parse(result.getString(7));
+					}
 
 					Commande commande = new Commande(result.getLong(1), client, result.getDouble(3),
 							result.getString(4), livreur, DateTimeUtil.parse(result.getString(6)),
-							DateTimeUtil.parse(result.getString(7)));
+							dateLiv);
 					commandes.add(commande);
 				}
 				statement.close();
@@ -181,14 +189,20 @@ public class CommandeServiceImpl implements CommandeService {
 					if (client == null)
 						System.out.println("Commande nulle");
 
-					LivreurServiceImpl livreurServiceImpl = new LivreurServiceImpl(conn);
-					Livreur livreur = livreurServiceImpl.findById(result.getLong(5));
-					if (livreur == null)
-						System.out.println("Commande nulle");
+					Livreur livreur = null;
+					if(result.getLong(5) !=  0) {
+						LivreurServiceImpl livreurServiceImpl = new LivreurServiceImpl(conn);
+						livreur = livreurServiceImpl.findById(result.getLong(5));
+					}
+					
+					LocalDateTime dateLiv = null;
+					if(result.getString(7) != null) {
+						dateLiv = DateTimeUtil.parse(result.getString(7));
+					}
 
 					Commande commande = new Commande(result.getLong(1), client, result.getDouble(3),
 							result.getString(4), livreur, DateTimeUtil.parse(result.getString(6)),
-							DateTimeUtil.parse(result.getString(7)));
+							dateLiv);
 					commandes.add(commande);
 				}
 				statement.close();
@@ -211,12 +225,12 @@ public class CommandeServiceImpl implements CommandeService {
 		try {
 //			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
-				String query = "select commande.id, commande.id_client, commande.total, commande.etat, commande.id_livreur, commande.dateCommande, commande.dateLivraison from restaurant, menu, plat, commande_item, commande where restaurant.id = menu.id_restaurant and menu.id_plat = plat.id and plat.id = commande_item.id_plat and commande_item.id_commande = commande.id and restaurant.id = ?";
-//				Statement statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
-//					    ResultSet.CONCUR_READ_ONLY);
-				PreparedStatement statement = conn.prepareStatement(query);
-				statement.setLong(1, idResto);
-				ResultSet result = statement.executeQuery();
+				String query = "select commande.id, commande.id_client, commande.total, commande.etat, commande.id_livreur, commande.dateCommande, commande.dateLivraison from restaurant, menu, plat, commande_item, commande where restaurant.id = menu.id_restaurant and menu.id_plat = plat.id and plat.id = commande_item.id_plat and commande_item.id_commande = commande.id and restaurant.id = "+idResto;
+				Statement statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
+					    ResultSet.CONCUR_READ_ONLY);
+//				PreparedStatement statement = conn.prepareStatement();
+//				statement.setLong(1, idResto);
+				ResultSet result = statement.executeQuery(query);
 
 				try {
 					result.last();
@@ -231,16 +245,23 @@ public class CommandeServiceImpl implements CommandeService {
 					ClientServiceImpl clientServiceImpl = new ClientServiceImpl(conn);
 					Client client = clientServiceImpl.findById(result.getLong(2));
 					if (client == null)
-						System.out.println("Commande nulle");
-
-					LivreurServiceImpl livreurServiceImpl = new LivreurServiceImpl(conn);
-					Livreur livreur = livreurServiceImpl.findById(result.getLong(5));
+						System.out.println("Client nulle dans findByRestaurant");
+					Livreur livreur = null;
+					if(result.getLong(5) !=  0) {
+						LivreurServiceImpl livreurServiceImpl = new LivreurServiceImpl(conn);
+						livreur = livreurServiceImpl.findById(result.getLong(5));
+					}
 					if (livreur == null)
-						System.out.println("Commande nulle");
-
+						System.out.println("livreur nulle dans findByRestaurant");
+					
+					LocalDateTime dateLiv = null;
+					if(result.getString(7) != null) {
+						dateLiv = DateTimeUtil.parse(result.getString(7));
+					}
+					
 					Commande commande = new Commande(result.getLong(1), client, result.getDouble(3),
 							result.getString(4), livreur, DateTimeUtil.parse(result.getString(6)),
-							DateTimeUtil.parse(result.getString(7)));
+							dateLiv);
 					commandes.add(commande);
 				}
 				statement.close();
@@ -278,9 +299,13 @@ public class CommandeServiceImpl implements CommandeService {
 					if (livreur == null)
 						System.out.println("Commande nulle");
 
+					LocalDateTime dateLiv = null;
+					if(result.getString(7) != null) {
+						dateLiv = DateTimeUtil.parse(result.getString(7));
+					}
 					Commande commande = new Commande(result.getLong(1), client, result.getDouble(3),
 							result.getString(4), livreur, DateTimeUtil.parse(result.getString(6)),
-							DateTimeUtil.parse(result.getString(7)));
+							dateLiv);
 					ps.close();
 //					SingletonConnexion.closeConnection(conn);
 					return commande;

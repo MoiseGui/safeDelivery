@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.safeDelivery.service.MenuService;
-import com.safeDelivery.utils.SingletonConnexion;
 
 public class MenuServiceImpl implements MenuService {
 	private Connection conn;

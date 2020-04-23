@@ -11,7 +11,6 @@ import java.util.List;
 import com.safeDelivery.model.Ville;
 import com.safeDelivery.model.Zone;
 import com.safeDelivery.service.ZoneService;
-import com.safeDelivery.utils.SingletonConnexion;
 
 public class ZoneServiceimpl implements ZoneService {
 	VilleServiceImpl villeserviceimpl;

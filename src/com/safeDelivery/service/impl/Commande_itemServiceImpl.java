@@ -12,7 +12,6 @@ import com.safeDelivery.model.Commande;
 import com.safeDelivery.model.Commande_item;
 import com.safeDelivery.model.Plat;
 import com.safeDelivery.service.Commande_itemService;
-import com.safeDelivery.utils.SingletonConnexion;
 
 public class Commande_itemServiceImpl implements Commande_itemService {
 	private Connection conn;

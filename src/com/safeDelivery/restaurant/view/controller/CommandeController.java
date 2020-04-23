@@ -79,7 +79,12 @@ public class CommandeController implements Initializable {
 		if (this.commande == null) {
 			System.out.println("Commande nulle");
 		} else {
-			lbl_nomClient.setText(commande.getClient().getNom());
+			if(commande.getClient() == null) {
+				System.out.println("Client nulle");
+			}
+			else {
+				lbl_nomClient.setText(commande.getClient().getNom());
+			}
 			lbl_heureCommande.setText(DateTimeUtil.format(commande.getDateCommande()).substring(11));
 			if (commande.getDateLivraison() != null) {
 				lbl_HeureLivraison.setText(DateTimeUtil.format(commande.getDateLivraison()).substring(11));

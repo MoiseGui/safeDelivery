@@ -13,7 +13,8 @@ public class Plat {
 	private DoubleProperty prix;
 	private StringProperty description;
 	private StringProperty image;
-	
+
+	// TODO change String of image into Image
 	
 
 	public String getImage() {
@@ -35,7 +36,7 @@ public class Plat {
 		this.nom = new SimpleStringProperty();
 		this.prix = new SimpleDoubleProperty();
 		this.description = new SimpleStringProperty();
-		this.image = new SimpleStringProperty();
+		this.image = new SimpleStringProperty("");
 	}
 	
 

@@ -1,5 +1,6 @@
 package com.safeDelivery.service.impl;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +11,7 @@ import java.util.List;
 
 import com.safeDelivery.model.Plat;
 import com.safeDelivery.service.PlatService;
+import com.safeDelivery.utils.ImageUtil;
 
 public class PlatServiceImpl implements PlatService {
 	private Connection conn;
@@ -19,7 +21,7 @@ public class PlatServiceImpl implements PlatService {
 	}
 
 	@Override
-	public long addPlat(Plat plat, long idResto) {
+	public long addPlat(Plat plat, long idResto, File file) {
 		try {
 //			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
@@ -34,9 +36,25 @@ public class PlatServiceImpl implements PlatService {
 					if (rs.next()) {
 						int rsgetint = rs.getInt(1);
 						ps.close();
-//						SingletonConnexion.closeConnection(conn);
+
+						if (rsgetint <= 0) {
+							return -5;
+						}
+
 						MenuServiceImpl impl = new MenuServiceImpl(conn);
 						impl.addMenu(rsgetint, idResto);
+
+						if (plat.getImage() == null || plat.getImage().isEmpty()) {
+							return -5;
+						}
+
+						long image_id = ImageUtil.uploadImage(conn, file, rsgetint);
+						System.out.println("image id " + image_id);
+
+						if (image_id <= 0) {
+							return -6;
+						}
+
 						return rsgetint;
 					} else {
 						ps.close();
@@ -48,6 +66,7 @@ public class PlatServiceImpl implements PlatService {
 //					SingletonConnexion.closeConnection(conn);
 					return -3;
 				}
+
 			} else {
 				return -2;
 			}
@@ -58,30 +77,55 @@ public class PlatServiceImpl implements PlatService {
 	}
 
 	@Override
-	public long changePlat(Plat oldPlat, Plat newPlat) {
+	public int changePlat(Plat oldPlat, Plat newPlat, File file) {
 		try {
+			String query;
 //			Connection conn = SingletonConnexion.startConnection();
+			if (newPlat.getImage() == null || newPlat.getImage().isEmpty()) {
+				return -5;
+			}
+
+			if (!newPlat.getImage().equals(oldPlat.getImage())) {
+				int i = ImageUtil.deleteImage(conn, oldPlat.getId());
+				System.out.println("Résultat de deleteImage "+i);
+				if (i < 0) {
+					return -6;
+				} else {
+					long image_id = ImageUtil.uploadImage(conn, file, oldPlat.getId());
+					System.out.println("image id " + image_id);
+					if (image_id < 0) {
+						return -7;
+					}
+				}
+			}
+
+			query = "update plat set nom = ?, prix = ?, description = ? where id = ?";
+			PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			ps.setString(1, newPlat.getNom());
+			ps.setDouble(2, newPlat.getPrix());
+			ps.setString(3, newPlat.getDescription());
+			ps.setLong(4, oldPlat.getId());
+
 			if (conn != null) {
-				String query = "update plat set nom = ?, prix = ?, description = ? where id = ?";
-				PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-				ps.setString(1, newPlat.getNom());
-				ps.setDouble(2, newPlat.getPrix());
-				ps.setString(3, newPlat.getDescription());
-				ps.setLong(4, oldPlat.getId());
 				int count = ps.executeUpdate();
 				ps.close();
-//				SingletonConnexion.closeConnection(conn);
+//						SingletonConnexion.closeConnection(conn);
 				if (count == 1) {
+					oldPlat.setNom(newPlat.getNom());
+					oldPlat.setPrix(newPlat.getPrix());
+					oldPlat.setDescription(newPlat.getDescription());
+					oldPlat.setImage(newPlat.getImage());
 					return 1;
 				} else {
-					return -1;
+					return -2;
 				}
 			} else {
-				return -2;
+				return -3;
 			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return -3;
+			return -4;
 		}
 	}
 
@@ -128,8 +172,16 @@ public class PlatServiceImpl implements PlatService {
 				ps.setLong(1, id);
 				ResultSet result = ps.executeQuery();
 				if (result.next()) {
+
+					String image = ImageUtil.DownloadImage(conn, id);
+
+					if (image == null || image.isEmpty()) {
+						System.out.println("image empty");
+						return null;
+					}
+
 					Plat plat = new Plat(result.getLong(1), result.getString(2), result.getDouble(3),
-							result.getString(4), result.getString(5));
+							result.getString(4), image);
 					ps.close();
 //					SingletonConnexion.closeConnection(conn);
 					return plat;
@@ -157,8 +209,13 @@ public class PlatServiceImpl implements PlatService {
 				ResultSet result = ps.executeQuery();
 				List<Plat> plats = new ArrayList<Plat>();
 				while (result.next()) {
+					String image = ImageUtil.DownloadImage(conn, result.getLong(1));
+
+					if (image == null || image.isEmpty()) {
+						System.out.println("image empty");
+					}
 					Plat plat = new Plat(result.getLong(1), result.getString(2), result.getDouble(3),
-							result.getString(4), result.getString(5));
+							result.getString(4), image);
 					plats.add(plat);
 				}
 				ps.close();
@@ -180,17 +237,16 @@ public class PlatServiceImpl implements PlatService {
 				PreparedStatement ps = conn.prepareStatement(query);
 				ps.setLong(1, id);
 				ResultSet result = ps.executeQuery();
-				if(result.next()) {
+				if (result.next()) {
 					double qte = result.getDouble(1);
 					if (qte > 0) {
 						ps.close();
-						return qte*prix;
+						return qte * prix;
 					} else {
 						ps.close();
 						return 0;
 					}
-				}
-				else {
+				} else {
 					ps.close();
 					return -4;
 				}
@@ -202,7 +258,7 @@ public class PlatServiceImpl implements PlatService {
 			return -3;
 		}
 	}
-	
+
 	public Plat getJamaisCmd() {
 		try {
 //			Connection conn = SingletonConnexion.startConnection();
@@ -211,8 +267,14 @@ public class PlatServiceImpl implements PlatService {
 				PreparedStatement ps = conn.prepareStatement(query);
 				ResultSet result = ps.executeQuery();
 				if (result.next()) {
+					String image = ImageUtil.DownloadImage(conn, result.getLong(1));
+
+					if (image == null || image.isEmpty()) {
+						System.out.println("image empty");
+						return null;
+					}
 					Plat plat = new Plat(result.getLong(1), result.getString(2), result.getDouble(3),
-							result.getString(4), result.getString(5));
+							result.getString(4), image);
 					ps.close();
 //					SingletonConnexion.closeConnection(conn);
 					return plat;
@@ -230,7 +292,7 @@ public class PlatServiceImpl implements PlatService {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public List<Plat> getRandomPlat() {
 		List<Plat> lists = new ArrayList<Plat>();
