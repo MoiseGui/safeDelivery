@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+
+<BorderPane prefHeight="516.0" prefWidth="400.0" stylesheets="@../../view/application.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="com.safeDelivery.restaurant.view.controller.EditPlatController">
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="438.0" prefWidth="400.0" style="-fx-background-color: #464F67;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label fx:id="lbl_errorImg" layoutX="12.0" layoutY="112.0" textFill="#e15353">
+                     <font>
+                        <Font name="System Italic" size="12.0" />
+                     </font>
+                  </Label>
+                  <StackPane layoutX="157.0" layoutY="47.0" prefHeight="135.0" prefWidth="231.0">
+                     <children>
+                        <Pane fx:id="pnl_img" prefHeight="135.0" prefWidth="231.0" style="-fx-background-color: #434B62;">
+                           <children>
+                              <ImageView fx:id="ImgPlat" fitHeight="135.0" fitWidth="231.0" pickOnBounds="true">
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                              </ImageView>
+                           </children>
+                        </Pane>
+                        <Pane fx:id="pnl_noImg" prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <ImageView fitHeight="85.0" fitWidth="98.0" layoutX="67.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../icons/icons8_credit_note_80px_1.png" />
+                                 </image>
+                              </ImageView>
+                              <Label layoutX="59.0" layoutY="99.0" text="Pas encore d'image" textFill="#b6dbca">
+                                 <font>
+                                    <Font name="System Italic" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children>
+                  </StackPane>
+                  <Label layoutX="56.0" layoutY="200.0" text="Nom du plat" textFill="#f8f8f8" />
+                  <Button fx:id="btn_image" layoutX="13.0" layoutY="74.0" mnemonicParsing="false" onAction="#buttonActionHandler" styleClass="button3" text="Choisissez une image" textFill="WHITE">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <HBox layoutX="94.578125" layoutY="7.0" spacing="10.0">
+                     <children>
+                        <Label fx:id="lbl_title" text="Ajouter" textFill="#f8f8f8">
+                           <font>
+                              <Font name="System Italic" size="28.0" />
+                           </font>
+                        </Label>
+                        <Label text="votre plat" textFill="#f8f8f8">
+                           <font>
+                              <Font name="System Italic" size="28.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <TextField fx:id="txt_nom" layoutX="55.0" layoutY="217.0" prefHeight="36.0" prefWidth="284.0" />
+                  <Label layoutX="52.0" layoutY="271.0" text="Prix du plat" textFill="#f8f8f8" />
+                  <TextField fx:id="txt_prix" layoutX="51.0" layoutY="288.0" prefHeight="36.0" prefWidth="284.0" />
+                  <Label layoutX="52.0" layoutY="340.0" text="Description du plat" textFill="#f8f8f8" />
+                  <TextArea fx:id="txt_description" layoutX="50.0" layoutY="357.0" prefHeight="107.0" prefWidth="287.0" />
+                  <Label fx:id="lbl_errorNom" layoutX="57.0" layoutY="251.0" textFill="#e15353">
+                     <font>
+                        <Font name="System Italic" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbl_errorDescription" layoutX="53.0" layoutY="462.0" textFill="#e15353">
+                     <font>
+                        <Font name="System Italic" size="12.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbl_errorPrix" layoutX="53.0" layoutY="321.0" textFill="#e15353">
+                     <font>
+                        <Font name="System Italic" size="12.0" />
+                     </font>
+                  </Label>
+                  <ButtonBar layoutX="137.0" layoutY="471.0" prefHeight="40.0" prefWidth="200.0">
+                    <buttons>
+                      <Button fx:id="btn_annuler" mnemonicParsing="false" onAction="#buttonActionHandler" style="-fx-background-color: #733647;" styleClass="button1" text="Annuler" />
+                        <Button fx:id="bnt_valider" layoutX="135.0" layoutY="18.0" mnemonicParsing="false" onAction="#buttonActionHandler" styleClass="button1" text="Valider" />
+                    </buttons>
+                  </ButtonBar>
+               </children>
+            </Pane>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>

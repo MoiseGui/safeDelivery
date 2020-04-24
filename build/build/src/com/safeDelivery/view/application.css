@@ -1,0 +1,236 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.error{
+	 -fx-text-box-border: red ;
+     -fx-focus-color: red ; 
+
+}
+
+.cliquable{
+	-fx-cursor: hand ;
+}
+
+.text-input{
+	
+	-fx-text-fill: #4E4A50;
+	-fx-prompt-text-fill: #D4CEE3;
+}
+
+.buttonInscr{
+	-fx-font-size: 30;
+	-fx-border-radius: 5 5 50 50;
+	-fx-background-radius: 5 50 50 5;
+	-fx-background-color: #3B60CF;
+	-fx-text-fill: #ffffff;
+	-fx-cursor: hand ;
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+	
+}
+
+.buttonInscr:hover{
+	-fx-text-fill: #3B56A2;
+}
+
+.buttonInscr:pressed{
+	-fx-text-fill: #3B56A2;
+}
+
+.buutonInscr:active{
+	-fx-text-fill: #3B56A2;
+}
+
+
+.button1{
+	-fx-background-color: #3F548E;
+	-fx-text-fill: #ffffff;
+	-fx-cursor: hand ;
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+.button1:hover{
+	-fx-text-fill: #431FA0;
+}
+
+.button1:pressed{
+	-fx-text-fill: #3F548E;
+}
+
+.buuton1:active{
+	-fx-text-fill: #80AFF5;
+}
+
+.button2{
+	-fx-background-color: #D5CBEB;
+	-fx-background-radius: 5;
+	-fx-text-fill: #3C62D2;
+	-fx-border-color: #3C62D2;
+	-fx-border-radius: 5;
+	-fx-cursor: hand ;
+}
+
+.button2:hover{
+	-fx-background-color: #9AA1B6;
+}
+
+.button2:pressed{
+	-fx-background-color: #E4EEFD;
+	-fx-background-radius: 20;
+}
+
+.button3{
+	-fx-background-color: linear-gradient(to top left, #35ACF1, #F6B46F);
+	-fx-background-radius: 20;
+	-fx-border-style: solid;
+	-fx-border-radius: 12;
+	-fx-border-insets: -5;
+	-fx-border-color: linear-gradient(to top left, #35ACF1, #F6B46F);
+	-fx-cursor: hand ;
+}
+
+.button3:hover{
+	-fx-background-color: linear-gradient(to top left, #F6B46F, #35ACF1);
+	-fx-background-radius: 20;
+	-fx-border-style: solid;
+	-fx-border-radius: 12;
+	-fx-border-insets: -5;
+	-fx-border-color: linear-gradient(to top left, #F6B46F, #35ACF1);
+}
+
+.button3:pressed{
+	-fx-background-color: linear-gradient(to top left, #35ACF1, #F6B46F);
+	-fx-background-radius: 20;
+	-fx-border-style: solid;
+	-fx-border-radius: 12;
+	-fx-border-insets: -5;
+	-fx-border-color: linear-gradient(to top left, #35ACF1, #F6B46F);
+}
+
+
+.button4{
+	-fx-background-color: linear-gradient(to top left, #41951C, #D4CEE3);
+	-fx-background-radius: 30 30 30 30;
+	-fx-cursor: hand ;
+}
+
+.button4:hover{
+	-fx-background-color: linear-gradient(to top left, #D4CEE3, #41951C);
+	-fx-background-radius: 30 30 30 30;
+}
+
+.button4:pressed{
+	-fx-background-color: linear-gradient(to top left, #41951C, #D4CEE3);
+	-fx-background-radius: 30 30 30 30;
+}
+
+
+.combo-box{
+	-fx-background-color: transparent ;
+	-fx-border-color: #BBBBBB;
+	-fx-border-radius: 3;
+}
+
+.combo-box:hover{
+	-fx-background-color: transparent;
+	-fx-border-color: #bbbbbb;
+	-fx-border-radius: 3;
+}
+
+.combo-box:pressed{
+	-fx-background-color:  transparent;
+	-fx-border-color: #FFFF;
+	-fx-border-radius: 3;
+}
+
+
+.table-view .column-header,
+.table-view .column-header-background .filler{
+	-fx-cell-size: 20;
+	-fx-background-color: #2D75E8;
+}
+
+.table-view .column-header .label{
+	-fx-text-fill: white ;
+	-fx-font-weight: bold;
+	-fx-alignment: CENTER_LEFT;
+}
+
+.table-view .cell{
+	-fx-cell-size: 30;
+	-fx-alignment: center-left;
+	-fx-text-fill: #000000 ;
+}
+
+
+.table-row-cell:selected{
+	-fx-background-color: rgb(127, 172, 243);
+}
+
+.table-row-cell:selected .text{
+	-fx-fill: white;
+}
+
+
+
+
+
+/* SCROLL BAR */
+
+
+/*css clss du button d'incrémentation et de décrémentation du scroll bar */
+.table-view .increment-button,
+.table-view .decrement-button{
+	-fx-background-color: transparent;
+	-fx-background-radius: 2em;
+}
+
+
+/* the main scroll bar **track** css class */
+.table-view .scroll-bar:horizontal .track,
+.table-view .scroll-bar:vertical .track{
+	-fx-background-color: transparent;
+	-fx-border-color: derive(#2D75E8, 90%);
+	-fx-background-radius: 2em;
+	-fx-border-radius: 2em;
+}
+
+
+/* the main scroll bar **thumb** css class which we drag each time  */
+
+.table-view .scroll-bar:horizontal .thumb,
+.table-view .scroll-bar:vertical .thumb{
+	-fx-background-color: derive(#2D75E8, 90%);
+	-fx-background-insets: 2, 0, 0;
+	-fx-background-radius: 2em;
+}
+
+
+/* chart proprities  */
+.chart{
+	-fx-padding: 10px;
+	-fx-background-color: transparent;
+	-fx-legend-visible: false;
+}
+
+.chart-plot-background{
+	-fx-background-color: transparent;
+}
+
+.linear-grad{
+	-fx-background-color: linear-gradient(to bottom left, #3B56A2,  #464F67);
+}
+
+
+.anchor-style{
+	-fx-border-width:  inherit;
+}
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="safeDelivery.jnlp">
+  <information>
+    <title>safeDelivery</title>
+    <vendor>com.safeDelivery</vendor>
+    <description>SafeDelivery</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="safeDelivery.jar" size="11327566" download="eager" />
+    <jar href="libs\AnimateFX-1.2.0.jar" size="85823" download="eager" />
+    <jar href="libs\mysql-connector-java-8.0.19.jar" size="2356711" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="0" height="0" main-class="com.safeDelivery.MainApp"  name="SafeDelivery" />
+  <update check="background"/>
+</jnlp>
