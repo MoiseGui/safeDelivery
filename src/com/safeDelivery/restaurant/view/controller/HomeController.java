@@ -2,6 +2,7 @@ package com.safeDelivery.restaurant.view.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,9 +17,11 @@ import com.safeDelivery.model.Restaurant;
 import com.safeDelivery.restaurant.MainResto;
 import com.safeDelivery.service.impl.CommandeServiceImpl;
 import com.safeDelivery.service.impl.PlatServiceImpl;
+import com.safeDelivery.service.impl.UserServiceImpl;
 import com.safeDelivery.utils.DateTimeUtil;
 import com.safeDelivery.utils.DateUtil;
 import com.safeDelivery.utils.DateUtilViewFormat;
+import com.safeDelivery.utils.saltHashPassword;
 import com.safeDelivery.view.controller.LoginController;
 
 import javafx.animation.KeyFrame;
@@ -35,6 +38,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -113,7 +117,7 @@ public class HomeController implements Initializable {
 	private Button btnSettings;
 
 	@FXML
-	private Button btnCustomers;
+	private Button btnAccount;
 
 	@FXML
 	private Button btnPackages;
@@ -169,6 +173,27 @@ public class HomeController implements Initializable {
 	@FXML
 	private Button btn_addPlat;
 
+	@FXML
+	private Pane pnlAccount;
+
+	@FXML
+	private TextField tEmailChangePass;
+
+	@FXML
+	private Button btnChangePass;
+
+	@FXML
+	private PasswordField txt_oldPass;
+
+	@FXML
+	private PasswordField txt_newPass;
+
+	@FXML
+	private Label lbl_errorOldPass;
+
+	@FXML
+	private Label lbl_errorNewPass;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -182,9 +207,6 @@ public class HomeController implements Initializable {
 	}
 
 	public void handleClicks(ActionEvent actionEvent) {
-		if (actionEvent.getSource() == btnCustomers) {
-			pnlCustomer.toFront();
-		}
 		if (actionEvent.getSource() == btnMenus) {
 			pnlMenus.toFront();
 			if (!dejaMenu) {
@@ -197,6 +219,11 @@ public class HomeController implements Initializable {
 		}
 		if (actionEvent.getSource() == btnOrders) {
 			pnlOrders.toFront();
+		}
+		if (actionEvent.getSource().equals(btnAccount)) {
+			tEmailChangePass.setText(restaurant.getRestaurateur().getEmail());
+			tEmailChangePass.setEditable(false);
+			pnlAccount.toFront();
 		}
 	}
 
@@ -435,18 +462,70 @@ public class HomeController implements Initializable {
 	@FXML
 	void search(KeyEvent event) {
 		String q = txtSearPlat.getText();
-		if(q.isEmpty()) {
+		if (q.isEmpty()) {
 			fillPlats(plats);
 			return;
 		}
-		
+
 		List<Plat> results = new ArrayList<Plat>();
-		
+
 		for (Plat plat : plats) {
-			if(plat.getNom().contains(q)) results.add(plat);
+			if (plat.getNom().contains(q))
+				results.add(plat);
 		}
-		
+
 		fillPlats(results);
 	}
 
+	@FXML
+	void handleButtonAction(ActionEvent event) throws NoSuchAlgorithmException {
+		boolean error = false;
+		lbl_errorNewPass.setText("");
+		lbl_errorOldPass.setText("");
+		
+		String oldPass = txt_oldPass.getText(), newPass = txt_newPass.getText();
+		
+		if(newPass.isEmpty() || newPass.length() < 6) {
+			error = true;
+			lbl_errorNewPass.setText("Au moins 6 caractères");
+			txt_newPass.setText("");
+		}
+		if(oldPass.isEmpty() || !saltHashPassword.generateHash(oldPass).equals(restaurant.getRestaurateur().getPass())){
+			error = true;
+			lbl_errorOldPass.setText("Ancien mot de passe incorrect");
+			txt_oldPass.setText("");
+			txt_newPass.setText("");
+		}
+		
+		if(!error) {
+			UserServiceImpl impl = new UserServiceImpl(connection);
+			int res = impl.changePass(restaurant.getRestaurateur().getId(), newPass);
+			
+			if (res <= 0) {
+				txt_oldPass.setText("");
+				txt_newPass.setText("");
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.initOwner(stage);
+				alert.setTitle("Safe Delivery");
+				alert.setHeaderText("Erreur lors de la connexion");
+				alert.setContentText("Le changement n'as pas pu être opéré.");
+				alert.showAndWait();
+			} else {
+				txt_oldPass.setText("");
+				txt_newPass.setText("");
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.initOwner(stage);
+				alert.setTitle("Safe Delivery");
+				alert.setHeaderText("Succès");
+				alert.setContentText("Votre mot de passe est changé avec succès");
+				alert.showAndWait();
+			}
+			
+		}
+	}
+	
+	@FXML
+    void signOutHandler(ActionEvent event) {
+		this.stage.close();
+    }
 }
