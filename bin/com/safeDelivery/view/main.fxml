@@ -29,7 +29,7 @@
                            <children>
                               <ImageView fitHeight="415.0" fitWidth="343.0" pickOnBounds="true" preserveRatio="true" smooth="false">
                                  <image>
-                                    <Image url="@../../../../../../Downloads/Images/4415_cropped_deg.jpg" />
+                                    <Image url="@images/4415_cropped_deg.jpg" />
                                  </image>
                               </ImageView>
                            </children>
