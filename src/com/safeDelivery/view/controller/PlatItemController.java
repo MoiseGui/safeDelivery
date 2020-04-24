@@ -79,10 +79,18 @@ public class PlatItemController implements Initializable {
 		if (result > 0) {
 			panier.setQte(result + 1);
 			panierService.upgradePanier(client, plat.getId(), panier.getQte());
+			boolean found = false;
+			for (Panier p : parent.getPaniers()) {
+				if(p.getPlat().getId() == panier.getPlat().getId()) {
+					found = true;
+					p.setQte(p.getQte()+1);
+				}
+			}
+			if(!found) System.out.println("Panier Not found in list of paniers");
 		} else {
 			panierService.addPanier(panier);
+			parent.getPaniers().add(panier);
 		}
-		parent.getPaniers().add(panier);
 		parent.showPanierCout();
 	}
 

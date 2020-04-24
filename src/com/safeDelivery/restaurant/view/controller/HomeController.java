@@ -38,6 +38,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -209,13 +210,13 @@ public class HomeController implements Initializable {
 
 			fillPlatStats(platServiceImpl);
 
-			fillPlats();
+			fillPlats(plats);
 
 		}
 
 	}
 
-	public void fillPlats() {
+	public void fillPlats(List<Plat> plats) {
 		Node[] nodes = new Node[plats.size()];
 		pnlPlats.getChildren().clear();
 		for (int i = 0; i < nodes.length; i++) {
@@ -359,13 +360,11 @@ public class HomeController implements Initializable {
 			System.out.println("Page chargée ");
 		}
 
-    	Timeline timeline = new Timeline(new KeyFrame(
-    	        Duration.millis(30000),
-    	        ae -> loadAllCommandes(dateCommandes.getValue())));
-    	timeline.play();
+		Timeline timeline = new Timeline(
+				new KeyFrame(Duration.millis(30000), ae -> loadAllCommandes(dateCommandes.getValue())));
+		timeline.play();
 
-
-         System.out.println("Task scheduled.");
+		System.out.println("Task scheduled.");
 	}
 
 	@FXML
@@ -384,24 +383,24 @@ public class HomeController implements Initializable {
 	}
 
 	void deletePlat(Plat plat) {
-		
+
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.initOwner(this.stage);
 		alert.setTitle("Suppression");
 //		alert.setHeaderText("Look, a Confirmation Dialog");
-		alert.setContentText("Voulez vous vraiment supprimer le plat "+plat.getNom()+" ?");
+		alert.setContentText("Voulez vous vraiment supprimer le plat " + plat.getNom() + " ?");
 
 		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == ButtonType.OK){
-		    // ... user chose OK
+		if (result.get() == ButtonType.OK) {
+			// ... user chose OK
 			PlatServiceImpl platServiceImpl = new PlatServiceImpl(connection);
 			int resultat = platServiceImpl.deletePlat(plat.getId());
-			
+
 			if (resultat == 1) {
 				plats.remove(plat);
-				
+
 				fillPlatStats(platServiceImpl);
-				fillPlats();
+				fillPlats(plats);
 			} else {
 				Alert alertError = new Alert(AlertType.ERROR);
 				alertError.initOwner(this.stage);
@@ -410,7 +409,6 @@ public class HomeController implements Initializable {
 				alertError.setContentText("Une erreur s'est produite lors de l'enregistrement. veuillez réessayer.");
 			}
 		}
-		
 
 	}
 
@@ -432,6 +430,23 @@ public class HomeController implements Initializable {
 		controller.setStage(primaryStage);
 		primaryStage.initOwner(stage);
 		primaryStage.show();
+	}
+
+	@FXML
+	void search(KeyEvent event) {
+		String q = txtSearPlat.getText();
+		if(q.isEmpty()) {
+			fillPlats(plats);
+			return;
+		}
+		
+		List<Plat> results = new ArrayList<Plat>();
+		
+		for (Plat plat : plats) {
+			if(plat.getNom().contains(q)) results.add(plat);
+		}
+		
+		fillPlats(results);
 	}
 
 }

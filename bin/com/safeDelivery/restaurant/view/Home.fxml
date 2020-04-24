@@ -135,7 +135,7 @@
             <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #464F67;" />
             <Pane fx:id="pnlMenus" layoutX="10.0" layoutY="10.0" prefHeight="554.0" prefWidth="793.0" style="-fx-background-color: #464F67;">
                <children>
-                  <TextField fx:id="txtSearPlat" layoutX="483.0" layoutY="22.0" prefHeight="42.0" prefWidth="270.0" promptText="Chercher un plat" style="-fx-background-color: #5A6277; -fx-border-color: #434752; -fx-border-radius: 5; -fx-text-inner-color: #ffffff;" styleClass="text-input" />
+                  <TextField fx:id="txtSearPlat" layoutX="483.0" layoutY="22.0" onKeyReleased="#search" prefHeight="42.0" prefWidth="270.0" promptText="Chercher un plat" style="-fx-background-color: #5A6277; -fx-border-color: #434752; -fx-border-radius: 5; -fx-text-inner-color: #ffffff;" styleClass="text-input" />
                   <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="723.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../images/icons8_Search_52px.png" />
