@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox alignment="CENTER_LEFT" prefWidth="743.0" spacing="10.0" style="-fx-background-color: #23314A; -fx-border-radius: 5;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.safeDelivery.view.controller.PanierController">
+   <children>
+      <HBox alignment="CENTER_LEFT" prefWidth="585.0" spacing="50.0">
+         <effect>
+            <DropShadow />
+         </effect>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets left="5.0" />
+         </padding>
+         <children>
+            <ImageView fx:id="img_plat" fitHeight="52.0" fitWidth="112.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/food.jpg" />
+               </image></ImageView>
+            <Label fx:id="lblNom" prefWidth="202.0" text="pizza" textFill="#9096b2">
+               <font>
+                  <Font size="22.0" />
+               </font></Label>
+            <Label fx:id="lblPrix" prefWidth="68.0" text="12" textFill="#9096b2">
+               <font>
+                  <Font size="22.0" />
+               </font></Label>
+            <Label fx:id="lblqte" text="2" textFill="#9096b2">
+               <font>
+                  <Font size="22.0" />
+               </font></Label>
+         </children>
+      </HBox>
+      <Button fx:id="btn_diminuer" mnemonicParsing="false" onAction="#diminuer" prefHeight="27.0" prefWidth="32.0" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fx:id="btnsup" fitHeight="34.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/minus.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="btn_deletePlat" layoutX="610.0" layoutY="28.0" mnemonicParsing="false" onAction="#augmenter" prefHeight="27.0" prefWidth="32.0" style="-fx-background-color: transparent;">
+         <graphic>
+            <ImageView fx:id="btnajout" fitHeight="36.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/plus.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+   </children>
+   <effect>
+      <DropShadow />
+   </effect>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+   <padding>
+      <Insets left="5.0" right="10.0" />
+   </padding>
+</HBox>

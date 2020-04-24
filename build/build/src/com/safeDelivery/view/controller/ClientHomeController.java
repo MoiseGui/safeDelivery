@@ -2,6 +2,7 @@ package com.safeDelivery.view.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,8 +16,10 @@ import com.safeDelivery.model.Plat;
 import com.safeDelivery.service.impl.PanierServiceImpl;
 import com.safeDelivery.service.impl.PlatServiceImpl;
 import com.safeDelivery.service.impl.RestaurantServiceImpl;
+import com.safeDelivery.service.impl.UserServiceImpl;
 import com.safeDelivery.service.impl.VilleServiceImpl;
 import com.safeDelivery.service.impl.ZoneServiceimpl;
+import com.safeDelivery.utils.saltHashPassword;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,6 +34,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -68,7 +72,7 @@ public class ClientHomeController implements Initializable {
 	private Button btnPanier;
 
 	@FXML
-	private Button btnsales;
+	private Button btnAccout;
 
 	@FXML
 	private Button btnaddoperator;
@@ -146,6 +150,34 @@ public class ClientHomeController implements Initializable {
 
 	@FXML
 	private Button btnValiderLiv;
+	
+    @FXML
+    private Pane pnlAccount;
+
+    @FXML
+    private TextField tEmailChangePass;
+
+    @FXML
+    private Button btnChangePass;
+
+    @FXML
+    private PasswordField txt_oldPass;
+
+    @FXML
+    private PasswordField txt_newPass;
+
+    @FXML
+    private Label lbl_errorOldPass;
+
+    @FXML
+    private Label lbl_errorNewPass;
+    
+    @FXML
+    void compteHandle(ActionEvent event) {
+    	tEmailChangePass.setText(client.getEmail());
+    	tEmailChangePass.setEditable(false);
+    	pnlAccount.toFront();
+    }
 
 	@FXML
 	void HomeHandle(ActionEvent event) {
@@ -543,6 +575,59 @@ public class ClientHomeController implements Initializable {
 				cbxZoneLiv.setItems(zoness);
 			}
 		}
+    }
+	
+	@FXML
+	void handleButtonAction(ActionEvent event) throws NoSuchAlgorithmException {
+		boolean error = false;
+		lbl_errorNewPass.setText("");
+		lbl_errorOldPass.setText("");
+		
+		String oldPass = txt_oldPass.getText(), newPass = txt_newPass.getText();
+		
+		if(newPass.isEmpty() || newPass.length() < 6) {
+			error = true;
+			lbl_errorNewPass.setText("Au moins 6 caractères");
+			txt_newPass.setText("");
+		}
+		if(oldPass.isEmpty() || !saltHashPassword.generateHash(oldPass).equals(client.getPass())){
+			error = true;
+			lbl_errorOldPass.setText("Ancien mot de passe incorrect");
+			txt_oldPass.setText("");
+			txt_newPass.setText("");
+		}
+		
+		if(!error) {
+			UserServiceImpl impl = new UserServiceImpl(connection);
+			int res = impl.changePass(client.getId(), newPass);
+			
+			if (res <= 0) {
+				txt_oldPass.setText("");
+				txt_newPass.setText("");
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.initOwner(primaryStage);
+				alert.setTitle("Safe Delivery");
+				alert.setHeaderText("Erreur lors de la connexion");
+				alert.setContentText("Le changement n'as pas pu être opéré.");
+				alert.showAndWait();
+			} else {
+				txt_oldPass.setText("");
+				txt_newPass.setText("");
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.initOwner(primaryStage);
+				alert.setTitle("Safe Delivery");
+				alert.setHeaderText("Succès");
+				alert.setContentText("Votre mot de passe est changé avec succès");
+				alert.showAndWait();
+			}
+			
+		}
+	}
+	
+	
+	@FXML
+    void signOutHandler(ActionEvent event) {
+		this.primaryStage.close();
     }
 
 }

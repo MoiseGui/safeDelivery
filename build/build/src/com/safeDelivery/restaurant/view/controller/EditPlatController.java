@@ -183,7 +183,7 @@ public class EditPlatController {
 					
 					stage.close();
 					parent.fillPlatStats(impl);
-					parent.fillPlats();
+					parent.fillPlats(parent.plats);
 				}
 			}
 		}

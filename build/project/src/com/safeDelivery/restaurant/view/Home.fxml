@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
@@ -78,35 +79,11 @@
                   <Insets left="50.0" />
                </padding>
             </Button>
-            <Button fx:id="btnSettings" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Paramètres">
-               <graphic>
-                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../images/icons8_Slider__32px.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <padding>
-                  <Insets left="50.0" />
-               </padding>
-            </Button>
-            <Button fx:id="btnCustomers" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Mon compte">
+            <Button fx:id="btnAccount" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" onAction="#handleClicks" prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Mon compte">
                <graphic>
                   <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../../images/icons8_Person_32px.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <padding>
-                  <Insets left="50.0" />
-               </padding>
-            </Button>
-            <Button fx:id="btnPackages" alignment="BASELINE_LEFT" graphicTextGap="22.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="259.0" stylesheets="@style.css" text="Confidentialité">
-               <graphic>
-                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../images/icons8_Box_32px.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -126,13 +103,131 @@
                   <Insets left="50.0" />
                </padding>
             </Button>
+            <Button fx:id="btnSignout" alignment="BASELINE_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#signOutHandler" prefHeight="42.0" prefWidth="259.0" stylesheets="@../../view/images/style.css" text="Quitter" textFill="#e7e5e5">
+               <graphic>
+                  <ImageView fitHeight="23.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../view/images/icons8_Sign_Out_32px.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <padding>
+                  <Insets left="50.0" />
+               </padding>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
          </children>
       </VBox>
       <StackPane layoutX="258.0" prefHeight="576.0" prefWidth="793.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="257.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Pane fx:id="pnlCustomer" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #464F67;" />
             <Pane fx:id="pnlOrders" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #464F67;" />
-            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #464F67;" />
+            <Pane fx:id="pnlMenus" layoutX="10.0" layoutY="10.0" prefHeight="554.0" prefWidth="793.0" style="-fx-background-color: #464F67;">
+               <children>
+                  <TextField fx:id="txtSearPlat" layoutX="483.0" layoutY="22.0" onKeyReleased="#search" prefHeight="42.0" prefWidth="270.0" promptText="Chercher un plat" style="-fx-background-color: #5A6277; -fx-border-color: #434752; -fx-border-radius: 5; -fx-text-inner-color: #ffffff;" styleClass="text-input" />
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="723.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../images/icons8_Search_52px.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="57.0" layoutY="25.0" text="Mon menu" textFill="#e7e5e5">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER_LEFT" layoutX="45.0" layoutY="72.0" prefHeight="92.0" prefWidth="516.0" spacing="50.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="92.0" prefWidth="92.0">
+                           <children>
+                              <Label fx:id="lbl_totalPlats" text="0" textFill="#2a73ff">
+                                 <font>
+                                    <Font name="System Bold" size="26.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Total" textFill="#e7e5e5" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="92.0" prefWidth="142.0">
+                           <children>
+                              <Label fx:id="lbl_platMode" text="Aucun" textFill="#26bfbc">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Plat à la mode" textFill="#e7e5e5" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="92.0" prefWidth="141.0">
+                           <children>
+                              <Label fx:id="lbl_platMoisCmd" text="Aucun" textFill="#fa5f7e">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Plat le moins commandé" textFill="#e7e5e5" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <Label layoutX="179.0" layoutY="198.0" text="Nom du plat" textFill="#6797f2" />
+                  <Label layoutX="440.0" layoutY="198.0" text="Revenu total" textFill="#6797f2" />
+                  <Label layoutX="356.0" layoutY="198.0" text="Prix" textFill="#6797f2" />
+                  <ScrollPane layoutX="14.0" layoutY="232.0" prefHeight="320.0" prefWidth="746.0" stylesheets="@style.css">
+                     <content>
+                        <VBox fx:id="pnlPlats" prefHeight="318.0" prefWidth="744.0" spacing="5.0" style="-fx-background-color: #464F67;">
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </VBox>
+                     </content>
+                  </ScrollPane>
+                  <Label layoutX="643.0" layoutY="198.0" text="Actions" textFill="#6797f2" />
+                  <Button fx:id="btn_addPlat" layoutX="593.0" layoutY="129.0" mnemonicParsing="false" onAction="#buttonActionHandler" prefHeight="38.0" prefWidth="167.0" style="-fx-background-color: #545C70;" text="Ajouter un plat" textFill="WHITE">
+                     <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../icons/icons8_add_48px_1.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </Pane>
+            <Pane fx:id="pnlAccount" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #464F67;">
+               <children>
+                  <TextField fx:id="tEmailChangePass" layoutX="274.0" layoutY="141.0" prefHeight="35.0" prefWidth="245.0" promptText="example@email.com" />
+                  <Button fx:id="btnChangePass" layoutX="397.0" layoutY="383.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="35.0" prefWidth="120.0" styleClass="button1" stylesheets="@../../view/application.css" text="Enregistrer" />
+                  <Label layoutX="275.0" layoutY="114.0" text="Email" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="274.0" layoutY="200.0" text="Ancien mot de passe" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <PasswordField fx:id="txt_oldPass" layoutX="274.0" layoutY="227.0" prefHeight="35.0" prefWidth="245.0" promptText="Votre ancien mot de passe" stylesheets="@../../view/application.css" />
+                  <PasswordField fx:id="txt_newPass" layoutX="275.0" layoutY="315.0" prefHeight="35.0" prefWidth="245.0" promptText="Le mot de passe (au moin 6 caractères)" stylesheets="@../../view/application.css" />
+                  <Label layoutX="274.0" layoutY="288.0" text="Nouveau mot de passe" textFill="WHITE">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="178.0" layoutY="27.0" text="Changement de mot de passe" textFill="#41b1dd">
+                     <font>
+                        <Font size="33.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="lbl_errorOldPass" layoutX="275.0" layoutY="262.0" textFill="#e41515" />
+                  <Label fx:id="lbl_errorNewPass" layoutX="275.0" layoutY="350.0" textFill="#e41515" />
+               </children>
+            </Pane>
             <Pane fx:id="pnlOverview" prefHeight="554.0" prefWidth="793.0" style="-fx-background-color: #464F67;">
                <children>
                   <DatePicker fx:id="dateCommandes" editable="false" layoutX="584.0" layoutY="51.0" onAction="#dateHasChanged" style="-fx-background-color: transparent; -fx-border-color: #B7C3D7;" />
@@ -210,80 +305,6 @@
                      </content>
                   </ScrollPane>
                   <Label layoutX="584.0" layoutY="34.0" text="Commandes de la journée :" textFill="#c0c2c3" />
-               </children>
-            </Pane>
-            <Pane fx:id="pnlMenus" layoutX="10.0" layoutY="10.0" prefHeight="554.0" prefWidth="793.0" style="-fx-background-color: #464F67;">
-               <children>
-                  <TextField fx:id="txtSearPlat" layoutX="483.0" layoutY="22.0" onKeyReleased="#search" prefHeight="42.0" prefWidth="270.0" promptText="Chercher un plat" style="-fx-background-color: #5A6277; -fx-border-color: #434752; -fx-border-radius: 5; -fx-text-inner-color: #ffffff;" styleClass="text-input" />
-                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="723.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../images/icons8_Search_52px.png" />
-                     </image>
-                  </ImageView>
-                  <Label layoutX="57.0" layoutY="25.0" text="Mon menu" textFill="#e7e5e5">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <HBox alignment="CENTER_LEFT" layoutX="45.0" layoutY="72.0" prefHeight="92.0" prefWidth="516.0" spacing="50.0">
-                     <children>
-                        <VBox alignment="CENTER" prefHeight="92.0" prefWidth="92.0">
-                           <children>
-                              <Label fx:id="lbl_totalPlats" text="0" textFill="#2a73ff">
-                                 <font>
-                                    <Font name="System Bold" size="26.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Total" textFill="#e7e5e5" />
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" prefHeight="92.0" prefWidth="142.0">
-                           <children>
-                              <Label fx:id="lbl_platMode" text="Aucun" textFill="#26bfbc">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Plat à la mode" textFill="#e7e5e5" />
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" prefHeight="92.0" prefWidth="141.0">
-                           <children>
-                              <Label fx:id="lbl_platMoisCmd" text="Aucun" textFill="#fa5f7e">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Plat le moins commandé" textFill="#e7e5e5" />
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-                  <Label layoutX="179.0" layoutY="198.0" text="Nom du plat" textFill="#6797f2" />
-                  <Label layoutX="440.0" layoutY="198.0" text="Revenu total" textFill="#6797f2" />
-                  <Label layoutX="356.0" layoutY="198.0" text="Prix" textFill="#6797f2" />
-                  <ScrollPane layoutX="14.0" layoutY="232.0" prefHeight="320.0" prefWidth="746.0" stylesheets="@style.css">
-                     <content>
-                        <VBox fx:id="pnlPlats" prefHeight="318.0" prefWidth="744.0" spacing="5.0" style="-fx-background-color: #464F67;">
-                           <padding>
-                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                           </padding>
-                        </VBox>
-                     </content>
-                  </ScrollPane>
-                  <Label layoutX="643.0" layoutY="198.0" text="Actions" textFill="#6797f2" />
-                  <Button fx:id="btn_addPlat" layoutX="593.0" layoutY="129.0" mnemonicParsing="false" onAction="#buttonActionHandler" prefHeight="38.0" prefWidth="167.0" style="-fx-background-color: #545C70;" text="Ajouter un plat" textFill="WHITE">
-                     <graphic>
-                        <ImageView fitHeight="30.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../../icons/icons8_add_48px_1.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
                </children>
             </Pane>
          </children>

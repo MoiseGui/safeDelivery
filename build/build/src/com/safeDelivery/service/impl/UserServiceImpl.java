@@ -225,5 +225,32 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 	}
+	
+	public int changePass(long id, String newPass) throws NoSuchAlgorithmException {
+		try {
+//			Connection conn = SingletonConnexion.startConnection();
+			if (conn != null) {
+				String query = "update user set pass = ? where id = ?";
+				PreparedStatement ps = conn.prepareStatement(query);
+				ps.setString(1, saltHashPassword.generateHash(newPass));
+				ps.setLong(2, id);
+				int count = ps.executeUpdate();
+				if (count > 0) {
+					ps.close();
+//					SingletonConnexion.closeConnection(conn);
+					return 1;
+				} else {
+					ps.close();
+//					SingletonConnexion.closeConnection(conn);
+					return -1;
+				}
+			} else {
+				return -2;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -3;
+		}
+	}
 
 }
