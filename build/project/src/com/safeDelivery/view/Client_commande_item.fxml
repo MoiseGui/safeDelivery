@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox alignment="CENTER_LEFT" prefHeight="79.0" prefWidth="573.0" spacing="50.0" style="-fx-background-color: transparent; -fx-border-radius: 5;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.safeDelivery.view.controller.Client_commande_itemController">
+   <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="79.0" prefWidth="436.0" spacing="45.0" style="-fx-background-color: transparent; -fx-border-radius: 5;">
+         <effect>
+            <DropShadow />
+         </effect>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets left="5.0" />
+         </padding>
+         <children>
+            <ImageView fx:id="img_plat" fitHeight="60.0" fitWidth="76.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../images/food-5.jpg" />
+               </image>
+            </ImageView>
+            <Label fx:id="lbl_nomPlat" prefHeight="17.0" prefWidth="119.0" text="Nom Plat" textFill="#e7e5e5" />
+            <Label fx:id="lbl_Qte" text="0" textFill="#e7e5e5" />
+            <Label fx:id="lbl_total" text="0" textFill="#e7e5e5" />
+         </children>
+      </HBox>
+      <Label fx:id="lblEtat" prefHeight="14.0" prefWidth="142.0" text="Label" textFill="WHITE">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+   </children>
+   <effect>
+      <DropShadow />
+   </effect>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+   <padding>
+      <Insets left="5.0" right="10.0" />
+   </padding>
+</HBox>
