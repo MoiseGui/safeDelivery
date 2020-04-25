@@ -118,6 +118,7 @@ public void setMain(MainApp main) {
     	else {
     		System.out.println("commandesToday size "+ commande_items.size());
     		Node[] nodes = new Node[commande_items.size()];
+    		pnl_commandeItems.getChildren().clear();
     		for (int i = 0; i < nodes.length; i++) {
     			try {
     				
