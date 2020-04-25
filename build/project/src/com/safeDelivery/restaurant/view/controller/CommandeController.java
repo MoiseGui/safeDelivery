@@ -10,6 +10,7 @@ import com.safeDelivery.model.Restaurant;
 import com.safeDelivery.restaurant.MainResto;
 import com.safeDelivery.utils.DateTimeUtil;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -96,7 +97,7 @@ public class CommandeController implements Initializable {
 	}
 
 	@FXML
-	public void showDetails() throws IOException {
+	public void showDetails(ActionEvent event) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(MainResto.class.getResource("view/CommandeDetails.fxml"));
 

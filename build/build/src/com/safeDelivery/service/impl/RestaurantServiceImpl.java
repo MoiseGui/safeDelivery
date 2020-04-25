@@ -32,7 +32,6 @@ public class RestaurantServiceImpl implements RestaurantService {
 					restaurant.getRestaurateur().getPass());
 			System.out.println("test si le restaurateur existe = " + rs);
 			if (rs >= 0) {
-				restaurant.getRestaurateur().setId(rs);
 //				User restaurateur = userServiceImpl.getUserByEmail(restaurant.getRestaurateur().getEmail());
 				try {
 //					Connection conn = SingletonConnexion.startConnection();
@@ -41,7 +40,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 						PreparedStatement ps = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 						ps.setString(1, restaurant.getNom());
 						ps.setLong(2, restaurant.getAdress().getId());
-						ps.setLong(3, rs);
+						ps.setLong(3, restaurant.getRestaurateur().getId());
 						int count = ps.executeUpdate();
 						if (count == 1) {
 							ResultSet rs1 = ps.getGeneratedKeys();

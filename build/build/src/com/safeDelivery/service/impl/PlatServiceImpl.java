@@ -35,6 +35,7 @@ public class PlatServiceImpl implements PlatService {
 					ResultSet rs = ps.getGeneratedKeys();
 					if (rs.next()) {
 						int rsgetint = rs.getInt(1);
+						System.out.println("Id du Plat ajouté "+rsgetint);
 						ps.close();
 
 						if (rsgetint <= 0) {

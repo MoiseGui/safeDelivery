@@ -23,6 +23,7 @@ import com.safeDelivery.model.Ville;
 import com.safeDelivery.model.Zone;
 import com.safeDelivery.restaurant.MainResto;
 import com.safeDelivery.restaurant.view.controller.HomeController;
+import com.safeDelivery.service.impl.AdresseServiceImpl;
 import com.safeDelivery.service.impl.ClientServiceImpl;
 import com.safeDelivery.service.impl.LivreurServiceImpl;
 import com.safeDelivery.service.impl.PlatServiceImpl;
@@ -415,12 +416,14 @@ public class LoginController implements Initializable {
 		}
 		if (event.getSource().equals(choixClient)) {
 			this.categorie = 1;
+			user.setCategorie(categorie);
 			new ZoomIn(pnlSignUpEmailPass).play();
 			pnlSignUpEmailPass.toFront();
 		}
 
 		if (event.getSource().equals(choixResto)) {
 			this.categorie = 2;
+			user.setCategorie(categorie);
 			System.out.println("categorie " + categorie);
 			new ZoomIn(pnlSignUpEmailPass).play();
 			pnlSignUpEmailPass.toFront();
@@ -428,6 +431,7 @@ public class LoginController implements Initializable {
 
 		if (event.getSource().equals(choixLivreur)) {
 			this.categorie = 3;
+			user.setCategorie(categorie);
 			new ZoomIn(pnlSignUpEmailPass).play();
 			pnlSignUpEmailPass.toFront();
 		}
@@ -627,16 +631,42 @@ public class LoginController implements Initializable {
 				restaurant.setNom(tNomResto.getText());
 				restaurant.setRestaurateur(restaurateur);
 				Adresse adresse = new Adresse();
-//				VilleServiceImpl villeServiceImpl = new VilleServiceImpl();
-//				Ville ville = villeServiceImpl.findById(villeServiceImpl.existByName(cbVilleResto.getValue()));
-//				zone.setVille(ville);
-//				zone.setNom(cbZoneResto.getValue());
+				VilleServiceImpl villeServiceImpl = new VilleServiceImpl(connection);
+				Ville ville = villeServiceImpl.findById(villeServiceImpl.existByName(cbVilleResto.getValue()));
+				zone.setVille(ville);
+				zone.setNom(cbZoneResto.getValue());
 				adresse.setDetail(tAdresseResto.getText());
 				ZoneServiceimpl zoneServiceimpl = new ZoneServiceimpl(connection);
 				adresse.setZone(zoneServiceimpl.findById(zoneServiceimpl.existByName(cbZoneResto.getValue())));
 				restaurant.setAdresse(adresse);
-				long result = restaurateurService.addRestaurateur(restaurateur);
-				if (result <= 0) {
+				boolean okay = true;
+				
+				AdresseServiceImpl adresseServiceImpl = new AdresseServiceImpl(connection);
+				long res = adresseServiceImpl.saveAdresse(adresse);
+				System.out.println("Id de l'adresse "+res);
+				adresse.setId(res);
+				if(res <= 0) {
+					okay = false;
+				}
+				else {
+					long result = restaurateurService.addRestaurateur(restaurateur);
+					System.out.println("Id du restaurateur "+result);
+					restaurateur.setId(result);
+					if(result <= 0) {
+						okay = false;
+					}
+					else {
+						RestaurantServiceImpl restaurantServiceImpl = new RestaurantServiceImpl(connection);
+						long result2 = restaurantServiceImpl.addRestaurant(restaurant);
+						System.out.println("Id du restaurant "+result2);
+						if(result2 <= 0) {
+							okay = false;
+						}
+					}
+				}
+				
+				
+				if (!okay) {
 					Alert alert = new Alert(AlertType.WARNING);
 					alert.initOwner(mainApp.getPrimaryStage());
 					alert.setTitle("Safe Delivery");
