@@ -252,7 +252,7 @@ public class ClientHomeController implements Initializable {
 				controller.setCommande(commandes.get(i));
 				controller.setConnection(this.connection);
 				controller.setRestaurant(restaurantService.findByCommande(commandes.get(i)));
-				controller.setOwnerStage(this.main.getPrimaryStage());
+				controller.setOwnerStage(this.primaryStage);
 				controller.setMain(main);
 				controller.fillCommmande();
 
