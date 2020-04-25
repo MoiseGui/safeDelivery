@@ -619,6 +619,16 @@ public class ClientHomeController implements Initializable {
 
 	@FXML
 	void commander(ActionEvent event) throws IOException {
+		
+		if(paniers == null || paniers.isEmpty()) {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.initOwner(this.primaryStage);
+			alert.setTitle("Détail de votre commande");
+			alert.setHeaderText("Panier vide");
+			alert.setContentText("Veuillez ajouter des plats à votre panier pour pouvoir commander.");
+			alert.showAndWait();
+			return;
+		}
 
 		VilleServiceImpl villeService = new VilleServiceImpl(connection);
 //		ZoneServiceimpl zoneService = new ZoneServiceimpl(connection);

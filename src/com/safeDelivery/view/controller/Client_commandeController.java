@@ -8,8 +8,6 @@ import java.util.ResourceBundle;
 import com.safeDelivery.MainApp;
 import com.safeDelivery.model.Commande;
 import com.safeDelivery.model.Restaurant;
-import com.safeDelivery.restaurant.MainResto;
-import com.safeDelivery.restaurant.view.controller.CommandeDetailsController;
 import com.safeDelivery.utils.DateTimeUtil;
 
 import javafx.event.ActionEvent;

@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.safeDelivery.model.Client;
 import com.safeDelivery.model.Commande;
-import com.safeDelivery.model.Restaurant;
 
 public interface CommandeService {
 	
