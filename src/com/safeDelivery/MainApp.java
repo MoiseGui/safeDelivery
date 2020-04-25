@@ -71,6 +71,7 @@ public class MainApp extends Application {
 		animation = (BorderPane) loader.load();
 		Scene scene = new Scene(animation);
 		stage.setScene(scene);
+		stage.getIcons().add(new Image("file:resources/images/logo_sans_titre.png"));
 		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.show();
 		new ScreenWait().start();
