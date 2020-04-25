@@ -14,8 +14,6 @@ import com.safeDelivery.model.Client;
 import com.safeDelivery.model.Commande;
 import com.safeDelivery.model.Panier;
 import com.safeDelivery.model.Plat;
-import com.safeDelivery.restaurant.MainResto;
-import com.safeDelivery.restaurant.view.controller.CommandeController;
 import com.safeDelivery.service.impl.CommandeServiceImpl;
 import com.safeDelivery.service.impl.PanierServiceImpl;
 import com.safeDelivery.service.impl.PlatServiceImpl;
@@ -54,6 +52,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class ClientHomeController implements Initializable {
+	Timeline timeline;
 	Stage primaryStage;
 	private Connection connection;
 	List<Plat> randomPlat = new ArrayList<Plat>();
@@ -254,7 +253,6 @@ public class ClientHomeController implements Initializable {
 				controller.setConnection(this.connection);
 				controller.setRestaurant(restaurantService.findByCommande(commandes.get(i)));
 				controller.setOwnerStage(this.main.getPrimaryStage());
-				controller.setCompteur(i+1);
 				controller.setMain(main);
 				controller.fillCommmande();
 
@@ -285,8 +283,8 @@ public class ClientHomeController implements Initializable {
 			System.out.println("Page chargée ");
 		}
 
-//		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30000), ae -> loadAllCommandes()));
-//		timeline.play();
+		timeline = new Timeline(new KeyFrame(Duration.millis(20000), ae -> loadAllCommandes()));
+		timeline.play();
 
 		System.out.println("Task scheduled.");
 	}

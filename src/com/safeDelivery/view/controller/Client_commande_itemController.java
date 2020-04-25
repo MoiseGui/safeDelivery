@@ -8,6 +8,7 @@ import com.safeDelivery.model.Commande_item;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Client_commande_itemController implements Initializable {
@@ -61,6 +62,10 @@ public class Client_commande_itemController implements Initializable {
 		lbl_Qte.setText(String.valueOf(commande_item.getQte()));
 		lbl_total.setText(String.valueOf(this.commande_item.getPlat().getPrix() * this.commande_item.getQte()));
 		lblEtat.setText(this.commande_item.getEtat());
+		if (commande_item.getPlat().getImage() != null && !commande_item.getPlat().getImage().isEmpty()) {
+			img_plat.setImage(new Image(commande_item.getPlat().getImage()));
+		}
+		else System.out.println("Image vide");
 	}
 
 	@Override

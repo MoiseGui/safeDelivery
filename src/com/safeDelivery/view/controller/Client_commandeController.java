@@ -87,15 +87,6 @@ public class Client_commandeController implements Initializable {
 	private Button btn_voirCommande;
 
 	private Stage stage;
-    private int compteur;
-    
-	public int getCompteur() {
-		return compteur;
-	}
-
-	public void setCompteur(int compteur) {
-		this.compteur = compteur;
-	}
 
 	public void fillCommmande() {
 		if (this.commande == null) {
@@ -105,7 +96,7 @@ public class Client_commandeController implements Initializable {
 				System.out.println("Client nulle");
 			} else {
 				
-				lbl_nomClient.setText(String.valueOf(compteur));
+				lbl_nomClient.setText(String.valueOf(commande.getId()));
 			}
 			lbl_heureCommande.setText(DateTimeUtil.format(commande.getDateCommande()).substring(11));
 			if (commande.getDateLivraison() != null) {

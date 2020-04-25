@@ -11,10 +11,11 @@ import com.safeDelivery.MainApp;
 import com.safeDelivery.model.Commande;
 import com.safeDelivery.model.Commande_item;
 import com.safeDelivery.model.Restaurant;
-import com.safeDelivery.restaurant.MainResto;
 import com.safeDelivery.restaurant.view.controller.Commande_itemController;
 import com.safeDelivery.service.impl.Commande_itemServiceImpl;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,11 +26,13 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class ClientCommandeDetailsController implements Initializable {
 
 	Stage primaryStage;
 	List<Commande_itemController> commande_itemControllers = new ArrayList<Commande_itemController>();
+	Timeline timeline;
 	
 	private Connection connection;
 	
@@ -144,6 +147,10 @@ public void setMain(MainApp main) {
     		}
     		
     	}
+    	
+    	timeline = new Timeline(
+				new KeyFrame(Duration.millis(20000), ae -> fillDetails()));
+		timeline.play();
     }
 
 

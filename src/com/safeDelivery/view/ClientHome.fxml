@@ -374,7 +374,7 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <Label layoutX="30.0" layoutY="198.0" text="commande" textFill="#6797f2" />
+                  <Label layoutX="32.0" layoutY="198.0" text="N°" textFill="#6797f2" />
                   <Label layoutX="142.0" layoutY="198.0" text="Commandé à" textFill="#6797f2" />
                   <Label layoutX="406.0" layoutY="198.0" text="Total" textFill="#6797f2" />
                   <Label layoutX="520.0" layoutY="198.0" text="Status" textFill="#6797f2" />
@@ -388,7 +388,7 @@
                         </VBox>
                      </content>
                   </ScrollPane>
-                  <Label fx:id="lbl_totalCommandes" layoutX="472.0" layoutY="39.0" text="0" textFill="#2a73ff">
+                  <Label fx:id="lbl_totalCommandes" layoutX="573.0" layoutY="39.0" text="0" textFill="#2a73ff">
                      <font>
                         <Font name="System Bold" size="26.0" />
                      </font>

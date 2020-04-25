@@ -51,6 +51,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class HomeController implements Initializable {
+	int commandesSize = 0;
+	Timeline timeline;
 	Stage stage;
 	LoginController main;
 	private Connection connection;
@@ -193,6 +195,7 @@ public class HomeController implements Initializable {
 
 	@FXML
 	private Label lbl_errorNewPass;
+	
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -358,6 +361,12 @@ public class HomeController implements Initializable {
 					controller.setOwnerStage(this.main.getPrimaryStage());
 					controller.fillCommmande();
 
+					// hilight if new
+					
+					if(j < commandesSize) {
+						nodes[j].setStyle("-fx-background-color : #5D604D");
+					}
+					
 					// give the items some effect
 					nodes[i].setOnMouseEntered(event -> {
 						nodes[j].setStyle("-fx-background-color : #363B46");
@@ -382,13 +391,20 @@ public class HomeController implements Initializable {
 		List<Commande> commandesTest = commandeServiceImpl.findByrestaurant(this.restaurant.getId());
 
 		if (commandesTest != null && !commandesTest.isEmpty()) {
+			if(commandes.size() < commandesTest.size()) {
+				commandesSize = commandesTest.size() - commandes.size();
+			}
+			else commandesSize = 0;
+			
+			System.out.println("Différence! "+commandesSize);
+			
 			this.commandes = commandesTest;
 			chargerPage(date);
 			System.out.println("Page chargée ");
 		}
 
-		Timeline timeline = new Timeline(
-				new KeyFrame(Duration.millis(30000), ae -> loadAllCommandes(dateCommandes.getValue())));
+		timeline = new Timeline(
+				new KeyFrame(Duration.millis(20000), ae -> loadAllCommandes(dateCommandes.getValue())));
 		timeline.play();
 
 		System.out.println("Task scheduled.");
