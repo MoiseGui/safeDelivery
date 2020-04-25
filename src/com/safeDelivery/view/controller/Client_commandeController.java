@@ -87,6 +87,13 @@ public class Client_commandeController implements Initializable {
 	private Button btn_voirCommande;
 
 	private Stage stage;
+	public Stage getStage() {
+		return stage;
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
+	}
 
 	public void fillCommmande() {
 		if (this.commande == null) {

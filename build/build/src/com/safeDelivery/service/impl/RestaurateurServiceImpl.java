@@ -53,4 +53,17 @@ public class RestaurateurServiceImpl implements RestaurateurService {
 		}
 	}
 
+	@Override
+	public Restaurateur findByid(long id) {
+		UserServiceImpl userService = new UserServiceImpl(conn);
+		User user = userService.getUserById(id);
+		if(!(user == null))
+		{
+			Restaurateur restaurateur = new Restaurateur(user);
+			return restaurateur;
+		}else {
+			return null;
+		}
+	}
+
 }

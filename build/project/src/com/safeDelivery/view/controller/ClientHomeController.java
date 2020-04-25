@@ -11,8 +11,10 @@ import java.util.ResourceBundle;
 
 import com.safeDelivery.MainApp;
 import com.safeDelivery.model.Client;
+import com.safeDelivery.model.Commande;
 import com.safeDelivery.model.Panier;
 import com.safeDelivery.model.Plat;
+import com.safeDelivery.service.impl.CommandeServiceImpl;
 import com.safeDelivery.service.impl.PanierServiceImpl;
 import com.safeDelivery.service.impl.PlatServiceImpl;
 import com.safeDelivery.service.impl.RestaurantServiceImpl;
@@ -21,6 +23,8 @@ import com.safeDelivery.service.impl.VilleServiceImpl;
 import com.safeDelivery.service.impl.ZoneServiceimpl;
 import com.safeDelivery.utils.saltHashPassword;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -45,11 +49,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class ClientHomeController implements Initializable {
+	Timeline timeline;
 	Stage primaryStage;
 	private Connection connection;
 	List<Plat> randomPlat = new ArrayList<Plat>();
+	List<Commande> commandes = new ArrayList<Commande>();
 
 	public Stage getPrimaryStage() {
 		return primaryStage;
@@ -150,38 +157,51 @@ public class ClientHomeController implements Initializable {
 
 	@FXML
 	private Button btnValiderLiv;
-	
-    @FXML
-    private Pane pnlAccount;
 
-    @FXML
-    private TextField tEmailChangePass;
+	@FXML
+	private Pane pnlAccount;
 
-    @FXML
-    private Button btnChangePass;
+	@FXML
+	private TextField tEmailChangePass;
 
-    @FXML
-    private PasswordField txt_oldPass;
+	@FXML
+	private Button btnChangePass;
 
-    @FXML
-    private PasswordField txt_newPass;
+	@FXML
+	private PasswordField txt_oldPass;
 
-    @FXML
-    private Label lbl_errorOldPass;
+	@FXML
+	private PasswordField txt_newPass;
 
-    @FXML
-    private Label lbl_errorNewPass;
-    
-    @FXML
-    void compteHandle(ActionEvent event) {
-    	tEmailChangePass.setText(client.getEmail());
-    	tEmailChangePass.setEditable(false);
-    	pnlAccount.toFront();
-    }
+	@FXML
+	private Label lbl_errorOldPass;
+	@FXML
+	private Pane pnlOverview;
+	@FXML
+	private Label lbl_errorNewPass;
+	@FXML
+	private VBox pnItems;
+	@FXML
+	private Label lbl_totalCommandes;
+	private MainApp main;
+	private Client client;
+	@FXML
+	void compteHandle(ActionEvent event) {
+		tEmailChangePass.setText(client.getEmail());
+		tEmailChangePass.setEditable(false);
+		pnlAccount.toFront();
+	}
 
 	@FXML
 	void HomeHandle(ActionEvent event) {
 		pnlHome.toFront();
+	}
+
+	@FXML
+	void loadCommands(ActionEvent event) {
+		loadAllCommandes();
+		pnlOverview.toFront();
+
 	}
 
 	private List<Panier> paniers = new ArrayList<Panier>();
@@ -202,17 +222,75 @@ public class ClientHomeController implements Initializable {
 		if (!value.equals("") && !value.isEmpty() && !value.equals(" ")) {
 			List<Plat> plats = platService.findAllByNom(value);
 			diplay(plats);
-		}
-		else {
+		} else {
 			List<Plat> plats = platService.findAll();
 			diplay(plats);
 		}
 
 	}
 
+	void fillLabels(List<Commande> commandes) {
+		int total = commandes.size();
+		lbl_totalCommandes.setText(String.valueOf(total));
+	}
+
+	public void chargerPage() {
+		pnItems.getChildren().clear();
+		lbl_totalCommandes.setText( String.valueOf(commandes.size()));
+		RestaurantServiceImpl restaurantService = new RestaurantServiceImpl(connection);
+		Node[] nodes = new Node[commandes.size()];
+		for (int i = 0; i < nodes.length; i++) {
+			try {
+
+				final int j = i;
+
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(MainApp.class.getResource("view/Client_commande.fxml"));
+				nodes[i] = (HBox) loader.load();
+
+				Client_commandeController controller = loader.getController();
+				controller.setCommande(commandes.get(i));
+				controller.setConnection(this.connection);
+				controller.setRestaurant(restaurantService.findByCommande(commandes.get(i)));
+				controller.setOwnerStage(this.main.getPrimaryStage());
+				controller.setMain(main);
+				controller.fillCommmande();
+
+				// give the items some effect
+				nodes[i].setOnMouseEntered(event -> {
+					nodes[j].setStyle("-fx-background-color : #363B46");
+				});
+				nodes[i].setOnMouseExited(event -> {
+					nodes[j].setStyle("-fx-background-color : transparent");
+				});
+				pnItems.getChildren().add(nodes[i]);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	public void loadAllCommandes() {
+		if (connection == null)
+			System.out.println("Connection nulle dans le controller -> Client_loadAllCommdes()");
+		CommandeServiceImpl commandeServiceImpl = new CommandeServiceImpl(connection);
+		List<Commande> commandesTest = commandeServiceImpl.findByClient(client);
+		if (commandesTest != null && !commandesTest.isEmpty()) {
+			this.commandes = commandesTest;
+			System.out.println("je vais charger la page");
+			chargerPage();
+			System.out.println("Page chargée ");
+		}
+
+		timeline = new Timeline(new KeyFrame(Duration.millis(20000), ae -> loadAllCommandes()));
+		timeline.play();
+
+		System.out.println("Task scheduled.");
+	}
+
 	List<Plat> plats = new ArrayList<Plat>();
-	private MainApp main;
-	private Client client;
+	
 
 	public Client getClient() {
 		return client;
@@ -326,8 +404,10 @@ public class ClientHomeController implements Initializable {
 	void filterResto(ActionEvent event) {
 		PlatServiceImpl platService = new PlatServiceImpl(connection);
 		v1 = cbxresto.getValue();
-		if(v1 == null) System.out.println("V1 nulle");
-		if(v2 == null) System.out.println("V2 nulle");
+		if (v1 == null)
+			System.out.println("V1 nulle");
+		if (v2 == null)
+			System.out.println("V2 nulle");
 		if (v1.equals("tous") && v2.equals("tous")) {
 			System.out.println("filtre resto j'ai cliqué sur tous ");
 			List<Plat> plats = platService.findAll();
@@ -510,7 +590,8 @@ public class ClientHomeController implements Initializable {
 			zone = cbxZoneLiv.getValue();
 			ville = cbxVilleLiv.getValue();
 			adresse = txtAdres.getText();
-			if (zone == null || ville == null || adresse == null || adresse.isEmpty() || zone.isEmpty() || ville.isEmpty()) {
+			if (zone == null || ville == null || adresse == null || adresse.isEmpty() || zone.isEmpty()
+					|| ville.isEmpty()) {
 				Alert alert = new Alert(AlertType.WARNING);
 				alert.initOwner(this.primaryStage);
 				alert.setTitle("Détail de votre commande");
@@ -562,10 +643,10 @@ public class ClientHomeController implements Initializable {
 		paniers.clear();
 		showPanier();
 	}
-	
+
 	@FXML
-    void loadzoneLive(ActionEvent event) {
-		if(cbxVilleLiv.getValue() != null && !cbxVilleLiv.getValue().isEmpty()) {
+	void loadzoneLive(ActionEvent event) {
+		if (cbxVilleLiv.getValue() != null && !cbxVilleLiv.getValue().isEmpty()) {
 			ZoneServiceimpl zoneService = new ZoneServiceimpl(connection);
 			List<String> zones = zoneService.findByVille(cbxVilleLiv.getValue());
 			ObservableList<String> zoness = FXCollections.observableArrayList(zones);
@@ -575,32 +656,32 @@ public class ClientHomeController implements Initializable {
 				cbxZoneLiv.setItems(zoness);
 			}
 		}
-    }
-	
+	}
+
 	@FXML
 	void handleButtonAction(ActionEvent event) throws NoSuchAlgorithmException {
 		boolean error = false;
 		lbl_errorNewPass.setText("");
 		lbl_errorOldPass.setText("");
-		
+
 		String oldPass = txt_oldPass.getText(), newPass = txt_newPass.getText();
-		
-		if(newPass.isEmpty() || newPass.length() < 6) {
+
+		if (newPass.isEmpty() || newPass.length() < 6) {
 			error = true;
 			lbl_errorNewPass.setText("Au moins 6 caractères");
 			txt_newPass.setText("");
 		}
-		if(oldPass.isEmpty() || !saltHashPassword.generateHash(oldPass).equals(client.getPass())){
+		if (oldPass.isEmpty() || !saltHashPassword.generateHash(oldPass).equals(client.getPass())) {
 			error = true;
 			lbl_errorOldPass.setText("Ancien mot de passe incorrect");
 			txt_oldPass.setText("");
 			txt_newPass.setText("");
 		}
-		
-		if(!error) {
+
+		if (!error) {
 			UserServiceImpl impl = new UserServiceImpl(connection);
 			int res = impl.changePass(client.getId(), newPass);
-			
+
 			if (res <= 0) {
 				txt_oldPass.setText("");
 				txt_newPass.setText("");
@@ -620,14 +701,13 @@ public class ClientHomeController implements Initializable {
 				alert.setContentText("Votre mot de passe est changé avec succès");
 				alert.showAndWait();
 			}
-			
+
 		}
 	}
-	
-	
+
 	@FXML
-    void signOutHandler(ActionEvent event) {
+	void signOutHandler(ActionEvent event) {
 		this.primaryStage.close();
-    }
+	}
 
 }

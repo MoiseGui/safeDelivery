@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Commande_itemController implements Initializable {
@@ -59,7 +60,7 @@ public class Commande_itemController implements Initializable {
 		this.etat = cbx_etat.getValue();
 	}
 	
-	void fillCommandeItem() {
+	public void fillCommandeItem() {
 		if(this.commande_item == null) System.out.println("Commande_iten");
 		if(this.commande_item.getPlat() == null) System.out.println("Plat");
 		if(this.commande_item.getPlat().getNom() == null) System.out.println(("Nom du plat"));
@@ -68,6 +69,10 @@ public class Commande_itemController implements Initializable {
 		lbl_total.setText(String.valueOf(this.commande_item.getPlat().getPrix() * this.commande_item.getQte()));
 		cbx_etat.setValue(this.commande_item.getEtat());
 		this.etat = this.commande_item.getEtat();
+		if (commande_item.getPlat().getImage() != null && !commande_item.getPlat().getImage().isEmpty()) {
+			img_plat.setImage(new Image(commande_item.getPlat().getImage()));
+		}
+		else System.out.println("Image vide");
 	}
 
 	@Override
