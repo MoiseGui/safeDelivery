@@ -2,6 +2,7 @@ package com.safeDelivery.service;
 
 import java.util.List;
 
+import com.safeDelivery.model.Commande;
 import com.safeDelivery.model.Restaurant;
 
 public interface RestaurantService {
@@ -11,4 +12,5 @@ public interface RestaurantService {
 	public int modifyResto(Restaurant oldRestaurant, Restaurant newRestaurant);
 	List<String> findAll();
 	public List<String> findRestoByVille(String ville);
+	public  Restaurant findByCommande(Commande commande);
 }
