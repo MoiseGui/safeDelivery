@@ -225,7 +225,7 @@ public class CommandeServiceImpl implements CommandeService {
 		try {
 //			Connection conn = SingletonConnexion.startConnection();
 			if (conn != null) {
-				String query = "select commande.id, commande.id_client, commande.total, commande.etat, commande.id_livreur, commande.dateCommande, commande.dateLivraison from restaurant, menu, plat, commande_item, commande where restaurant.id = menu.id_restaurant and menu.id_plat = plat.id and plat.id = commande_item.id_plat and commande_item.id_commande = commande.id and restaurant.id = "+idResto+"  order by dateCommande desc";
+				String query = "select distinct commande.id, commande.id_client, commande.total, commande.etat, commande.id_livreur, commande.dateCommande, commande.dateLivraison from restaurant, menu, plat, commande_item, commande where restaurant.id = menu.id_restaurant and menu.id_plat = plat.id and plat.id = commande_item.id_plat and commande_item.id_commande = commande.id and restaurant.id = "+idResto+"  order by dateCommande desc";
 				Statement statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
 					    ResultSet.CONCUR_READ_ONLY);
 //				PreparedStatement statement = conn.prepareStatement();

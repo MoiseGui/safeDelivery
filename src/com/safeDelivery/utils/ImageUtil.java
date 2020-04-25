@@ -45,7 +45,7 @@ public class ImageUtil {
 			
 			ResultSet rs = preparedStatement.getGeneratedKeys();
 			baos.close();
-			fileOuputStream.close();
+//			fileOuputStream.close();
 			if (rs.next()) {
 				System.out.println("Image sucessfully inserted to the table");
 				int rsgetint = rs.getInt(1);

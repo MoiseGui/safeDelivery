@@ -389,12 +389,16 @@ public class HomeController implements Initializable {
 			System.out.println("Connection nulle dans le controller -> loadAllCommdes()");
 		CommandeServiceImpl commandeServiceImpl = new CommandeServiceImpl(connection);
 		List<Commande> commandesTest = commandeServiceImpl.findByrestaurant(this.restaurant.getId());
+		System.out.println("Les commandes: "+commandesTest.size());
 
 		if (commandesTest != null && !commandesTest.isEmpty()) {
+			
 			if(commandes.size() < commandesTest.size()) {
 				commandesSize = commandesTest.size() - commandes.size();
 			}
 			else commandesSize = 0;
+			
+			System.out.println("Load all commandes size "+commandesTest.size());
 			
 			System.out.println("Différence! "+commandesSize);
 			

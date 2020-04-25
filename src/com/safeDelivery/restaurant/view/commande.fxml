@@ -27,7 +27,7 @@
             <Label fx:id="lbl_status" text="...." textFill="#e7e5e5" />
          </children>
       </HBox>
-      <Button fx:id="btn_voirCommande" alignment="CENTER" mnemonicParsing="false" prefHeight="27.0" style="-fx-border-color: #2A73FF; -fx-border-radius: 20; -fx-background-color: transparent; -fx-text-fill: #e7e5e5;" stylesheets="@style.css" text="Voir" textFill="#e7e5e5">
+      <Button fx:id="btn_voirCommande" alignment="CENTER" mnemonicParsing="false" onAction="#showDetails" prefHeight="27.0" style="-fx-border-color: #2A73FF; -fx-border-radius: 20; -fx-background-color: transparent; -fx-text-fill: #e7e5e5;" stylesheets="@style.css" text="Voir" textFill="#e7e5e5">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
