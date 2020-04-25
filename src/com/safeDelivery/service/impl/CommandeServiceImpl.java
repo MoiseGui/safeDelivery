@@ -219,7 +219,7 @@ public class CommandeServiceImpl implements CommandeService {
 			return null;
 		}
 	}
-
+    @Override
 	public List<Commande> findByrestaurant(long idResto) {
 		List<Commande> commandes = new ArrayList<Commande>();
 		try {
@@ -316,6 +316,52 @@ public class CommandeServiceImpl implements CommandeService {
 				}
 
 			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public List<Commande> findByClient(Client client) {
+		List<Commande> commandes = new ArrayList<Commande>();
+		try {
+//			Connection conn = SingletonConnexion.startConnection();
+			if (conn != null) {
+				String query = "select commande.* from client,commande where client.id = commande.id_client and client.id = "+client.getId();
+				Statement statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
+					    ResultSet.CONCUR_READ_ONLY);
+//				PreparedStatement statement = conn.prepareStatement();
+//				statement.setLong(1, idResto);
+				ResultSet result = statement.executeQuery(query);
+				while (result.next()) {
+					Livreur livreur = null;
+					if(result.getLong(5) !=  0) {
+						LivreurServiceImpl livreurServiceImpl = new LivreurServiceImpl(conn);
+						livreur = livreurServiceImpl.findById(result.getLong(5));
+					}
+					if (livreur == null)
+						System.out.println("livreur nulle dans findByRestaurant");
+					
+					LocalDateTime dateLiv = null;
+					if(result.getString(7) != null) {
+						dateLiv = DateTimeUtil.parse(result.getString(7));
+					}
+					
+					Commande commande = new Commande(result.getLong(1), client, result.getDouble(3),
+							result.getString(4), livreur, DateTimeUtil.parse(result.getString(6)),
+							dateLiv);
+					commandes.add(commande);
+				}
+				statement.close();
+//				SingletonConnexion.closeConnection(conn);
+				if (commandes.isEmpty())
+					System.out.println("Liste vide depuis findAll de commandes");
+				return commandes;
+			} else {
+				System.out.println("Passed by here");
 				return null;
 			}
 		} catch (SQLException e) {
